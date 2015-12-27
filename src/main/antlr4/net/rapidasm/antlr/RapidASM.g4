@@ -18,7 +18,7 @@ statement : instruction
 
 
 movStatement : ALPHANUM MOVOPTOKEN ALPHANUM ;
-assignmentStatement : ALPHANUM '=' NUMBER ; 
+assignmentStatement : ALPHANUM '=' numericValue ; 
 
 conditionalBlock : LIKELYHOOD? 'if' '(' booleanExpression ')' statementBlock ;
 
@@ -62,8 +62,13 @@ varargs : '(' ')'
         | '(' (WORD ':' VARSIZE)* ')'
         ;
 
+// TODO Make sure the pointer stuff doesn't allow spaces.
 numericValue : NUMBER
              | ALPHANUM
+             | '*'* ALPHANUM   // C-style pointer dereferencing
+             | '&' ALPHANUM    // C-style pointer referencing
+             | '&' NUMBER      // Direct addressing
+             | '!'             // Address of instruction
              ;
 
 NUMBER : '-'? INT
