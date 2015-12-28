@@ -2,7 +2,7 @@ package net.rapidasm.structure;
 
 import java.util.List;
 
-import net.rapidasm.arch.Instruction;
+import net.rapidasm.structure.subroutines.RapidInstruction;
 
 /**
  * Represents a sequence of ASM instructions generated for the .S file.
@@ -12,7 +12,7 @@ import net.rapidasm.arch.Instruction;
  */
 public class AsmSequence {
 
-	public List<Instruction> sequence;
+	public List<RapidInstruction> sequence;
 	
 	
 	
