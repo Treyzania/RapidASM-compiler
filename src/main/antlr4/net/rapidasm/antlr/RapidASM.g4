@@ -22,8 +22,8 @@ assignmentStatement : ALPHANUM '=' numericValue ;
 
 conditionalBlock : LIKELYHOOD? 'if' '(' booleanExpression ')' statementBlock ;
 
-whileBlock : 'while' '(' booleanExpression ')' statementBlock
-           | 'do' statementBlock 'while' '(' booleanExpression ')'
+whileBlock : LIKELYHOOD? 'while' '(' booleanExpression ')' statementBlock
+           | 'do' statementBlock LIKELYHOOD? 'while' '(' booleanExpression ')'
            ;
 
 booleanExpression : 'true'

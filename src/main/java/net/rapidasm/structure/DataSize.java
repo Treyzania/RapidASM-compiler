@@ -5,8 +5,8 @@ public enum DataSize {
 	POINTER(-1),
 	BYTE(1),
 	SHORT(2),
-	INTEGER(4),
-	LONG(8);
+	INTEGER(4);
+	//LONG(8);
 	
 	public int size;
 	
