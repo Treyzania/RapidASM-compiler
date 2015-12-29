@@ -8,7 +8,6 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 import net.rapidasm.antlr.RapidASMParser.SectionContext;
 import net.rapidasm.antlr.RapidASMParser.StatementBlockContext;
-import net.rapidasm.antlr.RapidASMParser.StatementContext;
 import net.rapidasm.antlr.RapidASMParser.SubroutineContext;
 import net.rapidasm.structure.subroutines.RapidSection;
 import net.rapidasm.structure.subroutines.RapidStatement;
@@ -20,8 +19,8 @@ public class RapidWalkerControler extends RapidASMBaseListener {
 	
 	private Stack<RapidStatementBlock> statementStack;
 	private RapidSection currentSection;
-	private RapidSubroutine currentSub;
-	private RapidStatement currentStatement; // Is this one necessary?
+	@SuppressWarnings("unused") private RapidSubroutine currentSub;
+	@SuppressWarnings("unused") private RapidStatement currentStatement; // Is this one necessary?
 	
 	public RapidWalkerControler() {
 		
@@ -47,6 +46,7 @@ public class RapidWalkerControler extends RapidASMBaseListener {
 		
 	}
 	
+	@SuppressWarnings("unused")
 	@Override
 	public void enterSubroutine(SubroutineContext ctx) {
 		

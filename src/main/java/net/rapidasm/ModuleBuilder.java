@@ -2,8 +2,6 @@ package net.rapidasm;
 
 import java.io.File;
 
-import net.rapidasm.antlr.RapidWalkerControler;
-
 public class ModuleBuilder {
 
 	public ModuleBuilder() {
@@ -17,8 +15,6 @@ public class ModuleBuilder {
 	public Module createModule(File file) {
 		
 		// TODO ANTLR stuff to do this.
-		
-		RapidWalkerControler sg = new RapidWalkerControler();
 		
 		return null;
 		
