@@ -9,6 +9,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import net.rapidasm.antlr.RapidASMParser.SectionContext;
 import net.rapidasm.antlr.RapidASMParser.StatementBlockContext;
 import net.rapidasm.antlr.RapidASMParser.SubroutineContext;
+import net.rapidasm.structure.RapidStatementBlock;
 import net.rapidasm.structure.subroutines.RapidSection;
 import net.rapidasm.structure.subroutines.RapidStatement;
 import net.rapidasm.structure.subroutines.RapidSubroutine;

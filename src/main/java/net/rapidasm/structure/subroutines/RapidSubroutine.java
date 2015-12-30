@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 import net.rapidasm.AsmLine;
-import net.rapidasm.antlr.RapidStatementBlock;
 import net.rapidasm.arch.CallingConvention;
 import net.rapidasm.structure.Assemblable;
 import net.rapidasm.structure.DataSize;
 import net.rapidasm.structure.Headerable;
+import net.rapidasm.structure.RapidStatementBlock;
 
 public class RapidSubroutine implements Assemblable, Headerable {
 

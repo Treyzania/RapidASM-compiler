@@ -16,7 +16,6 @@ statement : instruction
           | assignmentStatement
           ;
 
-
 movStatement : ALPHANUM MOVOPTOKEN ALPHANUM ;
 assignmentStatement : ALPHANUM '=' numericValue ; 
 
@@ -39,17 +38,16 @@ instruction : WORD
             | WORD ALPHANUM (',' ALPHANUM)*
             ;
 
-
 // Sections can only have alphanumeric names.  "Varargs" used here for align.
 section : 'section' varargs? ALPHANUM '{' sectionPopulant '}' ;
 
 sectionPopulant : subroutine
-                | object
+                | symbol
                 ;
 
 // For defining out of the ordinary stuff the compiler generates.
-// @define
-object : '@' WORD
+// @value
+symbol : '@' WORD
        | '@' WORD '='? ALPHANUM
        ;
 

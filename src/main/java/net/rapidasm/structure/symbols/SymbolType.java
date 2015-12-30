@@ -1,6 +1,6 @@
-package net.rapidasm.structure.objects;
+package net.rapidasm.structure.symbols;
 
-public enum RapidObjectType {
+public enum SymbolType {
 
 	VALUE("value", 2), // Generates operand 2, and provides a pointer the the data to the context.
 	STORE("store", 1), // Generates operand 1.
@@ -9,7 +9,7 @@ public enum RapidObjectType {
 	public String name;
 	public int operandCount;
 	
-	private RapidObjectType(String name, int operands) {
+	private SymbolType(String name, int operands) {
 		
 		this.name = name;
 		this.operandCount = operands;

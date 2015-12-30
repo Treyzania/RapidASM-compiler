@@ -1,4 +1,4 @@
-package net.rapidasm.antlr;
+package net.rapidasm.structure;
 
 import java.util.List;
 
