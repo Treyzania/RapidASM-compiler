@@ -41,16 +41,15 @@ instruction : WORD
 // Sections can only have alphanumeric names.  "Varargs" used here for align.
 section : 'section' varargs? ALPHANUM '{' sectionPopulant '}' ;
 
-sectionPopulant : subroutine
-                | symbol
-                ;
-
 // For defining out of the ordinary stuff the compiler generates.
 // @value
 symbol : '@' WORD
        | '@' WORD '='? ALPHANUM
        ;
 
+sectionPopulant : subroutine
+                | symbol
+                ;
 
 subroutine : 'sub!' ALPHANUM ('(' ')')? statementBlock
            | 'sub' ('<' ALPHANUM '>')? ALPHANUM varargs? statementBlock
