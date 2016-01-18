@@ -19,4 +19,9 @@ public class X86Architecture extends Architecture {
 		return 4;
 	}
 
+	@Override
+	public String getShortName() {
+		return "x86";
+	}
+
 }

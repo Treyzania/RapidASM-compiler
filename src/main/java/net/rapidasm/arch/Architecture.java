@@ -22,4 +22,10 @@ public abstract class Architecture {
 	 */
 	public abstract int getWordSize(); 
 	
+	/**
+	 * 
+	 * @return The short, common name of this architecture.
+	 */
+	public abstract String getShortName();
+	
 }
