@@ -36,10 +36,7 @@ public class RapidSubroutine implements Assemblable, Headerable, ContextProvider
 
 	@Override
 	public Context getContext() {
-		
-		// TODO
-		return null;
-		
+		return statementBlock.getContext();
 	}
 	
 }
