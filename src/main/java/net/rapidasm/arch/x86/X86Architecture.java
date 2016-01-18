@@ -1,6 +1,11 @@
 package net.rapidasm.arch.x86;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.rapidasm.arch.Architecture;
+import net.rapidasm.structure.context.Context;
+import net.rapidasm.structure.context.ContextItem;
 
 public class X86Architecture extends Architecture {
 
@@ -24,4 +29,14 @@ public class X86Architecture extends Architecture {
 		return "x86";
 	}
 
+	@Override
+	public Context getNewUniversalContext() {
+		
+		List<ContextItem> items = new ArrayList<ContextItem>();
+		
+		// TODO Set up registers.
+		
+		return new Context(items);
+	}
+	
 }

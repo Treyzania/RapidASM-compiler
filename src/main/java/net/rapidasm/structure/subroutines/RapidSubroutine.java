@@ -9,8 +9,10 @@ import net.rapidasm.structure.Assemblable;
 import net.rapidasm.structure.DataSize;
 import net.rapidasm.structure.Headerable;
 import net.rapidasm.structure.RapidStatementBlock;
+import net.rapidasm.structure.context.Context;
+import net.rapidasm.structure.context.ContextProvider;
 
-public class RapidSubroutine implements Assemblable, Headerable {
+public class RapidSubroutine implements Assemblable, Headerable, ContextProvider {
 
 	public String name;
 	public CallingConvention callingConvention;
@@ -23,6 +25,19 @@ public class RapidSubroutine implements Assemblable, Headerable {
 		
 		// TODO
 		
+		return null;
+		
+	}
+
+	@Override
+	public boolean isBacktrackable() {
+		return true;
+	}
+
+	@Override
+	public Context getContext() {
+		
+		// TODO
 		return null;
 		
 	}
