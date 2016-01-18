@@ -34,9 +34,11 @@ public class X86Architecture extends Architecture {
 		
 		List<ContextItem> items = new ArrayList<ContextItem>();
 		
-		// TODO Set up registers.
+		// TODO Set up registers from files.
+		// Should registers have their own declaration method and stuff.
 		
 		return new Context(items);
+		
 	}
 	
 }
