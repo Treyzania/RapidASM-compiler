@@ -3,6 +3,7 @@ package net.rapidasm.structure;
 public enum DataSize {
 
 	POINTER(-1),
+	STRING(-1),
 	BYTE(1),
 	SHORT(2),
 	INTEGER(4);
@@ -19,6 +20,7 @@ public enum DataSize {
 		String val = key.substring(1);
 		
 		if (val.equals("ptr")) return POINTER;
+		if (val.equals("str")) return STRING;
 		
 		int bytes = Integer.MIN_VALUE;
 		
