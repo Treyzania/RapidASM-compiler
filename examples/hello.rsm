@@ -1,0 +1,30 @@
+/*
+ * Prints "Hello, world!\n" to stdout on Linux.
+ */
+
+// Becomes `.rodata`
+section DATA {
+	
+	@value _str message = "Hello, world!\n"
+	@value _ptr length = ! - message
+	
+}
+
+// Becomes `.text`
+section TEXT {
+	
+	// Becomes `main`, with `.type main @function`.
+	sub! ENTRY {
+		
+		edx <- length	// Length
+		ecx <- message	// Pointer to the message
+		ebx = 1			// stdout printstream numberd
+		eax = 4			// sys_write syscall number
+		int 0x80		// Actually invoke it
+		
+		eax = 1			// sys_exit syscall number
+		int 0x80		// Actually invoke it
+		
+	}
+	
+}
