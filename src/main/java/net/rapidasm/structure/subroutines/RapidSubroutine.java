@@ -12,7 +12,7 @@ import net.rapidasm.structure.RapidStatementBlock;
 import net.rapidasm.structure.context.Context;
 import net.rapidasm.structure.context.ContextProvider;
 
-public class RapidSubroutine implements Assemblable, Headerable, ContextProvider {
+public class RapidSubroutine extends SectionPopulant implements Assemblable, Headerable, ContextProvider {
 
 	public String name;
 	public CallingConvention callingConvention;

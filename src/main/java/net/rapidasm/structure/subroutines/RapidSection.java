@@ -5,24 +5,19 @@ import java.util.List;
 
 import net.rapidasm.structure.context.Context;
 import net.rapidasm.structure.context.ContextItem;
+import net.rapidasm.structure.context.ContextItemProvider;
 import net.rapidasm.structure.context.ContextProvider;
-import net.rapidasm.structure.symbols.RapidSymbol;
 
 public class RapidSection implements ContextProvider {
 
 	public String name;
 
-	public List<RapidSubroutine> subroutines;
-	public List<RapidSymbol> symbols;
-
-	public void addSubroutine(RapidSubroutine sub) {
-		this.subroutines.add(sub);
+	public List<SectionPopulant> children;
+	
+	public void addChild(SectionPopulant sp) {
+		this.children.add(sp);
 	}
 	
-	public void addObject(RapidSymbol obj) {
-		this.symbols.add(obj);
-	}
-
 	@Override
 	public boolean isBacktrackable() {
 		return true;
@@ -33,13 +28,18 @@ public class RapidSection implements ContextProvider {
 		
 		Context c = new Context();
 		
-		// Apply the other contexts.
-		for (RapidSubroutine sub : this.subroutines) c = c.mergeContexts(sub.getContext());
-		
-		// Add symbols.
-		List<ContextItem> symbolCIs = new ArrayList<ContextItem>();
-		for (RapidSymbol symb : this.symbols) symbolCIs.add(symb.getContextItem());
-		c = c.mergeContexts(new Context(symbolCIs));
+		for (SectionPopulant sp : this.children) {
+			
+			if (sp instanceof ContextProvider) c = c.mergeContexts(((ContextProvider) sp).getContext());
+			if (sp instanceof ContextItemProvider) {
+				
+				List<ContextItem> l = new ArrayList<>(); 
+				l.add(((ContextItemProvider) sp).getContextItem());
+				c = c.mergeContexts(new Context(l));
+				
+			}
+			
+		}
 		
 		return c;
 		
