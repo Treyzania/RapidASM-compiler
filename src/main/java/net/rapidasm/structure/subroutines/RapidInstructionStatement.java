@@ -10,7 +10,6 @@ public class RapidInstructionStatement extends RapidStatement {
 
 	public Instruction type;
 	public RapidOperand[] operands;
-	public String label;
 	
 	@Override
 	public List<AsmLine> getAssembly() {

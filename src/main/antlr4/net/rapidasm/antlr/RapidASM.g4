@@ -1,5 +1,14 @@
 grammar RapidASM;
 
+module : modulePopulant+ ;
+
+modulePopulant : directive
+               | section
+               ;
+
+// Sections can only have alphanumeric names.
+section : 'section' ALPHANUM '{' sectionPopulant '}' ;
+
 // For explaining how the compiler behaves
 // #define
 directive : '#' WORD
@@ -14,6 +23,7 @@ statement : instruction
           | whileBlock
           | movStatement
           | assignmentStatement
+          | statementBlock
           ;
 
 movStatement : ALPHANUM MOVOPTOKEN ALPHANUM ;
@@ -38,17 +48,24 @@ instruction : WORD
             | WORD ALPHANUM (',' ALPHANUM)*
             ;
 
-// Sections can only have alphanumeric names.  "Varargs" used here for align.
-section : 'section' varargs? ALPHANUM '{' sectionPopulant '}' ;
-
 // For defining out of the ordinary stuff the compiler generates.
 // @value
-symbol : '@' WORD
-       | '@' WORD '='? ALPHANUM
-       ;
+symbol : sectionSymbol
+          | labelSymbol
+          ;
+
+sectionSymbol : valueSymbol
+              | storeSymbol
+              | skipSymbol
+              ;
+
+valueSymbol : '@value' WORD '=' VALUE ;
+storeSymbol : '@store' NUMBER ;
+skipSymbol : '@skip' NUMBER ;
+labelSymbol : '@label' WORD ;
 
 sectionPopulant : subroutine
-                | symbol
+                | sectionSymbol
                 ;
 
 subroutine : 'sub!' ALPHANUM ('(' ')')? statementBlock
@@ -68,6 +85,17 @@ numericValue : NUMBER
              | '!'             // Address of instruction
              ;
 
+VALUE : NUMBER
+      | STRING
+      ;
+
+STRING : '"' STRING_CHARS? '"' ;
+fragment STRING_CHARS : STRING_CHAR+ ;
+fragment STRING_CHAR : ~["\\]
+                     | ESCAPE_SEQ
+                     ;
+fragment ESCAPE_SEQ : '\\' [btnfr"'\\] ;
+
 NUMBER : '-'? INT
        | '-'? INT EXP
        | HEX
@@ -84,6 +112,7 @@ fragment BIN : '0b' [01] ; // Restrict to multiples of 8?
 // int/long/short/etc.
 VARSIZE : '_' INT // _ means width
         | '_ptr'
+        | '_str'
         ;
 
 // Changes the way the conditional is handled.
@@ -99,6 +128,11 @@ CMPOPTOKEN : '<' | '<=' | '==' | '!=' | '=>' | '>' ;
 NEWLINE : [\r\n]+ ;
 WORD : [a-zA-Z]+ ;
 ALPHANUM : [a-zA-Z0-9]+ ;
-ANYCHAR : [a-zA-Z0-9\.] ; // FIXME Not complete.
+ANYCHAR : [a-zA-Z0-9\.\ ] ; // FIXME Not complete.
 
-WS : [ \t]+ -> skip ;
+WS : [ \t\r\n\u000C]+ -> skip ;
+
+// Comments
+MULTI_COMMENT : '/*' .*? '*/' -> skip ;
+LINE_COMMENT : '//' ~[\r\n]* -> skip ;
+
