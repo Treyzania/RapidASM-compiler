@@ -1,0 +1,63 @@
+/*
+ * Init code to jump to C for zanix.
+ */
+
+#entry TEXT:ENTRY // Not necessary, as assumed
+#conv cdecl // Not necessary, as assumed
+
+#clink "kmain.c"
+
+#define ALIGN = 1 << 0
+#define MEMINFO = 1 << 1
+
+#define FLAGS = ALIGN | MEMINFO
+#define MAGIC = 0xBADB002
+#define CHECKSUM = -(MAGIC + FLAGS)
+
+// Multiboot header
+section(align:4) Multiboot {
+	
+	@store MAGIC
+	@store FLAGS
+	@store CHECKSUM
+	
+}
+
+section Stack {
+	
+	@value _ptr stack_bottom = !
+	@skip 16384
+	@value _ptr stack_top = !
+	
+}
+
+section TEXT {
+	
+	sub! ENTRY {
+		
+		esp <- stack_top
+		$kmain
+		
+		cli
+		hlt
+		
+		~hang
+		
+	}
+	
+	sub<nocall> hang {
+		~hang
+	}
+	
+<<<<<<<<
+Also valid is the following, for syntatic sugar.
+========
+	
+	sub! hang {
+		~hang
+	}	
+	
+>>>>>>>>
+	
+}
+
