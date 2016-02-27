@@ -1,16 +1,16 @@
 /*
  * Prints "Hello, world!\n" to stdout on Linux.
  */
-
-// Becomes `.rodata`
-section DATA {
+ 
+ // Becomes .data
+ section DATA {
 	
 	@value _str message = "Hello, world!\n"
 	@value _ptr length = ! - message
 	
 }
 
-// Becomes `.text`
+// Becomes .text
 section TEXT {
 	
 	// Becomes `main`, with `.type main @function`.
