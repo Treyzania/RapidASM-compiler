@@ -1,113 +1,138 @@
 grammar RapidASM;
 
-module : modulePopulant+ ;
-
-modulePopulant : directive
-               | section
-               ;
-
-// Sections can only have alphanumeric names.
-section : 'section' ALPHANUM '{' sectionPopulant '}' ;
+module : directiveDeclaration* section+ EOF ;
 
 // For explaining how the compiler behaves
 // #define
-directive : '#' WORD
-          | '#' WORD ALPHANUM*
-          | '#' '<' ANYCHAR '>'
-          ;
+directiveDeclaration : DIRECTIVE_IFDEF LIKELYHOOD '\n'*
+                     | DIRECTIVE_CLINK ALPHANUM '\n'*
+                     ;
 
-statementBlock : '{' statement* '}' ;
+DIRECTIVE_IFDEF : '#ifdefault' ; 
+DIRECTIVE_CLINK : '#clink' ; 
 
-statement : instruction
+// Sections can only have alphanumeric names.
+section : SECTION ALPHANUM '{' sectionPopulant* '}' '\n'*;
+
+sectionPopulant : subroutine
+                | sectionSymbol
+                ;
+
+statementBlock : '{' statementEntry* '}' ;
+statementEntry : labelSymbol* statement '\n'*;
+statement : movStatement
           | conditionalBlock
           | whileBlock
-          | movStatement
-          | assignmentStatement
           | statementBlock
+          | instruction
           ;
 
-movStatement : ALPHANUM MOVOPTOKEN ALPHANUM ;
-assignmentStatement : ALPHANUM '=' numericValue ; 
+movStatement : register MOVOPTOKEN numericValue ; // TODO Make this more specific. 
 
-conditionalBlock : LIKELYHOOD? 'if' '(' booleanExpression ')' statementBlock ;
+conditionalBlock : LIKELYHOOD? IF '(' booleanExpression ')' statementBlock ;
 
-whileBlock : LIKELYHOOD? 'while' '(' booleanExpression ')' statementBlock
-           | 'do' statementBlock LIKELYHOOD? 'while' '(' booleanExpression ')'
+whileBlock : LIKELYHOOD? WHILE '(' booleanExpression ')' statementBlock
+           | DO statementBlock LIKELYHOOD? WHILE '(' booleanExpression ')'
            ;
 
-booleanExpression : 'true'
-                  | 'false'
-                  | '0'
-                  | '1'
+booleanExpression : TRUE
+                  | FALSE
                   | numericValue CMPOPTOKEN numericValue
                   ; // TODO Add more to this.
 
-// Regular old expressions.
-// mov ax, bx
-instruction : WORD
-            | WORD ALPHANUM (',' ALPHANUM)*
+TRUE : 'true' ;
+FALSE : 'false' ;
+
+// Regular old instructions.
+// int 0x80
+instruction : ALPHANUM
+            | ALPHANUM argument (',' argument)*
             ;
+
+argument : numericValue
+         | register
+         ;
 
 // For defining out of the ordinary stuff the compiler generates.
 // @value
 symbol : sectionSymbol
-          | labelSymbol
-          ;
+       | labelSymbol
+       ;
+
+register : DOLLARSIGN ALPHANUM ;
 
 sectionSymbol : valueSymbol
               | storeSymbol
               | skipSymbol
               ;
 
-valueSymbol : '@value' WORD '=' VALUE ;
-storeSymbol : '@store' NUMBER ;
-skipSymbol : '@skip' NUMBER ;
-labelSymbol : '@label' WORD ;
+valueSymbol : SYMB_VALUE VARSIZE ALPHANUM EQUALS quantity ;
+storeSymbol : SYMB_STORE VARSIZE NUMBER ;
+skipSymbol : SYMB_SKIP NUMBER ;
+labelSymbol : SYMB_LABEL ALPHANUM ;
 
-sectionPopulant : subroutine
-                | sectionSymbol
-                ;
+SYMB_VALUE : '@value' ;
+SYMB_STORE : '@store' ;
+SYMB_SKIP : '@skip' ;
+SYMB_LABEL : '@label' ;
 
-subroutine : 'sub!' ALPHANUM ('(' ')')? statementBlock
-           | 'sub' ('<' ALPHANUM '>')? ALPHANUM varargs? statementBlock
+subroutine : SUBROUTINE_NOCALL ALPHANUM ('(' ')')? statementBlock
+           | SUBROUTINE convDeclaration? ALPHANUM varargs? statementBlock
            ;
 
-varargs : '(' ')'
-        | '(' (WORD ':' VARSIZE)* ')'
-        ;
+convDeclaration : '__' ALPHANUM ;
+
+varargs : '(' (ALPHANUM ':' VARSIZE)* ')' ;
 
 // TODO Make sure the pointer stuff doesn't allow spaces.
 numericValue : NUMBER
-             | ALPHANUM
-             | '*'* ALPHANUM   // C-style pointer dereferencing
-             | '&' ALPHANUM    // C-style pointer referencing
-             | '&' NUMBER      // Direct addressing
-             | '!'             // Address of instruction
+             | register
+             | ASTERISK* ALPHANUM      // C-style pointer dereferencing
+             | ANDPERSEAND ALPHANUM    // C-style pointer referencing
+             | ANDPERSEAND NUMBER      // Direct addressing
+             | EXCLAMATION             // Address of instruction
              ;
 
-VALUE : NUMBER
-      | STRING
-      ;
-
-STRING : '"' STRING_CHARS? '"' ;
-fragment STRING_CHARS : STRING_CHAR+ ;
-fragment STRING_CHAR : ~["\\]
-                     | ESCAPE_SEQ
-                     ;
-fragment ESCAPE_SEQ : '\\' [btnfr"'\\] ;
-
-NUMBER : '-'? INT
-       | '-'? INT EXP
+NUMBER : NEGATIVE? INT
        | HEX
        | OCT
        | BIN
        ;
 
 fragment INT : [0-9]+ ;
-fragment EXP : [Ee] [+\-]? INT ;
-fragment HEX : '0x' [0-9a-fA-F] ;
-fragment OCT : '0o' [0-7]* ;
-fragment BIN : '0b' [01] ; // Restrict to multiples of 8?
+fragment HEX : OH_EX [0-9a-fA-F]+ ;
+fragment OCT : OH_OH [0-7]+ ;
+fragment BIN : OH_BE [01]+ ; // Restrict to multiples of 8?
+fragment NEGATIVE : '-' ;
+fragment OH_EX : '0x' ;
+fragment OH_OH : '0o' ;
+fragment OH_BE : '0b' ;
+
+
+quantity : numericValue
+         | STRING
+         ;
+
+STRING : '"' STRING_CHARS? '"' ;
+fragment STRING_CHARS : STRING_CHAR+ ;
+fragment STRING_CHAR : ~["\\\n]
+                     | ESCAPE_SEQ
+                     ;
+fragment ESCAPE_SEQ : '\\' [btnfr"'\\] ;
+
+// General stuff.
+SECTION : 'section' ;
+WHILE : 'while' ;
+DO : 'do' ;
+IF : 'if' ;
+DOLLARSIGN : '$' ;
+EXCLAMATION : '!' ;
+ANDPERSEAND : '&' ;
+ASTERISK : '*' ;
+SUBROUTINE : 'sub' ;
+SUBROUTINE_NOCALL : 'sub!' ;
+
+ALPHANUM : [a-zA-Z][a-zA-Z0-9]+ ;
 
 // int/long/short/etc.
 VARSIZE : '_' INT // _ means width
@@ -121,18 +146,25 @@ LIKELYHOOD : 'likely'
            ;
 
 // Moving and comparison operators.
-MOVOPTOKEN : '=' | '<-' | '->' | '<->' | '<=>' ;
-CMPOPTOKEN : '<' | '<=' | '==' | '!=' | '=>' | '>' ;
+EQUALS : '=' ;
+MOVOPTOKEN : MOVLEFT | MOVRIGHT | XCHG | COERCEMOVLEFT | COERCEMOVRIGHT | COERCEXCHG ;
+CMPOPTOKEN : LESSTHAN | CMPLTET | CMPEQUAL | CMPINEQUAL | CMPGTET | GREATERTHAN ;
 
-// General stuff.
-NEWLINE : [\r\n]+ ;
-WORD : [a-zA-Z]+ ;
-ALPHANUM : [a-zA-Z0-9]+ ;
-ANYCHAR : [a-zA-Z0-9\.\ ] ; // FIXME Not complete.
+fragment MOVLEFT : '<-' ;
+fragment MOVRIGHT : '->' ;
+fragment XCHG : '<->' ;
+fragment COERCEMOVLEFT : '<<-' ;
+fragment COERCEMOVRIGHT : '->>' ;
+fragment COERCEXCHG : '<-->' ;
+fragment LESSTHAN : '<' ;
+fragment GREATERTHAN : '>' ;
+fragment CMPLTET : '<=' ;
+fragment CMPEQUAL : '==' ;
+fragment CMPINEQUAL : '!=' ;
+fragment CMPGTET : '>=' ;
 
 WS : [ \t\r\n\u000C]+ -> skip ;
 
 // Comments
 MULTI_COMMENT : '/*' .*? '*/' -> skip ;
-LINE_COMMENT : '//' ~[\r\n]* -> skip ;
-
+LINE_COMMENT : '//' ~[\r\n]* '\n' -> skip ;

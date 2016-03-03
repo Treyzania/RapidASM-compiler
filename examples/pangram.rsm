@@ -1,0 +1,65 @@
+/*
+ * This is a comment.
+ */
+
+section DATA {
+	
+	@value _str string = "This is a string."
+	@store _4 0x0099aaff
+	@skip 0x100
+	@value _ptr pointer = !
+	
+}
+
+// Comment
+section TEXT {
+	
+	// Comment
+	
+	sub! noCall {
+		
+		// Comment
+		int 0x80
+		mov $ax, $bx
+		
+		@label test
+		$eax <<- $ebx
+		$ecx <--> $edx
+		
+		if (true) {
+			
+			$edx <--> $eax
+			cli
+			
+		}
+		
+		likely while (false) {
+			
+			int 0x00
+			
+		}
+		
+		do {
+			
+			add $ax, $bx
+			
+		} while ($bx > 5)
+		
+		push $ax
+		pop $bx
+		
+	}
+	
+	sub __cdecl cdeclConv() {
+		
+		pop $bx
+		
+		unlikely if ($edx <= 5) {
+			
+			call noCall
+			
+		}
+		
+	}
+	
+}

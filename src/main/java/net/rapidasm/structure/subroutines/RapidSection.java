@@ -14,6 +14,13 @@ public class RapidSection implements ContextProvider {
 
 	public List<SectionPopulant> children;
 	
+	public RapidSection(String name) {
+		
+		this.children = new ArrayList<>();
+		this.name = name;
+		
+	}
+	
 	public void addChild(SectionPopulant sp) {
 		this.children.add(sp);
 	}

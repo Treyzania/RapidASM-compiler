@@ -1,12 +1,12 @@
 /*
  * Prints "Hello, world!\n" to stdout on Linux.
  */
- 
- // Becomes .data
- section DATA {
+
+// Becomes .data
+section DATA {
 	
 	@value _str message = "Hello, world!\n"
-	@value _ptr length = ! - message
+	@value _ptr length = 14
 	
 }
 
@@ -16,14 +16,14 @@ section TEXT {
 	// Becomes `main`, with `.type main @function`.
 	sub! ENTRY {
 		
-		edx <- length	// Length
-		ecx <- message	// Pointer to the message
-		ebx = 1			// stdout printstream numberd
-		eax = 4			// sys_write syscall number
-		int 0x80		// Actually invoke it
+		$edx <- length		// Length
+		$ecx <- message		// Pointer to the message
+		$ebx <<- 1			// stdout printstream number
+		$eax <<- 4			// sys_write syscall number
+		int 0x80			// Actually invoke it
 		
-		eax = 1			// sys_exit syscall number
-		int 0x80		// Actually invoke it
+		$eax <<- 1			// sys_exit syscall number
+		int 0x80			// Actually invoke it
 		
 	}
 	

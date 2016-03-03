@@ -14,7 +14,6 @@ import net.rapidasm.antlr.RapidASMParser.StatementContext;
 import net.rapidasm.antlr.RapidASMParser.StoreSymbolContext;
 import net.rapidasm.antlr.RapidASMParser.SubroutineContext;
 import net.rapidasm.antlr.RapidASMParser.SymbolContext;
-import net.rapidasm.antlr.RapidASMParser.ValueSymbolContext;
 import net.rapidasm.structure.RapidStatementBlock;
 import net.rapidasm.structure.subroutines.RapidSection;
 import net.rapidasm.structure.subroutines.RapidStatement;
@@ -27,8 +26,6 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	
 	private Stack<RapidStatementBlock> statementStack;
 	private RapidSection currentSection;
-	private RapidSubroutine currentSub;
-	@SuppressWarnings("unused") private RapidStatement currentStatement; // Is this one necessary?
 	
 	private List<LabelSymbol> cachedLabels;
 	
@@ -36,13 +33,14 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		
 		this.sectionsEncountered = new ArrayList<>();
 		this.statementStack = new Stack<>();
+		this.cachedLabels = new ArrayList<>();
 		
 	}
 	
 	@Override
 	public void enterSection(SectionContext ctx) {
 		
-		RapidSection section = new RapidSection();
+		RapidSection section = new RapidSection(ctx.ALPHANUM().getText());
 		
 		this.sectionsEncountered.add(section);
 		this.currentSection = section;
@@ -62,34 +60,17 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		
 		RapidSubroutine sub = new RapidSubroutine();
 		
-		List<TerminalNode> alphaNums = ctx.ALPHANUM();
-		
-		String subName, subConv;
-		
-		if (alphaNums.size() == 2) {
-			
-			subName = alphaNums.get(1).getText();
-			subConv = alphaNums.get(0).getText();
-			
-		} else if (alphaNums.size() == 1) {
-			
-			subName = alphaNums.get(0).getText();
-			
-		} else {
-			throw ctx.exception;
-		}
-		
-		sub.name = subName;
+		sub.name = ctx.ALPHANUM().getText();
 		sub.callingConvention = null; // FIXME TODO Change this.
 		
 		this.currentSection.addChild(sub);
-		this.currentSub = sub;
+		//this.currentSub = sub;
 		
 	}
 	
 	@Override
 	public void exitSubroutine(SubroutineContext ctx) {
-		this.currentSub = null;
+		//this.currentSub = null;
 	}
 	
 	@Override
@@ -141,17 +122,11 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		
 		
 	}
-
-	@Override
-	public void enterValueSymbol(ValueSymbolContext ctx) {
-		// TODO Auto-generated method stub
-		super.enterValueSymbol(ctx);
-	}
-
+	
 	@Override
 	public void enterLabelSymbol(LabelSymbolContext ctx) {
 		
-		LabelSymbol ls = new LabelSymbol(ctx.WORD().getText());
+		LabelSymbol ls = new LabelSymbol(ctx.ALPHANUM().getText());
 		this.cachedLabels.add(ls);
 		
 	}
