@@ -4,10 +4,10 @@
 
 section DATA {
 	
-	@value _str string = "This is a string."
+	@value _str someString = "This is a string."
 	@store _4 0x0099aaff
 	@skip 0x100
-	@value _ptr pointer = !
+	@value _ptr somePointer = !
 	
 }
 
@@ -15,6 +15,7 @@ section DATA {
 section TEXT {
 	
 	// Comment
+	@value _2 anotherValue = 42
 	
 	sub! noCall {
 		
@@ -61,5 +62,15 @@ section TEXT {
 		}
 		
 	}
+	
+	sub subWithArgs(pointer123 : _ptr, integer : _4) {
+		
+		do {
+			
+			inc integer
+			
+		} unlikely while (integer != 5)
+		
+	} 
 	
 }
