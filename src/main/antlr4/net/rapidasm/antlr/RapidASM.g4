@@ -29,11 +29,24 @@ statement : movStatement
 
 movStatement : register MOVOPTOKEN numericValue ; // TODO Make this more specific. 
 
-conditionalBlock : LIKELYHOOD? IF '(' booleanExpression ')' statementBlock ;
+conditionalBlock : LIKELYHOOD? IF booleanParen statementBlock ;
 
-whileBlock : LIKELYHOOD? WHILE '(' booleanExpression ')' statementBlock
-           | DO statementBlock LIKELYHOOD? WHILE '(' booleanExpression ')'
+whileBlock : whileBlockBefore
+           | whileBlockAfter
            ;
+
+whileBlockBefore : whileHeader statementBlock ;
+whileBlockAfter : DO statementBlock whileHeader ;
+whileHeader : LIKELYHOOD? WHILE booleanParen ;
+
+// Changes the way the conditional is handled.
+LIKELYHOOD : 'likely'
+           | 'unlikely'
+           ;
+
+booleanParen : OPENPAREN booleanExpression CLOSEPAREN ;
+OPENPAREN : '(' ;
+CLOSEPAREN : ')' ;
 
 booleanExpression : TRUE
                   | FALSE
@@ -82,7 +95,11 @@ subroutine : SUBROUTINE_NOCALL ALPHANUM ('(' ')')? statementBlock
 
 convDeclaration : '__' ALPHANUM ;
 
-varargs : '(' (ALPHANUM ':' VARSIZE)* ')' ;
+varargs : '(' ')'
+        | '(' vararg (',' vararg)* ')'
+        ;
+        
+vararg : ALPHANUM ':' VARSIZE ;
 
 // TODO Make sure the pointer stuff doesn't allow spaces.
 numericValue : NUMBER
@@ -139,11 +156,6 @@ VARSIZE : '_' INT // _ means width
         | '_ptr'
         | '_str'
         ;
-
-// Changes the way the conditional is handled.
-LIKELYHOOD : 'likely'
-           | 'unlikely'
-           ;
 
 // Moving and comparison operators.
 EQUALS : '=' ;
