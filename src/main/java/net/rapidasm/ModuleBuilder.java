@@ -1,7 +1,7 @@
 package net.rapidasm;
 
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -28,7 +28,15 @@ public class ModuleBuilder {
 		
 		try {
 			
-			ANTLRInputStream stream = new ANTLRInputStream(new FileReader(file));
+			FileInputStream fis = new FileInputStream(file);
+			byte[] data = new byte[(int) file.length()];
+			fis.read(data);
+			fis.close();
+			
+			String raw = new String(data);
+			String preprocessed = raw.replace("\r", ""); // Ughh windows...
+			
+			ANTLRInputStream stream = new ANTLRInputStream(preprocessed);
 			
 			// Basic pipeline setup.
 			RapidASMLexer lexer = new RapidASMLexer(stream);
