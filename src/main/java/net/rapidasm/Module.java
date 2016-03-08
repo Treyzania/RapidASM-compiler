@@ -16,13 +16,6 @@ public class Module {
 		this.sections = new ArrayList<>();
 	}
 	
-	public AsmFile getAsm() {
-		
-		// TODO Asm file generation.
-		return null;
-		
-	}
-	
 	public HeaderFile getHeader() {
 		
 		// TODO Header file generation.

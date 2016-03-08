@@ -1,9 +1,8 @@
 package net.rapidasm.structure.subroutines;
 
-import java.util.List;
 import java.util.Map;
 
-import net.rapidasm.AsmLine;
+import net.rapidasm.BinarySource;
 import net.rapidasm.arch.CallingConvention;
 import net.rapidasm.structure.Assemblable;
 import net.rapidasm.structure.DataSize;
@@ -19,12 +18,8 @@ public class RapidSubroutine extends SectionPopulant implements Assemblable, Hea
 	public RapidStatementBlock statementBlock;
 
 	@Override
-	public List<AsmLine> getAssembly() {
-		
-		// TODO
-		
-		return null;
-		
+	public void addLines(BinarySource src) {
+		// TODO Auto-generated method stub
 	}
 	
 }

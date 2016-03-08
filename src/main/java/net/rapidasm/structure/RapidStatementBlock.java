@@ -2,7 +2,7 @@ package net.rapidasm.structure;
 
 import java.util.List;
 
-import net.rapidasm.AsmLine;
+import net.rapidasm.BinarySource;
 import net.rapidasm.structure.subroutines.RapidStatement;
 import net.rapidasm.structure.subroutines.RapidSubroutine;
 import net.rapidasm.structure.subroutines.StatementBlockParent;
@@ -27,18 +27,16 @@ public class RapidStatementBlock extends RapidStatement implements Child<Stateme
 	}
 	
 	@Override
-	public List<AsmLine> getAssembly() {
-		
-		return null;
-		
-	}
-
-	@Override
 	public StatementBlockParent getStructuralParent() {
 		
 		// Can return a null, but we won't know what to return otherwise.
 		return this.owningSubroutine != null ? this.owningSubroutine : this.parentBlock;
 		
+	}
+
+	@Override
+	public void addLines(BinarySource src) {
+		// TODO Auto-generated method stub
 	}
 	
 }

@@ -1,12 +1,10 @@
 package net.rapidasm.structure;
 
-import java.util.List;
-
-import net.rapidasm.AsmLine;
+import net.rapidasm.BinarySource;
 
 public interface Assemblable {
 
 	// TODO Figure out how to do this bit here.
-	public abstract List<AsmLine> getAssembly();
+	public void addLines(BinarySource src);
 
 }
