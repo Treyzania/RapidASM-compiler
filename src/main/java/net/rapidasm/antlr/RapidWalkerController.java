@@ -81,13 +81,12 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		}
 		
 		this.currentSection.addChild(sub);
-		//this.currentSub = sub;
 		
 	}
 	
 	@Override
 	public void exitSubroutine(SubroutineContext ctx) {
-		//this.currentSub = null;
+		
 	}
 	
 	@Override
@@ -97,22 +96,22 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	
 	@Override
 	public void enterStoreSymbol(StoreSymbolContext ctx) {
-		this.currentSection.addChild(new StoreSymbol(DataSize.getSize(ctx.VARSIZE().getText()), MathUtils.parseNumber(ctx.NUMBER().getText())));
+		this.currentSection.addChild(new StoreSymbol(this.currentSection, DataSize.getSize(ctx.VARSIZE().getText()), MathUtils.parseNumber(ctx.NUMBER().getText())));
 	}
 	
 	@Override
 	public void enterSkipSymbol(SkipSymbolContext ctx) {
-		this.currentSection.addChild(new SkipSymbol((int) MathUtils.parseNumber(ctx.NUMBER().getText())));
+		this.currentSection.addChild(new SkipSymbol(this.currentSection, (int) MathUtils.parseNumber(ctx.NUMBER().getText())));
 	}
 	
 	@Override
 	public void enterValueSymbol(ValueSymbolContext ctx) {
-		this.currentSection.addChild(new ValueSymbol(ctx.ALPHANUM().getText(), DataSize.getSize(ctx.VARSIZE().getText()), ctx.quantity()));
+		this.currentSection.addChild(new ValueSymbol(this.currentSection, ctx.ALPHANUM().getText(), DataSize.getSize(ctx.VARSIZE().getText()), ctx.quantity()));
 	}
 	
 	@Override
 	public void enterStatementBlock(StatementBlockContext ctx) {
-		this.statementStack.push(new RapidStatementBlock());
+		this.statementStack.push(new RapidStatementBlock(this.statementStack.peek()));
 	}
 	
 	@Override

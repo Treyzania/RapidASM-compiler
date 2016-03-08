@@ -1,24 +1,20 @@
 package net.rapidasm.structure.symbols;
 
 import net.rapidasm.structure.DataSize;
-import net.rapidasm.structure.context.ContextItem;
+import net.rapidasm.structure.subroutines.RapidSection;
 
-public class StoreSymbol extends Symbol {
+public class StoreSymbol extends StandaloneSymbol {
 
 	public DataSize size;
 	public long data;
 	
-	public StoreSymbol(DataSize size, long data) {
+	public StoreSymbol(RapidSection parent, DataSize size, long data) {
+		
+		super(parent);
 		
 		this.size = size;
 		this.data = data;
 		
-	}
-
-	@Override
-	public ContextItem getContextItem() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	@Override

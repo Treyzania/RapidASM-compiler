@@ -1,23 +1,21 @@
 package net.rapidasm.structure.symbols;
 
-import net.rapidasm.structure.context.ContextItem;
+import net.rapidasm.structure.subroutines.RapidSection;
 
-public class SkipSymbol extends Symbol {
+public class SkipSymbol extends StandaloneSymbol {
 
 	private int bytesSkipped;
 	
-	public SkipSymbol(int bytes) {
+	public SkipSymbol(RapidSection parent, int bytes) {
+		
+		super(parent);
+		
 		this.bytesSkipped = bytes;
+		
 	}
 	
 	public int getBytesSkipped() {
 		return this.bytesSkipped;
-	}
-	
-	@Override
-	public ContextItem getContextItem() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	@Override

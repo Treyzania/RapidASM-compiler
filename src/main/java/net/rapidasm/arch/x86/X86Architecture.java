@@ -1,11 +1,6 @@
 package net.rapidasm.arch.x86;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.rapidasm.arch.Architecture;
-import net.rapidasm.structure.context.Context;
-import net.rapidasm.structure.context.ContextItem;
 
 public class X86Architecture extends Architecture {
 
@@ -27,18 +22,6 @@ public class X86Architecture extends Architecture {
 	@Override
 	public String getShortName() {
 		return "x86";
-	}
-
-	@Override
-	public Context getNewUniversalContext() {
-		
-		List<ContextItem> items = new ArrayList<ContextItem>();
-		
-		// TODO Set up registers from files.
-		// Should registers have their own declaration method and stuff.
-		
-		return new Context(items);
-		
 	}
 	
 }

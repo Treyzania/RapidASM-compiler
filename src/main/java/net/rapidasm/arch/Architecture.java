@@ -1,7 +1,5 @@
 package net.rapidasm.arch;
 
-import net.rapidasm.structure.context.Context;
-
 public abstract class Architecture {
 
 	// TODO Add list of instructions.
@@ -29,11 +27,5 @@ public abstract class Architecture {
 	 * @return The short, common name of this architecture.
 	 */
 	public abstract String getShortName();
-	
-	/**
-	 * 
-	 * @return A new context representing the "things" always accessible by a program, usually the registers.
-	 */
-	public abstract Context getNewUniversalContext();
 	
 }

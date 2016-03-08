@@ -9,10 +9,8 @@ import net.rapidasm.structure.Assemblable;
 import net.rapidasm.structure.DataSize;
 import net.rapidasm.structure.Headerable;
 import net.rapidasm.structure.RapidStatementBlock;
-import net.rapidasm.structure.context.Context;
-import net.rapidasm.structure.context.ContextProvider;
 
-public class RapidSubroutine extends SectionPopulant implements Assemblable, Headerable, ContextProvider {
+public class RapidSubroutine extends SectionPopulant implements Assemblable, Headerable {
 
 	public String name;
 	public CallingConvention callingConvention;
@@ -27,16 +25,6 @@ public class RapidSubroutine extends SectionPopulant implements Assemblable, Hea
 		
 		return null;
 		
-	}
-
-	@Override
-	public boolean isBacktrackable() {
-		return true;
-	}
-
-	@Override
-	public Context getContext() {
-		return statementBlock.getContext();
 	}
 	
 }

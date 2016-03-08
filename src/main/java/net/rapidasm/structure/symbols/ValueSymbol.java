@@ -2,25 +2,22 @@ package net.rapidasm.structure.symbols;
 
 import net.rapidasm.antlr.RapidASMParser.QuantityContext;
 import net.rapidasm.structure.DataSize;
-import net.rapidasm.structure.context.ContextItem;
+import net.rapidasm.structure.subroutines.RapidSection;
 
-public class ValueSymbol extends Symbol {
+public class ValueSymbol extends StandaloneSymbol {
 
 	public String name;
 	public DataSize size;
 	public QuantityContext value;
 	
-	public ValueSymbol(String name, DataSize size, QuantityContext data) {
+	public ValueSymbol(RapidSection parent, String name, DataSize size, QuantityContext data) {
+		
+		super(parent);
 		
 		this.name = name;
 		this.size = size;
 		this.value = data;
 		
-	}
-	
-	@Override
-	public ContextItem getContextItem() {
-		return null;
 	}
 	
 	@Override
