@@ -10,7 +10,7 @@ import net.rapidasm.structure.DataSize;
 import net.rapidasm.structure.Headerable;
 import net.rapidasm.structure.RapidStatementBlock;
 
-public class RapidSubroutine extends SectionPopulant implements Assemblable, Headerable {
+public class RapidSubroutine extends SectionPopulant implements Assemblable, Headerable, StatementBlockParent {
 
 	public String name;
 	public CallingConvention callingConvention;
