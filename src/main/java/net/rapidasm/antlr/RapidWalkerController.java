@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Stack;
 
 import net.rapidasm.MathUtils;
+import net.rapidasm.Module;
 import net.rapidasm.antlr.RapidASMParser.ConvDeclarationContext;
 import net.rapidasm.antlr.RapidASMParser.LabelSymbolContext;
 import net.rapidasm.antlr.RapidASMParser.SectionContext;
@@ -25,6 +26,8 @@ import net.rapidasm.structure.symbols.ValueSymbol;
 
 public class RapidWalkerController extends RapidASMBaseListener {
 
+	private Module generatedModule;
+	
 	public List<RapidSection> sectionsEncountered;
 	
 	private Stack<RapidStatementBlock> statementStack;
@@ -34,18 +37,24 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	
 	public RapidWalkerController() {
 		
+		this.generatedModule = new Module();
+		
 		this.sectionsEncountered = new ArrayList<>();
 		this.statementStack = new Stack<>();
 		this.cachedLabels = new ArrayList<>();
 		
 	}
 	
+	public Module getModule() {
+		return this.generatedModule;
+	}
+	
 	@Override
 	public void enterSection(SectionContext ctx) {
 		
-		RapidSection section = new RapidSection(ctx.ALPHANUM().getText());
+		RapidSection section = new RapidSection(this.generatedModule, ctx.ALPHANUM().getText());
 		
-		this.sectionsEncountered.add(section);
+		this.generatedModule.sections.add(section);
 		this.currentSection = section;
 		
 	}

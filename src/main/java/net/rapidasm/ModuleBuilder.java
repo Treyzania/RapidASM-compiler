@@ -24,8 +24,6 @@ public class ModuleBuilder {
 	
 	public Module createModule(File file) {
 		
-		Module mod = new Module();
-		
 		try {
 			
 			FileInputStream fis = new FileInputStream(file);
@@ -49,16 +47,18 @@ public class ModuleBuilder {
 			RapidWalkerController ctrl = new RapidWalkerController();
 			walker.walk(ctrl, parser.module());
 			
-			// Populate the module.
-			mod.sections.addAll(ctrl.sectionsEncountered);
-			mod.filename = file;
+			// Get the populated module.
+			return ctrl.getModule();
 			
 		} catch (IOException e) {
+			
 			e.printStackTrace();
 			System.exit(-1);
+			
+			// Probably would never get to this point, but we'll return null for good measure.
+			return null;
+			
 		}
-		
-		return mod;
 		
 	}
 	
