@@ -48,8 +48,9 @@ public class RapidSection implements Child<Module>, Assemblable {
 			actualName = "bss";
 		}
 		
-		src.addLabel("rsm_section_" + this.name);
+		src.addLabel("section_" + this.name);
 		src.addCode("section." + actualName);
+		src.addSpace();
 		
 		for (SectionPopulant child : this.children) {
 			
@@ -75,7 +76,7 @@ public class RapidSection implements Child<Module>, Assemblable {
 			
 		}
 		
-		src.addLabel("rsm_section_" + this.name + "_end");
+		src.addLabel("section_" + this.name + "_end");
 		
 	}
 	

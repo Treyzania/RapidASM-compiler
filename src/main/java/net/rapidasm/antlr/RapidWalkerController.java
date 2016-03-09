@@ -1,5 +1,6 @@
 package net.rapidasm.antlr;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -32,12 +33,13 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	
 	private Stack<RapidStatementBlock> statementStack;
 	private RapidSection currentSection;
+	private RapidSubroutine currentSub;
 	
 	private List<LabelSymbol> cachedLabels;
 	
-	public RapidWalkerController() {
+	public RapidWalkerController(File file) {
 		
-		this.generatedModule = new Module();
+		this.generatedModule = new Module(file);
 		
 		this.sectionsEncountered = new ArrayList<>();
 		this.statementStack = new Stack<>();
@@ -81,12 +83,13 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		}
 		
 		this.currentSection.addChild(sub);
+		this.currentSub = sub;
 		
 	}
 	
 	@Override
 	public void exitSubroutine(SubroutineContext ctx) {
-		
+		this.currentSub = null;
 	}
 	
 	@Override
@@ -111,7 +114,17 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	
 	@Override
 	public void enterStatementBlock(StatementBlockContext ctx) {
-		this.statementStack.push(new RapidStatementBlock(this.statementStack.peek()));
+		
+		RapidStatementBlock block = null;
+		
+		if (!this.statementStack.isEmpty()) {
+			block = new RapidStatementBlock(this.statementStack.peek());
+		} else {
+			block = new RapidStatementBlock(this.currentSub);
+		}
+		
+		this.statementStack.push(block);
+		
 	}
 	
 	@Override

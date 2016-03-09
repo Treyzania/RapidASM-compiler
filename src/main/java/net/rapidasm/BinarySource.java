@@ -29,7 +29,7 @@ public class BinarySource {
 	 */
 	public void addLabel(String labelName) {
 		
-		this.lines.addLine(labelName + ":");
+		this.add(labelName + ":");
 		this.lastTypeAdded = LineType.LABEL;
 		
 	}
@@ -42,7 +42,7 @@ public class BinarySource {
 	public void addCode(String... lines) {
 		
 		for (String line : lines) {
-			this.lines.addLine("\t" + line);
+			this.add("\t" + line);
 		}
 		
 		this.lastTypeAdded = LineType.CODE;
@@ -54,7 +54,7 @@ public class BinarySource {
 		String indent = this.getIndent();
 		
 		for (int i = 0; i < num; i++) {
-			this.lines.addLine(indent);
+			this.add(indent);
 		}
 		
 	}
@@ -64,7 +64,24 @@ public class BinarySource {
 	}
 	
 	public void addComment(String msg) {
-		this.lines.addLine(this.getIndent() + "; " + msg);
+		this.add(this.getIndent() + "; " + msg);
+	}
+	
+	public void add(String str) {
+		this.lines.addLine(str);
+	}
+	
+	@Override
+	public String toString() {
+		
+		StringBuilder sb = new StringBuilder();
+		
+		for (String line : this.lines.lines) {
+			sb.append(line + "\n");
+		}
+		
+		return sb.toString();
+		
 	}
 	
 	private static enum LineType {

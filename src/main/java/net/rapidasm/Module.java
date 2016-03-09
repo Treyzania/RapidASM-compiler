@@ -14,15 +14,19 @@ public class Module implements Assemblable, Headerable {
 	
 	public List<RapidSection> sections;
 	
-	public Module() {
+	public Module(File file) {
+		
+		this.filename = file;
+		
 		this.sections = new ArrayList<>();
+		
 	}
 
 	@Override
 	public void addLines(BinarySource src) {
 		
 		// Add beginning stuff.
-		src.addComment("Generated from " + this.toString());
+		src.addComment("Generated from " + this.filename.getPath());
 		// TODO Add some generic stuff derived from the arch.
 		
 		// Put in the sections.

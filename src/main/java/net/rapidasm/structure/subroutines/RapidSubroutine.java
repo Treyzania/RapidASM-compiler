@@ -16,10 +16,20 @@ public class RapidSubroutine extends SectionPopulant implements Assemblable, Hea
 	public Map<String, DataSize> signature;
 	
 	public RapidStatementBlock statementBlock;
-
+	
+	public RapidSubroutine() {
+		this.statementBlock = new RapidStatementBlock(this);
+	}
+	
 	@Override
 	public void addLines(BinarySource src) {
-		// TODO Auto-generated method stub
+		
+		src.addLabel("sub_" + this.name.toLowerCase());
+		this.statementBlock.addLines(src);
+		src.addLabel("sub_" + this.name.toLowerCase() + "_end");
+		
+		src.addSpace();
+		
 	}
 	
 }

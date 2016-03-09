@@ -37,6 +37,12 @@ public class RapidASM {
 			
 		}
 		
+		BinarySource bs = new BinarySource();
+		mod.addLines(bs);
+		
+		System.out.println("\n========\n");
+		System.out.println(bs.toString());
+		
 	}
 	
 }
