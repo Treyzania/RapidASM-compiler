@@ -4,12 +4,18 @@ module : directiveDeclaration* section+ EOF ;
 
 // For explaining how the compiler behaves
 // #define
-directiveDeclaration : DIRECTIVE_IFDEF LIKELYHOOD '\n'*
-                     | DIRECTIVE_CLINK ALPHANUM '\n'*
+directiveDeclaration : directiveIfDefault
+                     | directiveCfunc
                      ;
 
-DIRECTIVE_IFDEF : '#ifdefault' ; 
-DIRECTIVE_CLINK : '#clink' ; 
+directiveIfDefault : DIRECTIVE_IFDEF LIKELYHOOD '\n'* ;
+directiveCfunc : DIRECTIVE_CFUNC ALPHANUM varSizeList? '\n'* ;
+
+varSizeList : VARSIZE (',' VARSIZE)* ;
+
+DIRECTIVE_IFDEF : '%ifdefault' ; 
+DIRECTIVE_CFUNC : '%cfunc' ; 
+
 
 // Sections can only have alphanumeric names.
 section : SECTION ALPHANUM '{' sectionPopulant* '}' '\n'*;

@@ -2,17 +2,17 @@
  * Init code to jump to C for zanix.
  */
 
-#entry TEXT:ENTRY // Not necessary, as assumed
-#conv cdecl // Not necessary, as assumed
+%entry TEXT:ENTRY // Not necessary, as assumed
+%conv cdecl // Not necessary, as assumed
 
-#clink "kmain.c"
+%clink "kmain.c"
 
-#define ALIGN = 1 << 0
-#define MEMINFO = 1 << 1
+%set ALIGN = 1 << 0
+%set MEMINFO = 1 << 1
 
-#define FLAGS = ALIGN | MEMINFO
-#define MAGIC = 0xBADB002
-#define CHECKSUM = -(MAGIC + FLAGS)
+%set FLAGS = ALIGN | MEMINFO
+%set MAGIC = 0xBADB002
+%set CHECKSUM = -(MAGIC + FLAGS)
 
 // Multiboot header
 section(align:4) Multiboot {
