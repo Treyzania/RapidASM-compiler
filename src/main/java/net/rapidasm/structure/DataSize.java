@@ -2,17 +2,21 @@ package net.rapidasm.structure;
 
 public enum DataSize {
 
-	POINTER(-1),
-	STRING(-1),
-	BYTE(1),
-	SHORT(2),
-	INTEGER(4);
+	POINTER(-1, ""), // FIXME
+	STRING(-1, "db"), // Still works the same as for byte, this is just to provide more context
+	BYTE(1, "db"),
+	SHORT(2, "dw"),
+	INTEGER(4, "dd");
 	//LONG(8);
 	
 	public int size;
+	public String keyword;
 	
-	private DataSize(int size) {
+	private DataSize(int size, String keyword) {
+		
 		this.size = size;
+		this.keyword = keyword;
+		
 	}
 	
 	public static DataSize getSize(String key) {

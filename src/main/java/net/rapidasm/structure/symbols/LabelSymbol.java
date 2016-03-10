@@ -11,5 +11,5 @@ public class LabelSymbol extends Symbol {
 	public String getName() {
 		return this.name;
 	}
-
+	
 }

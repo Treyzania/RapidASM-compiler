@@ -70,7 +70,6 @@ public class RapidSection implements Child<Module>, Assemblable {
 				}
 				
 				asm.addLines(src);
-				src.addSpace();
 				
 			}
 			

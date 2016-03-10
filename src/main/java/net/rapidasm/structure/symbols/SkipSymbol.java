@@ -1,8 +1,10 @@
 package net.rapidasm.structure.symbols;
 
+import net.rapidasm.BinarySource;
+import net.rapidasm.structure.Assemblable;
 import net.rapidasm.structure.subroutines.RapidSection;
 
-public class SkipSymbol extends StandaloneSymbol {
+public class SkipSymbol extends StandaloneSymbol implements Assemblable {
 
 	private int bytesSkipped;
 	
@@ -21,6 +23,11 @@ public class SkipSymbol extends StandaloneSymbol {
 	@Override
 	public String toString() {
 		return String.format("%s{skipped=%s}", this.getClass().getSimpleName(), this.bytesSkipped);
+	}
+
+	@Override
+	public void addLines(BinarySource src) {
+		src.addCode(String.format(".skip %s", this.bytesSkipped));
 	}
 	
 }
