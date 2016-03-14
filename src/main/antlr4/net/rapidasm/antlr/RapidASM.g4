@@ -76,8 +76,6 @@ symbol : sectionSymbol
        | labelSymbol
        ;
 
-register : DOLLARSIGN ALPHANUM ;
-
 sectionSymbol : valueSymbol
               | storeSymbol
               | skipSymbol
@@ -105,6 +103,10 @@ varargs : '(' ')'
         
 vararg : ALPHANUM ':' VARSIZE ;
 
+quantity : numericValue
+         | STRING
+         ;
+
 // TODO Make sure the pointer stuff doesn't allow spaces.
 numericValue : NUMBER
              | register
@@ -113,6 +115,8 @@ numericValue : NUMBER
              | ANDPERSEAND NUMBER      // Direct addressing
              | EXCLAMATION             // Address of instruction
              ;
+
+register : DOLLARSIGN ALPHANUM ;
 
 NUMBER : NEGATIVE? INT
        | HEX
@@ -128,11 +132,6 @@ fragment NEGATIVE : '-' ;
 fragment OH_EX : '0x' ;
 fragment OH_OH : '0o' ;
 fragment OH_BE : '0b' ;
-
-
-quantity : numericValue
-         | STRING
-         ;
 
 STRING : '"' STRING_CHARS? '"' ;
 fragment STRING_CHARS : STRING_CHAR+ ;
