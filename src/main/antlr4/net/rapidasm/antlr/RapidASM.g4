@@ -108,27 +108,31 @@ quantity : numericValue
          ;
 
 // TODO Make sure the pointer stuff doesn't allow spaces.
-numericValue : NUMBER
-             | register
-             | ASTERISK* ALPHANUM      // C-style pointer dereferencing
+numericValue : NUMBER                  // Literals
+             | register                // Values of registers
+             | ALPHANUM
+             | ASTERISK+ numericValue  // C-style pointer dereferencing
              | ANDPERSEAND ALPHANUM    // C-style pointer referencing
              | ANDPERSEAND NUMBER      // Direct addressing
              | EXCLAMATION             // Address of instruction
+             | OPENPAREN numericValue plusMinus NUMBER CLOSEPAREN // Relative addressing
              ;
 
 register : DOLLARSIGN ALPHANUM ;
 
-NUMBER : NEGATIVE? INT
+NUMBER : MINUS? INT
        | HEX
        | OCT
        | BIN
        ;
 
+plusMinus : PLUS | MINUS ;
+MINUS : '-' ;
+PLUS : '+' ;
 fragment INT : [0-9]+ ;
 fragment HEX : OH_EX [0-9a-fA-F]+ ;
 fragment OCT : OH_OH [0-7]+ ;
 fragment BIN : OH_BE [01]+ ; // Restrict to multiples of 8?
-fragment NEGATIVE : '-' ;
 fragment OH_EX : '0x' ;
 fragment OH_OH : '0o' ;
 fragment OH_BE : '0b' ;
