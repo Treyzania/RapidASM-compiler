@@ -1,5 +1,6 @@
 package net.rapidasm.structure;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.rapidasm.BinarySource;
@@ -14,12 +15,24 @@ public class RapidStatementBlock extends RapidStatement implements Child<Stateme
 	
 	public List<RapidStatement> statements;
 	
+	public RapidStatementBlock() {
+		this.statements = new ArrayList<>();
+	}
+	
 	public RapidStatementBlock(RapidSubroutine owner) {
+		
+		this();
+		
 		this.owningSubroutine = owner;
+		
 	}
 	
 	public RapidStatementBlock(RapidStatementBlock parent) {
+		
+		this();
+		
 		this.parentBlock = parent;
+		
 	}
 	
 	public void addStatement(RapidStatement statement) {
@@ -36,7 +49,13 @@ public class RapidStatementBlock extends RapidStatement implements Child<Stateme
 
 	@Override
 	public void addLines(BinarySource src) {
-		// TODO Auto-generated method stub
+		
+		src.addComment("BLOCK: " + this.hashCode() + " (" + this.statements.size() + ")");
+		
+		for (RapidStatement rs : this.statements) {
+			rs.addLines(src);
+		}
+		
 	}
 	
 }

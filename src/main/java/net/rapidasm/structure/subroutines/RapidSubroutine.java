@@ -18,7 +18,7 @@ public class RapidSubroutine extends SectionPopulant implements Assemblable, Hea
 	public RapidStatementBlock statementBlock;
 	
 	public RapidSubroutine() {
-		this.statementBlock = new RapidStatementBlock(this);
+		
 	}
 	
 	@Override

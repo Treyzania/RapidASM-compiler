@@ -16,7 +16,6 @@ varSizeList : VARSIZE (',' VARSIZE)* ;
 DIRECTIVE_IFDEF : '%ifdefault' ; 
 DIRECTIVE_CFUNC : '%cfunc' ; 
 
-
 // Sections can only have alphanumeric names.
 section : SECTION ALPHANUM '{' sectionPopulant* '}' '\n'*;
 
@@ -64,9 +63,8 @@ FALSE : 'false' ;
 
 // Regular old instructions.
 // int 0x80
-instruction : ALPHANUM
-            | ALPHANUM argument (',' argument)*
-            ;
+instruction : ALPHANUM instructionArgs? ;
+instructionArgs : argument (',' argument)* ;
 
 argument : numericValue
          | register

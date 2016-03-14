@@ -8,6 +8,7 @@ import java.util.Stack;
 import net.rapidasm.MathUtils;
 import net.rapidasm.Module;
 import net.rapidasm.antlr.RapidASMParser.ConvDeclarationContext;
+import net.rapidasm.antlr.RapidASMParser.InstructionContext;
 import net.rapidasm.antlr.RapidASMParser.LabelSymbolContext;
 import net.rapidasm.antlr.RapidASMParser.SectionContext;
 import net.rapidasm.antlr.RapidASMParser.SkipSymbolContext;
@@ -18,6 +19,7 @@ import net.rapidasm.antlr.RapidASMParser.ValueSymbolContext;
 import net.rapidasm.arch.EmptyConvention;
 import net.rapidasm.structure.DataSize;
 import net.rapidasm.structure.RapidStatementBlock;
+import net.rapidasm.structure.subroutines.RapidInstructionStatement;
 import net.rapidasm.structure.subroutines.RapidSection;
 import net.rapidasm.structure.subroutines.RapidSubroutine;
 import net.rapidasm.structure.symbols.LabelSymbol;
@@ -120,7 +122,10 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		if (!this.statementStack.isEmpty()) {
 			block = new RapidStatementBlock(this.statementStack.peek());
 		} else {
+			
 			block = new RapidStatementBlock(this.currentSub);
+			this.currentSub.statementBlock = block;
+			
 		}
 		
 		this.statementStack.push(block);
@@ -130,6 +135,16 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	@Override
 	public void exitStatementBlock(StatementBlockContext ctx) {
 		this.statementStack.pop();
+	}
+
+	@Override
+	public void enterInstruction(InstructionContext ctx) {
+		
+		RapidStatementBlock block = this.statementStack.peek();
+		RapidInstructionStatement statement = new RapidInstructionStatement(block, ctx);
+		
+		block.addStatement(statement);
+		
 	}
 	
 }

@@ -1,17 +1,39 @@
 package net.rapidasm.structure.subroutines;
 
 import net.rapidasm.BinarySource;
-import net.rapidasm.arch.Instruction;
-import net.rapidasm.structure.RapidOperand;
+import net.rapidasm.antlr.RapidASMParser.InstructionContext;
+import net.rapidasm.structure.Child;
+import net.rapidasm.structure.RapidStatementBlock;
 
-public class RapidInstructionStatement extends RapidStatement {
+public class RapidInstructionStatement extends RapidStatement implements Child<RapidStatementBlock> {
 
-	public Instruction type;
-	public RapidOperand[] operands;
+	private RapidStatementBlock parent;
+	public InstructionContext context;
+	
+	public RapidInstructionStatement(RapidStatementBlock parent, InstructionContext context) {
+		
+		this.parent = parent;
+		this.context = context;
+		
+	}
 	
 	@Override
 	public void addLines(BinarySource src) {
 		
+		String instruction = this.context.ALPHANUM().getText();
+		
+		String args = this.context.instructionArgs().getText().trim();
+		if (args.length() == 0) {
+			src.addCode(instruction);
+		} else {
+			src.addCode(String.format("%s %s", instruction, args));
+		}
+		
+	}
+
+	@Override
+	public RapidStatementBlock getStructuralParent() {
+		return this.parent;
 	}
 	
 }
