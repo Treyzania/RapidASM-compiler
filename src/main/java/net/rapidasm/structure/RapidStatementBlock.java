@@ -22,7 +22,7 @@ public class RapidStatementBlock extends RapidStatement implements Child<Stateme
 	public RapidStatementBlock(RapidSubroutine owner) {
 		
 		this();
-		
+		System.out.println("SB WITH SUB");
 		this.owningSubroutine = owner;
 		
 	}
@@ -30,7 +30,7 @@ public class RapidStatementBlock extends RapidStatement implements Child<Stateme
 	public RapidStatementBlock(RapidStatementBlock parent) {
 		
 		this();
-		
+		System.out.println("SB WITH BLOCK");
 		this.parentBlock = parent;
 		
 	}
@@ -56,6 +56,11 @@ public class RapidStatementBlock extends RapidStatement implements Child<Stateme
 			rs.addLines(src);
 		}
 		
+	}
+
+	@Override
+	public RapidStatementBlock getBody() {
+		return this; // Let's hope this doesn't cause any stack overflows.
 	}
 	
 }

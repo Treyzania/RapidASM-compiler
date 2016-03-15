@@ -25,11 +25,16 @@ public class RapidSubroutine extends SectionPopulant implements Assemblable, Hea
 	public void addLines(BinarySource src) {
 		
 		src.addLabel("sub_" + this.name.toLowerCase());
-		this.statementBlock.addLines(src);
+		if (this.statementBlock != null) this.statementBlock.addLines(src);
 		src.addLabel("sub_" + this.name.toLowerCase() + "_end");
 		
 		src.addSpace();
 		
+	}
+
+	@Override
+	public RapidStatementBlock getBody() {
+		return this.statementBlock;
 	}
 	
 }

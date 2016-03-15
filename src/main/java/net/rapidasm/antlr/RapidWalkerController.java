@@ -7,6 +7,7 @@ import java.util.Stack;
 
 import net.rapidasm.MathUtils;
 import net.rapidasm.Module;
+import net.rapidasm.antlr.RapidASMParser.ConditionalBlockContext;
 import net.rapidasm.antlr.RapidASMParser.ConvDeclarationContext;
 import net.rapidasm.antlr.RapidASMParser.InstructionContext;
 import net.rapidasm.antlr.RapidASMParser.LabelSymbolContext;
@@ -19,6 +20,7 @@ import net.rapidasm.antlr.RapidASMParser.ValueSymbolContext;
 import net.rapidasm.arch.EmptyConvention;
 import net.rapidasm.structure.DataSize;
 import net.rapidasm.structure.RapidStatementBlock;
+import net.rapidasm.structure.subroutines.RapidIfStatement;
 import net.rapidasm.structure.subroutines.RapidInstructionStatement;
 import net.rapidasm.structure.subroutines.RapidSection;
 import net.rapidasm.structure.subroutines.RapidSubroutine;
@@ -44,7 +46,6 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		this.generatedModule = new Module(file);
 		
 		this.sectionsEncountered = new ArrayList<>();
-		this.statementStack = new Stack<>();
 		this.cachedLabels = new ArrayList<>();
 		
 	}
@@ -73,6 +74,7 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	@Override
 	public void enterSubroutine(SubroutineContext ctx) {
 		
+		this.statementStack = new Stack<>();
 		RapidSubroutine sub = new RapidSubroutine();
 		
 		sub.name = ctx.ALPHANUM().getText();
@@ -91,7 +93,10 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	
 	@Override
 	public void exitSubroutine(SubroutineContext ctx) {
+		
 		this.currentSub = null;
+		this.statementStack = null;
+		
 	}
 	
 	@Override
@@ -120,7 +125,12 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		RapidStatementBlock block = null;
 		
 		if (!this.statementStack.isEmpty()) {
-			block = new RapidStatementBlock(this.statementStack.peek());
+			
+			RapidStatementBlock parent = this.statementStack.peek();
+			
+			block = new RapidStatementBlock(parent);
+			parent.addStatement(block);
+			
 		} else {
 			
 			block = new RapidStatementBlock(this.currentSub);
@@ -135,6 +145,16 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	@Override
 	public void exitStatementBlock(StatementBlockContext ctx) {
 		this.statementStack.pop();
+	}
+	
+	@Override
+	public void enterConditionalBlock(ConditionalBlockContext ctx) {
+		
+		RapidStatementBlock parent = this.statementStack.peek();
+		RapidIfStatement statement = new RapidIfStatement(parent, ctx);
+		
+		this.statementStack.push(statement.getBody());
+		
 	}
 
 	@Override
