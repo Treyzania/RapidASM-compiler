@@ -30,9 +30,11 @@ statement : movStatement
           | whileBlock
           | statementBlock
           | instruction
+          | subroutineInvocation
+          | returnStatement
           ;
 
-movStatement : register movOperator numericValue ; // TODO Make this more specific. 
+movStatement : numericValue movOperator numericValue ; // TODO Make this more specific. 
 
 conditionalBlock : LIKELYHOOD? IF booleanParen statementBlock ;
 
@@ -44,22 +46,13 @@ whileBlockBefore : whileHeader statementBlock ;
 whileBlockAfter : DO statementBlock whileHeader ;
 whileHeader : LIKELYHOOD? WHILE booleanParen ;
 
-// Changes the way the conditional is handled.
-LIKELYHOOD : 'likely'
-           | 'unlikely'
-           ;
-
 booleanParen : OPENPAREN booleanExpression CLOSEPAREN ;
-OPENPAREN : '(' ;
-CLOSEPAREN : ')' ;
-
 booleanExpression : TRUE
                   | FALSE
                   | numericValue cmpOperator numericValue
                   ; // TODO Add more to this.
 
-TRUE : 'true' ;
-FALSE : 'false' ;
+returnStatement : RETURN numericValue? ;
 
 // Regular old instructions.
 // int 0x80
@@ -91,14 +84,14 @@ SYMB_STORE : '@store' ;
 SYMB_SKIP : '@skip' ;
 SYMB_LABEL : '@label' ;
 
-subroutine : SUBROUTINE_NOCALL ALPHANUM ('(' ')')? statementBlock
+subroutine : SUBROUTINE_NOCALL ALPHANUM (OPENPAREN CLOSEPAREN)? statementBlock
            | SUBROUTINE convDeclaration? ALPHANUM varargs? statementBlock
            ;
 
 convDeclaration : '__' ALPHANUM ;
 
-varargs : '(' ')'
-        | '(' vararg (',' vararg)* ')'
+varargs : OPENPAREN CLOSEPAREN
+        | OPENPAREN vararg (',' vararg)* CLOSEPAREN
         ;
         
 vararg : ALPHANUM ':' VARSIZE ;
@@ -108,15 +101,23 @@ quantity : numericValue
          ;
 
 // TODO Make sure the pointer stuff doesn't allow spaces.
-numericValue : NUMBER                  // Literals
-             | register                // Values of registers
-             | ALPHANUM
-             | ASTERISK+ numericValue  // C-style pointer dereferencing
-             | ANDPERSEAND ALPHANUM    // C-style pointer referencing
-             | ANDPERSEAND NUMBER      // Direct addressing
-             | EXCLAMATION             // Address of instruction
-             | OPENPAREN numericValue plusMinus NUMBER CLOSEPAREN // Relative addressing
+numericValue : numericImmediate
+             | ASTERISK+ numericValue                                 // C-style pointer dereferencing
+             | ANDPERSEAND ALPHANUM                                   // C-style pointer referencing
+             | ANDPERSEAND NUMBER                                     // Direct addressing
+             | subroutineInvocation                                   // Return values
+             | OPENPAREN numericImmediate plusMinus NUMBER CLOSEPAREN // Relative addressing
              ;
+
+numericImmediate : NUMBER      // Literals
+                 | register    // Values of registers
+                 | ALPHANUM
+                 | EXCLAMATION // Address of instruction
+                 ;
+
+subroutineInvocation : SQUIGGLE ALPHANUM OPENPAREN invocationArguments? CLOSEPAREN;
+invocationArguments : invocationArg (',' invocationArg)*;
+invocationArg : numericValue ; // No string literals here.
 
 register : DOLLARSIGN ALPHANUM ;
 
@@ -137,7 +138,7 @@ fragment OH_EX : '0x' ;
 fragment OH_OH : '0o' ;
 fragment OH_BE : '0b' ;
 
-STRING : '"' STRING_CHARS? '"' ;
+STRING : QUOT STRING_CHARS? QUOT ;
 fragment STRING_CHARS : STRING_CHAR+ ;
 fragment STRING_CHAR : ~["\\\n]
                      | ESCAPE_SEQ
@@ -155,6 +156,19 @@ ANDPERSEAND : '&' ;
 ASTERISK : '*' ;
 SUBROUTINE : 'sub' ;
 SUBROUTINE_NOCALL : 'sub!' ;
+SQUIGGLE : '~' ;
+TRUE : 'true' ;
+FALSE : 'false' ;
+OPENPAREN : '(' ;
+CLOSEPAREN : ')' ;
+QUOT : '"' ;
+
+// Changes the way the conditional is handled.
+LIKELYHOOD : 'likely'
+           | 'unlikely'
+           ;
+
+RETURN : 'return' ;
 
 ALPHANUM : [a-zA-Z][a-zA-Z0-9]+ ;
 

@@ -34,6 +34,8 @@ section TEXT {
 			
 		}
 		
+		
+		
 		likely while (false) {
 			
 			int 0x00
@@ -55,9 +57,11 @@ section TEXT {
 		
 		pop $bx
 		
+		~subWithArgs(somePointer, someString) -> $ebx
+		
 		unlikely if ($edx <= 5) {
 			
-			call noCall
+			~noCall()
 			
 		}
 		
@@ -70,6 +74,8 @@ section TEXT {
 			inc integer
 			
 		} unlikely while (integer != 5)
+		
+		return 5
 		
 	} 
 	
