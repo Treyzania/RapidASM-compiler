@@ -1,10 +1,7 @@
 package net.rapidasm.structure;
 
 import net.rapidasm.BinarySource;
-import net.rapidasm.antlr.RapidASMParser.NumericImmediateContext;
-import net.rapidasm.antlr.RapidASMParser.NumericValueContext;
 import net.rapidasm.arch.Architecture;
-import net.rapidasm.arch.Instruction;
 
 public abstract class Operand {
 
@@ -16,55 +13,19 @@ public abstract class Operand {
 		
 	}
 	
-	// The cache here is the register we store it in before doing whatever with it, might not be necessary.
-	public void setup(String cache, BinarySource src) {
+	public void setup(BinarySource src) {
 		
 	}
 	
-	public void cleanup(String cache, BinarySource src) {
+	public void cleanup(BinarySource src) {
 		
 	}
 	
 	public abstract String getActualOperand();
 	
+	// The cache here is the register we store it in before doing whatever with it, might not be necessary.
 	public abstract boolean needsRegisterCache();
 	public void setCacheRegister(String registre) {
-		
-	}
-	
-	/**
-	 * 
-	 * @return An instance of an Operand ready to be used.
-	 */
-	public static Operand getOperand(Architecture arch, RapidSubroutine sub, NumericValueContext ctx) { // FIXME TODO Make this work.
-		
-		NumericImmediateContext nic = ctx.numericImmediate();
-		
-		if (nic != null) {
-			
-			if (ctx.plusMinus() != null) {
-				
-				return null; // FIXME
-				
-			} else {
-				
-				// Literals, registers, etc.
-				return new ImmediateOperand(arch, nic.getText());
-				
-			}
-			
-		}
-		
-		String text = ctx.getText();
-		if (text.startsWith("*")) {
-			return new PointerDereferenceOperand(arch, sub, text.substring(1)); // ???
-		} else if (text.startsWith("~")) {
-			// TODO Sub invocation handling.
-		}
-		
-		// TODO Implementation for the other types of operands.
-		
-		return null;
 		
 	}
 	
@@ -72,7 +33,7 @@ public abstract class Operand {
 
 		public String value;
 		
-		protected ImmediateOperand(Architecture arch, String reg) {
+		public ImmediateOperand(Architecture arch, String reg) {
 			
 			super(arch);
 			
@@ -80,8 +41,8 @@ public abstract class Operand {
 				
 				String val = reg.substring(1);
 				
-				if (arch.hasRegister(val)) this.value = val;
-				throw new IllegalArgumentException("Architecture " + arch.getShortName() + " does not support the " + val + " register!");
+				if (!arch.hasRegister(val)) throw new IllegalArgumentException("Architecture " + arch.getShortName() + " does not support the " + val + " register!");
+				this.value = val;
 				
 			} else {
 				this.value = reg;
@@ -105,51 +66,45 @@ public abstract class Operand {
 		
 		private RapidSubroutine subroutine;
 		private String pointer;
+		private int offset;
 		
-		private String cache;
-		
-		protected PointerDereferenceOperand(Architecture arch, RapidSubroutine sub, String pointer) {
+		public PointerDereferenceOperand(Architecture arch, RapidSubroutine sub, String pointer, int offset) {
 			
 			super(arch);
 			
 			this.subroutine = sub;
 			this.pointer = pointer;
+			this.offset = offset;
 			
 		}
 		
-		@Override
-		public void setup(String cache, BinarySource src) {
-			
-			String exp = "";
-			
-			if (this.subroutine.hasArgument(this.pointer)) {
-				
-				exp = this.subroutine.getArgumentExpression(this.pointer);
-				
-			} else {
-				
-				// It's somewhere in the module, at least.  We can get it like this.
-				exp = String.format("[%s]", this.pointer);
-				
-			}
-			
-			src.addCode(this.arch.getInstruction(Instruction.MOVE, this.cache, exp));
-			
+		public PointerDereferenceOperand(Architecture arch, RapidSubroutine sub, String pointer) {
+			this(arch, sub, pointer, 0);
 		}
 		
 		@Override
 		public String getActualOperand() {
-			return this.cache;
+			
+			if (this.subroutine.hasArgument(this.pointer)) {
+				
+				return this.subroutine.getArgumentExpression(this.pointer);
+				
+			} else {
+				
+				// It's somewhere in the module, at least.  We can get it like this.
+				if (this.offset == 0) {
+					return String.format("[%s]", this.pointer);
+				} else {
+					return String.format("[%s %s %s]", this.pointer, this.offset > 0 ? '+' : '-', this.offset);
+				}
+				
+			}
+			
 		}
 
 		@Override
 		public boolean needsRegisterCache() {
-			return true; // ???
-		}
-
-		@Override
-		public void setCacheRegister(String register) {
-			this.cache = register;
+			return false;
 		}
 		
 	}

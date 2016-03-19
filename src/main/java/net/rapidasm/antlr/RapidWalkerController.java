@@ -11,6 +11,10 @@ import net.rapidasm.antlr.RapidASMParser.ConditionalBlockContext;
 import net.rapidasm.antlr.RapidASMParser.ConvDeclarationContext;
 import net.rapidasm.antlr.RapidASMParser.InstructionContext;
 import net.rapidasm.antlr.RapidASMParser.LabelSymbolContext;
+import net.rapidasm.antlr.RapidASMParser.NumericDereferenceContext;
+import net.rapidasm.antlr.RapidASMParser.NumericImmediateContext;
+import net.rapidasm.antlr.RapidASMParser.NumericRelativeDereferenceContext;
+import net.rapidasm.antlr.RapidASMParser.NumericSubroutineInvocationContext;
 import net.rapidasm.antlr.RapidASMParser.SectionContext;
 import net.rapidasm.antlr.RapidASMParser.SkipSymbolContext;
 import net.rapidasm.antlr.RapidASMParser.StatementBlockContext;
@@ -21,6 +25,7 @@ import net.rapidasm.antlr.RapidASMParser.VarargContext;
 import net.rapidasm.arch.Architecture;
 import net.rapidasm.arch.CallingConvention;
 import net.rapidasm.structure.DataSize;
+import net.rapidasm.structure.Operand;
 import net.rapidasm.structure.RapidInstructionStatement;
 import net.rapidasm.structure.RapidSection;
 import net.rapidasm.structure.RapidStatementBlock;
@@ -43,6 +48,9 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	private RapidSection currentSection;
 	private RapidSubroutine currentSub;
 	
+	private RapidInstructionStatement currentInstructionStatement;
+	
+	private List<Operand> cachedOperands;
 	private List<LabelSymbol> cachedLabels;
 	
 	public RapidWalkerController(File file, Architecture arch) {
@@ -52,6 +60,7 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		
 		this.sectionsEncountered = new ArrayList<>();
 		this.cachedLabels = new ArrayList<>();
+		this.resetOperands();
 		
 	}
 	
@@ -62,7 +71,11 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	public Architecture getArchitecture() {
 		return architecture;
 	}
-
+	
+	private void resetOperands() {
+		this.cachedOperands = new ArrayList<>();
+	}
+	
 	@Override
 	public void enterSection(SectionContext ctx) {
 		
@@ -176,9 +189,55 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	public void enterInstruction(InstructionContext ctx) {
 		
 		RapidStatementBlock block = this.statementStack.peek();
-		RapidInstructionStatement statement = new RapidInstructionStatement(block, ctx);
+		this.currentInstructionStatement = new RapidInstructionStatement(block, ctx.ALPHANUM().getText());
 		
-		block.addStatement(statement);
+		block.addStatement(this.currentInstructionStatement);
+		
+	}
+
+	@Override
+	public void enterNumericDereference(NumericDereferenceContext ctx) {
+		
+		Operand.PointerDereferenceOperand pdo = new Operand.PointerDereferenceOperand(this.architecture, this.currentSub, ctx.numericImmediate().getText()); // TODO
+		this.cachedOperands.add(pdo);
+		
+	}
+
+	@Override
+	public void enterNumericRelativeDereference(NumericRelativeDereferenceContext ctx) {
+		
+		int offset = Integer.getInteger(ctx.plusMinus().getText() + ctx.NUMBER().getText());
+		
+		Operand.PointerDereferenceOperand pdo = new Operand.PointerDereferenceOperand(this.architecture, this.currentSub, ctx.numericImmediate().getText(), offset);
+		this.cachedOperands.add(pdo);
+		
+	}
+
+	@Override
+	public void enterNumericSubroutineInvocation(NumericSubroutineInvocationContext ctx) {
+		
+		if (this.currentInstructionStatement != null) {
+			
+			throw new RuntimeException("this isn't supposed to happen!");
+			
+		}
+		
+	}
+
+	@Override
+	public void enterNumericImmediate(NumericImmediateContext ctx) {
+		
+		Operand.ImmediateOperand io = new Operand.ImmediateOperand(this.architecture, ctx.getText());
+		this.cachedOperands.add(io);
+		
+	}
+
+	@Override
+	public void exitInstruction(InstructionContext ctx) {
+		
+		this.currentInstructionStatement.setOperands(this.cachedOperands);
+		this.resetOperands();
+		this.currentInstructionStatement = null;
 		
 	}
 	

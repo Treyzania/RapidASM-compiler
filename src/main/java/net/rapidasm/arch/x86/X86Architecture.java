@@ -3,6 +3,7 @@ package net.rapidasm.arch.x86;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ListIterator;
 
 import net.rapidasm.BinarySource;
 import net.rapidasm.arch.Architecture;
@@ -13,6 +14,8 @@ import net.rapidasm.arch.InstructionSet;
 import net.rapidasm.arch.Register;
 import net.rapidasm.structure.DataSize;
 import net.rapidasm.structure.RapidSubroutine;
+import net.rapidasm.structure.Signature;
+import net.rapidasm.structure.Vararg;
 
 public class X86Architecture extends Architecture {
 
@@ -94,6 +97,26 @@ public class X86Architecture extends Architecture {
 			
 			// Just return.  This is a caller-cleans convention.
 			src.addCode("ret");
+			
+		}
+
+		@Override
+		public String getArgumentExpression(Signature sig, String argName) {
+			
+			ListIterator<Vararg> args = sig.getArguments().listIterator();
+			
+			int bytesPassed = 0;
+			
+			while (args.hasNext()) {
+				
+				Vararg arg = args.next();
+				
+				bytesPassed += arg.size.size;
+				if (arg.name.equals(argName)) break;
+				
+			}
+			
+			return String.format("[esp + %s]", bytesPassed);
 			
 		}
 		

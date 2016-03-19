@@ -24,7 +24,7 @@ public class RapidSubroutine extends SectionPopulant implements Assemblable, Hea
 	}
 	
 	public String getArgumentExpression(String name) {
-		return String.format("", "");
+		return this.callingConvention.getArgumentExpression(this.signature, name); 
 	}
 	
 	@Override

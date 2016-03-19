@@ -30,4 +30,8 @@ public class Signature {
 		return this.arguments.contains(name);
 	}
 	
+	public List<Vararg> getArguments() {
+		return this.arguments;
+	}
+	
 }

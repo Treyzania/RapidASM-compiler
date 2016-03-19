@@ -56,12 +56,7 @@ returnStatement : RETURN numericValue? ;
 
 // Regular old instructions.
 // int 0x80
-instruction : ALPHANUM instructionArgs? ;
-instructionArgs : argument (',' argument)* ;
-
-argument : numericValue
-         | register
-         ;
+instruction : ALPHANUM operands? ;
 
 // For defining out of the ordinary stuff the compiler generates.
 // @value
@@ -93,7 +88,7 @@ convDeclaration : '__' ALPHANUM ;
 varargs : OPENPAREN CLOSEPAREN
         | OPENPAREN vararg (',' vararg)* CLOSEPAREN
         ;
-        
+
 vararg : ALPHANUM ':' VARSIZE ;
 
 quantity : numericValue
@@ -102,21 +97,23 @@ quantity : numericValue
 
 // TODO Make sure the pointer stuff doesn't allow spaces.
 numericValue : numericImmediate
-             | ASTERISK numericValue                                  // C-style pointer dereferencing
-             | ANDPERSEAND ALPHANUM                                   // C-style pointer referencing
-             | subroutineInvocation                                   // Return values
-             | ASTERISK OPENPAREN numericImmediate plusMinus NUMBER CLOSEPAREN // Relative addressing
+             | numericDereference          // C-style pointer dereferencing
+             | numericSubroutineInvocation // Return values
+             | numericRelativeDereference  // Relative addressing
              ;
 
+numericDereference : ASTERISK numericImmediate ;
+numericSubroutineInvocation : subroutineInvocation ;
+numericRelativeDereference : ASTERISK OPENPAREN numericImmediate plusMinus NUMBER CLOSEPAREN ;
 numericImmediate : NUMBER      // Literals
                  | register    // Values of registers
                  | ALPHANUM
                  | EXCLAMATION // Address of instruction
                  ;
 
-subroutineInvocation : SQUIGGLE ALPHANUM OPENPAREN invocationArguments? CLOSEPAREN;
-invocationArguments : invocationArg (',' invocationArg)*;
-invocationArg : numericValue ; // No string literals here.
+subroutineInvocation : SQUIGGLE ALPHANUM OPENPAREN operands? CLOSEPAREN;
+operands : operand (',' operand)*;
+operand : numericValue ; // No string literals here.
 
 register : DOLLARSIGN ALPHANUM ;
 

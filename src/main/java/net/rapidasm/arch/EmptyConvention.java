@@ -2,6 +2,7 @@ package net.rapidasm.arch;
 
 import net.rapidasm.BinarySource;
 import net.rapidasm.structure.RapidSubroutine;
+import net.rapidasm.structure.Signature;
 
 public class EmptyConvention extends CallingConvention {
 
@@ -35,6 +36,11 @@ public class EmptyConvention extends CallingConvention {
 		// Just the return instruction here.
 		src.addCode(this.arch.getInstruction(Instruction.RETURN));
 		
+	}
+
+	@Override
+	public String getArgumentExpression(Signature sig, String argName) {
+		return "!!!TEST!!!";
 	}
 	
 }
