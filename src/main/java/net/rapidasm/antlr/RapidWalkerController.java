@@ -17,6 +17,8 @@ import net.rapidasm.antlr.RapidASMParser.StatementBlockContext;
 import net.rapidasm.antlr.RapidASMParser.StoreSymbolContext;
 import net.rapidasm.antlr.RapidASMParser.SubroutineContext;
 import net.rapidasm.antlr.RapidASMParser.ValueSymbolContext;
+import net.rapidasm.antlr.RapidASMParser.VarargContext;
+import net.rapidasm.arch.CallingConvention;
 import net.rapidasm.arch.EmptyConvention;
 import net.rapidasm.structure.DataSize;
 import net.rapidasm.structure.RapidIfStatement;
@@ -24,6 +26,7 @@ import net.rapidasm.structure.RapidInstructionStatement;
 import net.rapidasm.structure.RapidSection;
 import net.rapidasm.structure.RapidStatementBlock;
 import net.rapidasm.structure.RapidSubroutine;
+import net.rapidasm.structure.Vararg;
 import net.rapidasm.structure.symbols.LabelSymbol;
 import net.rapidasm.structure.symbols.SkipSymbol;
 import net.rapidasm.structure.symbols.StoreSymbol;
@@ -75,22 +78,33 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	public void enterSubroutine(SubroutineContext ctx) {
 		
 		this.statementStack = new Stack<>();
-		RapidSubroutine sub = new RapidSubroutine();
-		
-		sub.name = ctx.ALPHANUM().getText();
+		String name = ctx.ALPHANUM().getText();
 		
 		ConvDeclarationContext conv = ctx.convDeclaration();
+		CallingConvention cc = null;
 		if (conv != null) {
-			sub.callingConvention = new EmptyConvention(conv.ALPHANUM().getText());
+			cc = new EmptyConvention(conv.ALPHANUM().getText());
 		} else {
-			sub.callingConvention = new EmptyConvention("UNDEFINED");
+			cc = new EmptyConvention("UNDEFINED");
 		}
+		
+		RapidSubroutine sub = new RapidSubroutine(name, cc); 
 		
 		this.currentSection.addChild(sub);
 		this.currentSub = sub;
 		
 	}
 	
+	@Override
+	public void enterVararg(VarargContext ctx) {
+		
+		String name = ctx.ALPHANUM().getText();
+		DataSize size = DataSize.getSize(ctx.VARSIZE().getText());
+		
+		this.currentSub.signature.addVararg(new Vararg(name, size));
+		
+	}
+
 	@Override
 	public void exitSubroutine(SubroutineContext ctx) {
 		

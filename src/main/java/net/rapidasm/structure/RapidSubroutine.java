@@ -1,7 +1,5 @@
 package net.rapidasm.structure;
 
-import java.util.Map;
-
 import net.rapidasm.BinarySource;
 import net.rapidasm.arch.CallingConvention;
 
@@ -9,11 +7,15 @@ public class RapidSubroutine extends SectionPopulant implements Assemblable, Hea
 
 	public String name;
 	public CallingConvention callingConvention;
-	public Map<String, DataSize> signature;
+	public Signature signature;
 	
 	public RapidStatementBlock statementBlock;
 	
-	public RapidSubroutine() {
+	public RapidSubroutine(String name, CallingConvention conv) {
+		
+		this.name = name;
+		this.callingConvention = conv;
+		this.signature = new Signature();
 		
 	}
 	
@@ -27,7 +29,7 @@ public class RapidSubroutine extends SectionPopulant implements Assemblable, Hea
 		src.addSpace();
 		
 	}
-
+	
 	@Override
 	public RapidStatementBlock getBody() {
 		return this.statementBlock;
