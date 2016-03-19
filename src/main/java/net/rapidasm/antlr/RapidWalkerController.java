@@ -100,7 +100,7 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	public void enterVararg(VarargContext ctx) {
 		
 		String name = ctx.ALPHANUM().getText();
-		DataSize size = DataSize.getSize(ctx.VARSIZE().getText());
+		DataSize size = DataSize.getSize(this.architecture, ctx.VARSIZE().getText());
 		
 		this.currentSub.signature.addVararg(new Vararg(name, size));
 		
@@ -121,7 +121,7 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	
 	@Override
 	public void enterStoreSymbol(StoreSymbolContext ctx) {
-		this.currentSection.addChild(new StoreSymbol(this.currentSection, DataSize.getSize(ctx.VARSIZE().getText()), MathUtils.parseNumber(ctx.NUMBER().getText())));
+		this.currentSection.addChild(new StoreSymbol(this.currentSection, DataSize.getSize(this.architecture, ctx.VARSIZE().getText()), MathUtils.parseNumber(ctx.NUMBER().getText())));
 	}
 	
 	@Override
@@ -131,7 +131,7 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	
 	@Override
 	public void enterValueSymbol(ValueSymbolContext ctx) {
-		this.currentSection.addChild(new ValueSymbol(this.currentSection, ctx.ALPHANUM().getText(), DataSize.getSize(ctx.VARSIZE().getText()), ctx.quantity()));
+		this.currentSection.addChild(new ValueSymbol(this.currentSection, ctx.ALPHANUM().getText(), DataSize.getSize(this.architecture, ctx.VARSIZE().getText()), ctx.quantity()));
 	}
 	
 	@Override

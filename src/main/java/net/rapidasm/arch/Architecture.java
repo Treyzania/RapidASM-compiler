@@ -1,6 +1,9 @@
 package net.rapidasm.arch;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import net.rapidasm.structure.DataSize;
 
 public abstract class Architecture {
 
@@ -10,7 +13,7 @@ public abstract class Architecture {
 	 * 
 	 * @return The size of a pointers in bytes.
 	 */
-	public abstract int getPointerSize();
+	public abstract DataSize getPointerSize();
 	
 	/**
 	 * 
@@ -22,7 +25,7 @@ public abstract class Architecture {
 	 * 
 	 * @return The size of a word in bytes.
 	 */
-	public abstract int getWordSize(); 
+	public abstract DataSize getWordSize(); 
 	
 	/**
 	 * 
@@ -37,11 +40,15 @@ public abstract class Architecture {
 	public abstract List<CallingConvention> getCallingConventions();
 	
 	/**
-	 * A list of all of the general-purpose registers that can be accessed by most instructions.
 	 * 
-	 * @return
+	 * @return A list of all of the general-purpose registers that can be accessed by most instructions.
 	 */
 	public abstract List<Register> getRegisters();
+	
+	/**
+	 * 
+	 * @return The register representing the base of the stack.
+	 */
 	public abstract Register getStackRegister();
 	
 	public boolean hasRegister(String name) {
@@ -51,6 +58,18 @@ public abstract class Architecture {
 		}
 		
 		return false;
+		
+	}
+	
+	public List<Register> getOptimalPointerRegisters() {
+		
+		List<Register> regs = new ArrayList<>();
+		
+		this.getRegisters().forEach(r -> {
+			if (r.width == this.getPointerSize().size) regs.add(r);
+		});
+		
+		return regs;
 		
 	}
 	

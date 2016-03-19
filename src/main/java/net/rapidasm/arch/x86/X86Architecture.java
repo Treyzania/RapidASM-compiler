@@ -11,6 +11,7 @@ import net.rapidasm.arch.EmptyConvention;
 import net.rapidasm.arch.Instruction;
 import net.rapidasm.arch.InstructionSet;
 import net.rapidasm.arch.Register;
+import net.rapidasm.structure.DataSize;
 import net.rapidasm.structure.RapidSubroutine;
 
 public class X86Architecture extends Architecture {
@@ -40,8 +41,8 @@ public class X86Architecture extends Architecture {
 	}
 	
 	@Override
-	public int getPointerSize() {
-		return 4;
+	public DataSize getPointerSize() {
+		return DataSize.INTEGER;
 	}
 
 	@Override
@@ -50,8 +51,8 @@ public class X86Architecture extends Architecture {
 	}
 
 	@Override
-	public int getWordSize() {
-		return 4;
+	public DataSize getWordSize() {
+		return DataSize.INTEGER;
 	}
 
 	@Override
