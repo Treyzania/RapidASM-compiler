@@ -17,4 +17,13 @@ public class Signature {
 		this.arguments.add(arg);
 	}
 	
+	public int getTotalSize() {
+		
+		// Just sum up everything and return the sum.
+		int sum = 0;
+		for (Vararg arg : this.arguments) sum += arg.size.size;
+		return sum;
+		
+	}
+	
 }
