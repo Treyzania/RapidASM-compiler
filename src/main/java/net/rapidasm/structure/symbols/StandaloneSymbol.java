@@ -1,7 +1,7 @@
 package net.rapidasm.structure.symbols;
 
 import net.rapidasm.structure.Child;
-import net.rapidasm.structure.subroutines.RapidSection;
+import net.rapidasm.structure.RapidSection;
 
 public class StandaloneSymbol extends Symbol implements Child<RapidSection> {
 

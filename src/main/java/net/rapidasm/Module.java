@@ -6,7 +6,7 @@ import java.util.List;
 
 import net.rapidasm.structure.Assemblable;
 import net.rapidasm.structure.Headerable;
-import net.rapidasm.structure.subroutines.RapidSection;
+import net.rapidasm.structure.RapidSection;
 
 public class Module implements Assemblable, Headerable {
 

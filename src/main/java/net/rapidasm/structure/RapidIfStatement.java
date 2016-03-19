@@ -1,9 +1,7 @@
-package net.rapidasm.structure.subroutines;
+package net.rapidasm.structure;
 
 import net.rapidasm.BinarySource;
 import net.rapidasm.antlr.RapidASMParser.ConditionalBlockContext;
-import net.rapidasm.structure.Child;
-import net.rapidasm.structure.RapidStatementBlock;
 
 public class RapidIfStatement extends RapidStatement implements Child<StatementBlockParent>, StatementBlockParent {
 

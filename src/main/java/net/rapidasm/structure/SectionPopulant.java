@@ -1,4 +1,4 @@
-package net.rapidasm.structure.subroutines;
+package net.rapidasm.structure;
 
 import java.util.ArrayList;
 import java.util.List;

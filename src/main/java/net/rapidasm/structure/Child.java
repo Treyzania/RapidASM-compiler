@@ -1,8 +1,6 @@
 package net.rapidasm.structure;
 
 import net.rapidasm.Module;
-import net.rapidasm.structure.subroutines.RapidSection;
-import net.rapidasm.structure.subroutines.RapidSubroutine;
 
 public interface Child<T> {
 

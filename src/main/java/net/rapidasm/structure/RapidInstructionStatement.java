@@ -1,9 +1,7 @@
-package net.rapidasm.structure.subroutines;
+package net.rapidasm.structure;
 
 import net.rapidasm.BinarySource;
 import net.rapidasm.antlr.RapidASMParser.InstructionContext;
-import net.rapidasm.structure.Child;
-import net.rapidasm.structure.RapidStatementBlock;
 
 public class RapidInstructionStatement extends RapidStatement implements Child<RapidStatementBlock> {
 

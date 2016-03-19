@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.rapidasm.BinarySource;
-import net.rapidasm.structure.subroutines.RapidStatement;
-import net.rapidasm.structure.subroutines.RapidSubroutine;
-import net.rapidasm.structure.subroutines.StatementBlockParent;
 
 public class RapidStatementBlock extends RapidStatement implements Child<StatementBlockParent>, StatementBlockParent {
 

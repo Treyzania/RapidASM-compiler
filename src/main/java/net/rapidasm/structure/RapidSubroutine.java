@@ -1,13 +1,9 @@
-package net.rapidasm.structure.subroutines;
+package net.rapidasm.structure;
 
 import java.util.Map;
 
 import net.rapidasm.BinarySource;
 import net.rapidasm.arch.CallingConvention;
-import net.rapidasm.structure.Assemblable;
-import net.rapidasm.structure.DataSize;
-import net.rapidasm.structure.Headerable;
-import net.rapidasm.structure.RapidStatementBlock;
 
 public class RapidSubroutine extends SectionPopulant implements Assemblable, Headerable, StatementBlockParent {
 

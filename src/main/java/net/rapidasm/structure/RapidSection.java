@@ -1,12 +1,10 @@
-package net.rapidasm.structure.subroutines;
+package net.rapidasm.structure;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import net.rapidasm.BinarySource;
 import net.rapidasm.Module;
-import net.rapidasm.structure.Assemblable;
-import net.rapidasm.structure.Child;
 import net.rapidasm.structure.symbols.LabelSymbol;
 import net.rapidasm.structure.symbols.Labelable;
 

@@ -1,8 +1,8 @@
 package net.rapidasm;
 
-import net.rapidasm.structure.subroutines.RapidSection;
-import net.rapidasm.structure.subroutines.RapidSubroutine;
-import net.rapidasm.structure.subroutines.SectionPopulant;
+import net.rapidasm.structure.RapidSection;
+import net.rapidasm.structure.RapidSubroutine;
+import net.rapidasm.structure.SectionPopulant;
 import net.rapidasm.structure.symbols.Symbol;
 
 public class RapidASM {

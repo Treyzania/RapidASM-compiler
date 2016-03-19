@@ -3,7 +3,7 @@ package net.rapidasm.structure.symbols;
 import net.rapidasm.BinarySource;
 import net.rapidasm.structure.Assemblable;
 import net.rapidasm.structure.DataSize;
-import net.rapidasm.structure.subroutines.RapidSection;
+import net.rapidasm.structure.RapidSection;
 
 public class StoreSymbol extends StandaloneSymbol implements Assemblable {
 

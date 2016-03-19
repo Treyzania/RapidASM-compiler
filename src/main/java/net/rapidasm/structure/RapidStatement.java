@@ -1,8 +1,7 @@
-package net.rapidasm.structure.subroutines;
+package net.rapidasm.structure;
 
 import java.util.List;
 
-import net.rapidasm.structure.Assemblable;
 import net.rapidasm.structure.symbols.LabelSymbol;
 import net.rapidasm.structure.symbols.Labelable;
 

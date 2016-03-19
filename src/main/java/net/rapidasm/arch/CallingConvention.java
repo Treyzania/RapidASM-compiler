@@ -1,6 +1,6 @@
 package net.rapidasm.arch;
 
-import net.rapidasm.structure.subroutines.RapidSubroutine;
+import net.rapidasm.structure.RapidSubroutine;
 
 public abstract class CallingConvention {
 
