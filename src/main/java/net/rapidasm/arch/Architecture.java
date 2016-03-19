@@ -46,13 +46,10 @@ public abstract class Architecture {
 		
 	}
 	
-	// Basic instructions
-	public abstract String getMovInstruction(String to, String from);
-	public abstract String getIncInstruction(String target);
-	public abstract String getDecInstruction(String target);
-	public abstract String getAddInstruction(String target, String other);
-	public abstract String getSubInstruciton(String target, String other);
-	public abstract String getCallInstruction(String sub);
-	public abstract String getReturnInstruction();
+	public abstract InstructionSet getInstructionSet();
+	
+	public String getInstruction(Instruction instr, String... operands) {
+		return this.getInstructionSet().fill(instr, operands);
+	}
 	
 }

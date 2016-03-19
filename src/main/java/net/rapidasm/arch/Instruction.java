@@ -1,15 +1,25 @@
 package net.rapidasm.arch;
 
-public class Instruction {
+public enum Instruction {
 
-	public final String name;
-	public final int operandCount; 
+	MOVE,
+	ADD,
+	SUBTRACT,
+	INCREMENT,
+	DECREMENT,
+	CALL,
+	RETURN,
+	JUMP,
+	COMPARE,
+	JUMP_EQUAL,
+	JUMP_INEQUAL,
+	JUMP_ZERO,
+	JUMP_NONZERO,
+	JUMP_GREATER,
+	JUMP_GREATER_OR_QQUAL,
+	JUMP_LESS,
+	JUMP_LESS_OR_EQUAL,
 	
-	public Instruction(String name, int operandCount) {
-		
-		this.name = name;
-		this.operandCount = operandCount;
-		
-	}
+	UNDEFINED; // Used for any other instruction that we somehow need to represent.
 	
 }

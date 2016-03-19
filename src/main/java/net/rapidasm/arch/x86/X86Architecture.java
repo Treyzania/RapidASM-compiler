@@ -7,11 +7,14 @@ import net.rapidasm.BinarySource;
 import net.rapidasm.arch.Architecture;
 import net.rapidasm.arch.CallingConvention;
 import net.rapidasm.arch.EmptyConvention;
+import net.rapidasm.arch.Instruction;
+import net.rapidasm.arch.InstructionSet;
 import net.rapidasm.structure.RapidSubroutine;
 
 public class X86Architecture extends Architecture {
 
 	private List<CallingConvention> conventions;
+	private InstructionSet instructionSet;
 	
 	public X86Architecture() {
 		
@@ -20,6 +23,16 @@ public class X86Architecture extends Architecture {
 		this.conventions.add(new CdeclConvention(this));
 		this.conventions.add(new EmptyConvention(this, "test"));
 		this.conventions.add(new EmptyConvention(this, "nocall"));
+		
+		this.instructionSet = new InstructionSet();
+		this.instructionSet.set(Instruction.MOVE, "mov %s, %s");
+		this.instructionSet.set(Instruction.ADD, "add %s, %s");
+		this.instructionSet.set(Instruction.SUBTRACT, "sub %s, %s");
+		this.instructionSet.set(Instruction.INCREMENT, "inc %s");
+		this.instructionSet.set(Instruction.DECREMENT, "dec %s");
+		this.instructionSet.set(Instruction.CALL, "call %s");
+		this.instructionSet.set(Instruction.RETURN, "ret");
+		// TODO Add more support.
 		
 	}
 	
@@ -42,45 +55,15 @@ public class X86Architecture extends Architecture {
 	public String getShortName() {
 		return "x86";
 	}
-
+	
 	@Override
 	public List<CallingConvention> getCallingConventions() {
 		return this.conventions;
 	}
-	
-	@Override
-	public String getMovInstruction(String to, String from) {
-		return String.format("mov %s, %s", to, from);
-	}
 
 	@Override
-	public String getIncInstruction(String target) {
-		return String.format("inc %s", target);
-	}
-
-	@Override
-	public String getDecInstruction(String target) {
-		return String.format("dec %s", target);
-	}
-
-	@Override
-	public String getAddInstruction(String target, String other) {
-		return String.format("add %s, %s", target, other);
-	}
-
-	@Override
-	public String getSubInstruciton(String target, String other) {
-		return String.format("add %s, %s", target, other);
-	}
-
-	@Override
-	public String getCallInstruction(String sub) {
-		return String.format("call %s", sub);
-	}
-
-	@Override
-	public String getReturnInstruction() {
-		return "ret";
+	public InstructionSet getInstructionSet() {
+		return this.instructionSet;
 	}
 	
 	public static class CdeclConvention extends CallingConvention {
