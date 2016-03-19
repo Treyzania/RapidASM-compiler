@@ -53,6 +53,8 @@ public class RapidStatementBlock extends RapidStatement implements Child<Stateme
 			rs.addLines(src);
 		}
 		
+		src.addComment("END BLOCK: " + this.hashCode());
+		
 	}
 
 	@Override
