@@ -1,5 +1,6 @@
 package net.rapidasm.arch;
 
+import net.rapidasm.BinarySource;
 import net.rapidasm.structure.RapidSubroutine;
 
 public abstract class CallingConvention {
@@ -12,8 +13,9 @@ public abstract class CallingConvention {
 		
 	}
 	
-	// TODO Change how these store info, they currently can't do anything.
-	public abstract void getSetupInstructions(RapidSubroutine sub);
-	public abstract void getCleanupInstructions(RapidSubroutine sub);
+	public abstract void doCallerSetup(RapidSubroutine caller, RapidSubroutine callee, BinarySource src);
+	public abstract void doCallerCleanup(RapidSubroutine caller, RapidSubroutine callee, BinarySource src);
+	public abstract void doCalleeSetup(RapidSubroutine callee, BinarySource src);
+	public abstract void doCalleeCleanup(RapidSubroutine callee, BinarySource src);
 	
 }

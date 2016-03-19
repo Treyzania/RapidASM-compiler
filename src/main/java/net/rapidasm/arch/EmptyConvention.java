@@ -1,5 +1,6 @@
 package net.rapidasm.arch;
 
+import net.rapidasm.BinarySource;
 import net.rapidasm.structure.RapidSubroutine;
 
 public class EmptyConvention extends CallingConvention {
@@ -9,15 +10,23 @@ public class EmptyConvention extends CallingConvention {
 	}
 
 	@Override
-	public void getSetupInstructions(RapidSubroutine sub) {
-		// TODO Auto-generated method stub
-
+	public void doCallerSetup(RapidSubroutine caller, RapidSubroutine callee, BinarySource src) {
+		
 	}
 
 	@Override
-	public void getCleanupInstructions(RapidSubroutine sub) {
-		// TODO Auto-generated method stub
-
+	public void doCallerCleanup(RapidSubroutine caller, RapidSubroutine callee, BinarySource src) {
+		
 	}
 
+	@Override
+	public void doCalleeSetup(RapidSubroutine callee, BinarySource src) {
+		
+	}
+
+	@Override
+	public void doCalleeCleanup(RapidSubroutine callee, BinarySource src) {
+		
+	}
+	
 }
