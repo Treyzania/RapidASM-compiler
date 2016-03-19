@@ -5,15 +5,15 @@ import net.rapidasm.structure.RapidSubroutine;
 
 public class EmptyConvention extends CallingConvention {
 
-	public EmptyConvention(String name) {
-		super(name);
+	public EmptyConvention(Architecture arch, String name) {
+		super(arch, name);
 	}
 	
 	@Override
 	public void doCallerSetup(RapidSubroutine caller, RapidSubroutine callee, BinarySource src) {
 		
 		src.addComment("CALLING: " + caller.name + " (" + this.name + ")");
-		src.addCode(String.format("call %s", callee.name));
+		src.addCode(this.arch.getCallInstruction(callee.name));
 		
 	}
 	
@@ -33,7 +33,7 @@ public class EmptyConvention extends CallingConvention {
 	public void doCalleeCleanup(RapidSubroutine callee, BinarySource src) {
 		
 		// Just the return instruction here.
-		src.addCode("ret");
+		src.addCode(this.arch.getReturnInstruction());
 		
 	}
 	

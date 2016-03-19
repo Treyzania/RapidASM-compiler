@@ -17,9 +17,9 @@ public class X86Architecture extends Architecture {
 		
 		// FIXME TODO Create actual calling conventions for these ones.
 		this.conventions = new ArrayList<>();
-		this.conventions.add(new EmptyConvention("test"));
-		this.conventions.add(new EmptyConvention("cdecl"));
-		this.conventions.add(new EmptyConvention("nocall"));
+		this.conventions.add(new CdeclConvention(this));
+		this.conventions.add(new EmptyConvention(this, "test"));
+		this.conventions.add(new EmptyConvention(this, "nocall"));
 		
 	}
 	
@@ -48,10 +48,45 @@ public class X86Architecture extends Architecture {
 		return this.conventions;
 	}
 	
+	@Override
+	public String getMovInstruction(String to, String from) {
+		return String.format("mov %s, %s", to, from);
+	}
+
+	@Override
+	public String getIncInstruction(String target) {
+		return String.format("inc %s", target);
+	}
+
+	@Override
+	public String getDecInstruction(String target) {
+		return String.format("dec %s", target);
+	}
+
+	@Override
+	public String getAddInstruction(String target, String other) {
+		return String.format("add %s, %s", target, other);
+	}
+
+	@Override
+	public String getSubInstruciton(String target, String other) {
+		return String.format("add %s, %s", target, other);
+	}
+
+	@Override
+	public String getCallInstruction(String sub) {
+		return String.format("call %s", sub);
+	}
+
+	@Override
+	public String getReturnInstruction() {
+		return "ret";
+	}
+	
 	public static class CdeclConvention extends CallingConvention {
 
-		public CdeclConvention(String name) {
-			super(name);
+		private CdeclConvention(X86Architecture x86) {
+			super(x86, "cdecl");
 		}
 
 		@Override

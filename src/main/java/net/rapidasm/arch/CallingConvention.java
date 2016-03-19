@@ -5,10 +5,12 @@ import net.rapidasm.structure.RapidSubroutine;
 
 public abstract class CallingConvention {
 
+	public final Architecture arch;
 	public final String name;
 	
-	public CallingConvention(String name) {
+	public CallingConvention(Architecture arch, String name) {
 		
+		this.arch = arch;
 		this.name = name;
 		
 	}
