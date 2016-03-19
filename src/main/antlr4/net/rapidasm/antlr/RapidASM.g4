@@ -32,7 +32,7 @@ statement : movStatement
           | instruction
           ;
 
-movStatement : register MOVOPTOKEN numericValue ; // TODO Make this more specific. 
+movStatement : register movOperator numericValue ; // TODO Make this more specific. 
 
 conditionalBlock : LIKELYHOOD? IF booleanParen statementBlock ;
 
@@ -55,7 +55,7 @@ CLOSEPAREN : ')' ;
 
 booleanExpression : TRUE
                   | FALSE
-                  | numericValue CMPOPTOKEN numericValue
+                  | numericValue cmpOperator numericValue
                   ; // TODO Add more to this.
 
 TRUE : 'true' ;
@@ -166,21 +166,20 @@ VARSIZE : '_' INT // _ means width
 
 // Moving and comparison operators.
 EQUALS : '=' ;
-MOVOPTOKEN : MOVLEFT | MOVRIGHT | XCHG | COERCEMOVLEFT | COERCEMOVRIGHT | COERCEXCHG ;
-CMPOPTOKEN : LESSTHAN | CMPLTET | CMPEQUAL | CMPINEQUAL | CMPGTET | GREATERTHAN ;
+movOperator : LARROW | RARROW | DARROW | LARROWEQ | RARROWEQ | DARROWEQ ;
+cmpOperator : LESSTHAN | GREATERTHAN | EQUALCMP | INEQUALCMP | LARROWEQ | RARROWEQ;
 
-fragment MOVLEFT : '<-' ;
-fragment MOVRIGHT : '->' ;
-fragment XCHG : '<->' ;
-fragment COERCEMOVLEFT : '<<-' ;
-fragment COERCEMOVRIGHT : '->>' ;
-fragment COERCEXCHG : '<-->' ;
-fragment LESSTHAN : '<' ;
-fragment GREATERTHAN : '>' ;
-fragment CMPLTET : '<=' ;
-fragment CMPEQUAL : '==' ;
-fragment CMPINEQUAL : '!=' ;
-fragment CMPGTET : '>=' ;
+LARROW : '<-' ;
+RARROW : '->' ;
+DARROW : '<->' ;
+LARROWEQ : '<=' ;
+RARROWEQ : '=>' ;
+DARROWEQ : '<=>' ;
+LESSTHAN : '<' ;
+GREATERTHAN : '>' ;
+EQUALCMP : '==' ;
+INEQUALCMP : '!=' ;
+GTETCMP : '>=' ;
 
 WS : [ \t\r\n\u000C]+ -> skip ;
 

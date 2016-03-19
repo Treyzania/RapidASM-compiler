@@ -24,12 +24,12 @@ section TEXT {
 		mov $ax, $bx
 		
 		@label test
-		$eax <<- $ebx
-		$ecx <--> $edx
+		$eax <- $ebx
+		$ecx <-> $edx
 		
 		if (true) {
 			
-			$edx <--> $eax
+			$edx <-> $eax
 			cli
 			
 		}
