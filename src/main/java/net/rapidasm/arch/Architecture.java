@@ -13,7 +13,9 @@ public abstract class Architecture {
 	 * 
 	 * @return The size of a pointers in bytes.
 	 */
-	public abstract DataSize getPointerSize();
+	public DataSize getPointerSize() {
+		return this.getWordSize();
+	}
 	
 	/**
 	 * 
@@ -61,12 +63,12 @@ public abstract class Architecture {
 		
 	}
 	
-	public List<Register> getOptimalPointerRegisters() {
+	public List<Register> getOptimalRegisters() {
 		
 		List<Register> regs = new ArrayList<>();
 		
 		this.getRegisters().forEach(r -> {
-			if (r.width == this.getPointerSize().size) regs.add(r);
+			if (r.width == this.getWordSize().size) regs.add(r);
 		});
 		
 		return regs;

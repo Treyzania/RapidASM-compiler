@@ -41,15 +41,10 @@ public class X86Architecture extends Architecture {
 	}
 	
 	@Override
-	public DataSize getPointerSize() {
-		return DataSize.INTEGER;
-	}
-
-	@Override
 	public long getMaximumAddressableMemory() {
 		return 0xffffffff;
 	}
-
+	
 	@Override
 	public DataSize getWordSize() {
 		return DataSize.INTEGER;
