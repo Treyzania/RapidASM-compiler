@@ -41,9 +41,18 @@ public abstract class Architecture {
 	 * 
 	 * @return
 	 */
-	public abstract List<String> getRegisters();
+	public abstract List<Register> getRegisters();
+	public abstract Register getStackRegister();
 	
-	public abstract String getStackRegister();
+	public boolean hasRegister(String name) {
+		
+		for (Register r : this.getRegisters()) {
+			if (r.name.equals(name)) return true;
+		}
+		
+		return false;
+		
+	}
 	
 	/**
 	 * 

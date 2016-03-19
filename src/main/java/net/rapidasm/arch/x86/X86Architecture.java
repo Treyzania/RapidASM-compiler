@@ -10,6 +10,7 @@ import net.rapidasm.arch.CallingConvention;
 import net.rapidasm.arch.EmptyConvention;
 import net.rapidasm.arch.Instruction;
 import net.rapidasm.arch.InstructionSet;
+import net.rapidasm.arch.Register;
 import net.rapidasm.structure.RapidSubroutine;
 
 public class X86Architecture extends Architecture {
@@ -103,25 +104,51 @@ public class X86Architecture extends Architecture {
 	}
 
 	@Override
-	public List<String> getRegisters() {
+	public List<Register> getRegisters() {
 		
 		return Arrays.asList(
-			"al", "ah", "ax", "eax",
-			"bl", "bh", "bx", "ebx",
-			"cl", "ch", "cx", "ecx",
-			"dl", "dh", "dx", "edx",
-			"si", "esi", "di", "edi",
-			"bp", "ebp", "sp", "esp",
-			"flags", "eflags"
+				
+			// General purpose registers
+			new Register("al", 1),
+			new Register("ah", 1),
+			new Register("ax", 2),
+			new Register("eax", 4),
+			new Register("bl", 1),
+			new Register("bh", 1),
+			new Register("bx", 2),
+			new Register("ebx", 4),
+			new Register("cl", 1),
+			new Register("ch", 1),
+			new Register("cx", 2),
+			new Register("ecx", 4),
+			new Register("dl", 1),
+			new Register("dh", 1),
+			new Register("dx", 2),
+			new Register("edx", 4),
+			
+			// Others
+			new Register("si", 2),
+			new Register("esi", 4),
+			new Register("di", 2),
+			new Register("edi", 4),
+			new Register("bp", 2),
+			new Register("ebp", 4),
+			new Register("sp", 2),
+			new Register("esp", 4),
+			
+			// Flags
+			new Register("flags", 2),
+			new Register("eflags", 4)
+			
+			// TODO Add the other ones, like cs, ds, es, fs, gs, and ss? 
+			
 		);
-		
-		// TODO More?
 		
 	}
 
 	@Override
-	public String getStackRegister() {
-		return "esp";
+	public Register getStackRegister() {
+		return new Register("esp", 4); // This is identical to the one defined above.
 	}
 
 	@Override

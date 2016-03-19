@@ -77,7 +77,12 @@ public abstract class Operand {
 			super(arch);
 			
 			if (reg.startsWith("$")) {
-				this.value = reg.substring(1);
+				
+				String val = reg.substring(1);
+				
+				if (arch.hasRegister(val)) this.value = val;
+				throw new IllegalArgumentException("Architecture " + arch.getShortName() + " does not support the " + val + " register!");
+				
 			} else {
 				this.value = reg;
 			}
