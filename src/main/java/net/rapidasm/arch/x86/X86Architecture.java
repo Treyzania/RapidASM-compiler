@@ -3,9 +3,11 @@ package net.rapidasm.arch.x86;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.rapidasm.BinarySource;
 import net.rapidasm.arch.Architecture;
 import net.rapidasm.arch.CallingConvention;
 import net.rapidasm.arch.EmptyConvention;
+import net.rapidasm.structure.RapidSubroutine;
 
 public class X86Architecture extends Architecture {
 
@@ -44,6 +46,40 @@ public class X86Architecture extends Architecture {
 	@Override
 	public List<CallingConvention> getCallingConventions() {
 		return this.conventions;
+	}
+	
+	public static class CdeclConvention extends CallingConvention {
+
+		public CdeclConvention(String name) {
+			super(name);
+		}
+
+		@Override
+		public void doCallerSetup(RapidSubroutine caller, RapidSubroutine callee, BinarySource src) {
+			// TODO Push the arguments onto the stack.
+		}
+
+		@Override
+		public void doCallerCleanup(RapidSubroutine caller, RapidSubroutine callee, BinarySource src) {
+			
+			// Clean up the stack.
+			src.addCode(String.format("add esp, %s", callee.signature.getTotalSize())); // Remove the arguments.
+			
+		}
+
+		@Override
+		public void doCalleeSetup(RapidSubroutine callee, BinarySource src) {
+			// Nothing!
+		}
+
+		@Override
+		public void doCalleeCleanup(RapidSubroutine callee, BinarySource src) {
+			
+			// Just return.  This is a caller-cleans convention.
+			src.addCode("ret");
+			
+		}
+		
 	}
 	
 }
