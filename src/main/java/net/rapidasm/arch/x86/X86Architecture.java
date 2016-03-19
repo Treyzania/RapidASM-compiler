@@ -26,6 +26,7 @@ public class X86Architecture extends Architecture {
 		
 		this.instructionSet = new InstructionSet();
 		this.instructionSet.set(Instruction.MOVE, "mov %s, %s");
+		this.instructionSet.set(Instruction.EXCHANGE, "xchg %s, %s");
 		this.instructionSet.set(Instruction.ADD, "add %s, %s");
 		this.instructionSet.set(Instruction.SUBTRACT, "sub %s, %s");
 		this.instructionSet.set(Instruction.INCREMENT, "inc %s");

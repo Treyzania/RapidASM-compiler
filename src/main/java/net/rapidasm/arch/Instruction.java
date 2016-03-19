@@ -3,6 +3,7 @@ package net.rapidasm.arch;
 public enum Instruction {
 
 	MOVE,
+	EXCHANGE,
 	ADD,
 	SUBTRACT,
 	INCREMENT,
