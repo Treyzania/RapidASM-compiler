@@ -18,8 +18,8 @@ import net.rapidasm.antlr.RapidASMParser.StoreSymbolContext;
 import net.rapidasm.antlr.RapidASMParser.SubroutineContext;
 import net.rapidasm.antlr.RapidASMParser.ValueSymbolContext;
 import net.rapidasm.antlr.RapidASMParser.VarargContext;
+import net.rapidasm.arch.Architecture;
 import net.rapidasm.arch.CallingConvention;
-import net.rapidasm.arch.EmptyConvention;
 import net.rapidasm.structure.DataSize;
 import net.rapidasm.structure.RapidIfStatement;
 import net.rapidasm.structure.RapidInstructionStatement;
@@ -35,6 +35,7 @@ import net.rapidasm.structure.symbols.ValueSymbol;
 public class RapidWalkerController extends RapidASMBaseListener {
 
 	private Module generatedModule;
+	private final Architecture architecture;
 	
 	public List<RapidSection> sectionsEncountered;
 	
@@ -44,9 +45,10 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	
 	private List<LabelSymbol> cachedLabels;
 	
-	public RapidWalkerController(File file) {
+	public RapidWalkerController(File file, Architecture arch) {
 		
 		this.generatedModule = new Module(file);
+		this.architecture = arch;
 		
 		this.sectionsEncountered = new ArrayList<>();
 		this.cachedLabels = new ArrayList<>();
@@ -57,6 +59,10 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		return this.generatedModule;
 	}
 	
+	public Architecture getArchitecture() {
+		return architecture;
+	}
+
 	@Override
 	public void enterSection(SectionContext ctx) {
 		
@@ -81,12 +87,7 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		String name = ctx.ALPHANUM().getText();
 		
 		ConvDeclarationContext conv = ctx.convDeclaration();
-		CallingConvention cc = null;
-		if (conv != null) {
-			cc = new EmptyConvention(conv.ALPHANUM().getText());
-		} else {
-			cc = new EmptyConvention("UNDEFINED");
-		}
+		CallingConvention cc = this.architecture.getCallingConvention(conv != null ? conv.ALPHANUM().getText() : "nocall");
 		
 		RapidSubroutine sub = new RapidSubroutine(name, cc); 
 		

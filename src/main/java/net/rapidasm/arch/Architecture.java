@@ -1,5 +1,7 @@
 package net.rapidasm.arch;
 
+import java.util.List;
+
 public abstract class Architecture {
 
 	// TODO Add list of instructions.
@@ -27,5 +29,21 @@ public abstract class Architecture {
 	 * @return The short, common name of this architecture.
 	 */
 	public abstract String getShortName();
+	
+	/**
+	 * 
+	 * @return A list of calling convention representations that this architecture supports.
+	 */
+	public abstract List<CallingConvention> getCallingConventions();
+	
+	public CallingConvention getCallingConvention(String name) {
+		
+		for (CallingConvention cc : this.getCallingConventions()) {
+			if (cc.name.equals(name)) return cc;
+		}
+		
+		throw new UnsupportedConventionException("Calling convention " + name + " is not supported by " + this.getShortName() + ".");
+		
+	}
 	
 }
