@@ -1,6 +1,7 @@
 package net.rapidasm.arch.x86;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import net.rapidasm.BinarySource;
@@ -99,6 +100,33 @@ public class X86Architecture extends Architecture {
 			
 		}
 		
+	}
+
+	@Override
+	public List<String> getRegisters() {
+		
+		return Arrays.asList(
+			"al", "ah", "ax", "eax",
+			"bl", "bh", "bx", "ebx",
+			"cl", "ch", "cx", "ecx",
+			"dl", "dh", "dx", "edx",
+			"si", "esi", "di", "edi",
+			"bp", "ebp", "sp", "esp",
+			"flags", "eflags"
+		);
+		
+		// TODO More?
+		
+	}
+
+	@Override
+	public String getStackRegister() {
+		return "esp";
+	}
+
+	@Override
+	public int getStackDirection() {
+		return -1;
 	}
 	
 }

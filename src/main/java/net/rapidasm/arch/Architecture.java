@@ -36,6 +36,29 @@ public abstract class Architecture {
 	 */
 	public abstract List<CallingConvention> getCallingConventions();
 	
+	/**
+	 * A list of all of the general-purpose registers that can be accessed by most instructions.
+	 * 
+	 * @return
+	 */
+	public abstract List<String> getRegisters();
+	
+	public abstract String getStackRegister();
+	
+	/**
+	 * 
+	 * @return '+' or '-', depending on which direction the stack grows.
+	 */
+	public abstract int getStackDirection();
+	public char getStackDirectionSign() {
+		
+		if (this.getStackDirection() == 1) return '+';
+		if (this.getStackDirection() == -1) return '-';
+		
+		throw new IllegalArgumentException("Architecture " + this.getShortName() + " has invalid stack direction!");
+		
+	}
+	
 	public CallingConvention getCallingConvention(String name) {
 		
 		for (CallingConvention cc : this.getCallingConventions()) {

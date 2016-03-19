@@ -102,11 +102,10 @@ quantity : numericValue
 
 // TODO Make sure the pointer stuff doesn't allow spaces.
 numericValue : numericImmediate
-             | ASTERISK+ numericValue                                 // C-style pointer dereferencing
+             | ASTERISK numericValue                                  // C-style pointer dereferencing
              | ANDPERSEAND ALPHANUM                                   // C-style pointer referencing
-             | ANDPERSEAND NUMBER                                     // Direct addressing
              | subroutineInvocation                                   // Return values
-             | OPENPAREN numericImmediate plusMinus NUMBER CLOSEPAREN // Relative addressing
+             | ASTERISK OPENPAREN numericImmediate plusMinus NUMBER CLOSEPAREN // Relative addressing
              ;
 
 numericImmediate : NUMBER      // Literals

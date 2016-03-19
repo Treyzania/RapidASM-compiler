@@ -26,4 +26,8 @@ public class Signature {
 		
 	}
 	
+	public boolean hasAgument(String name) {
+		return this.arguments.contains(name);
+	}
+	
 }

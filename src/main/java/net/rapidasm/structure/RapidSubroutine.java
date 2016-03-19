@@ -19,6 +19,14 @@ public class RapidSubroutine extends SectionPopulant implements Assemblable, Hea
 		
 	}
 	
+	public boolean hasArgument(String name) {
+		return this.signature.hasAgument(name);
+	}
+	
+	public String getArgumentExpression(String name) {
+		return String.format("", "");
+	}
+	
 	@Override
 	public void addLines(BinarySource src) {
 		
