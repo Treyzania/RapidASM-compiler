@@ -76,6 +76,10 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		this.cachedOperands = new ArrayList<>();
 	}
 	
+	private RapidStatementBlock getCurrentBlock() {
+		return this.statementStack.peek();
+	}
+	
 	@Override
 	public void enterSection(SectionContext ctx) {
 		
@@ -154,7 +158,7 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		
 		if (!this.statementStack.isEmpty()) {
 			
-			RapidStatementBlock parent = this.statementStack.peek();
+			RapidStatementBlock parent = this.getCurrentBlock();
 			
 			block = new RapidStatementBlock(parent);
 			parent.addStatement(block);
@@ -178,7 +182,7 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	@Override
 	public void enterConditionalBlock(ConditionalBlockContext ctx) {
 		
-		RapidStatementBlock parent = this.statementStack.peek();
+		RapidStatementBlock parent = this.getCurrentBlock();
 		RapidIfStatement statement = new RapidIfStatement(parent, ctx);
 		
 		this.statementStack.push(statement.getBody());
@@ -188,7 +192,7 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	@Override
 	public void enterInstruction(InstructionContext ctx) {
 		
-		RapidStatementBlock block = this.statementStack.peek();
+		RapidStatementBlock block = this.getCurrentBlock();
 		this.currentInstructionStatement = new RapidInstructionStatement(block, ctx.ALPHANUM().getText());
 		
 		this.resetOperands();
