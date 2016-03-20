@@ -64,6 +64,7 @@ section TEXT {
 		
 		unlikely if ($edx <= 5) {
 			
+			add *$esi, 5
 			~noCall()
 			
 		}
