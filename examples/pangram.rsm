@@ -34,7 +34,10 @@ section TEXT {
 			
 		}
 		
+		int 42
 		
+		mov *$eax, $ebx
+		mov $ebx, *($dx + 4)
 		
 		likely while (false) {
 			
