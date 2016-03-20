@@ -207,7 +207,7 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	@Override
 	public void enterNumericRelativeDereference(NumericRelativeDereferenceContext ctx) {
 		
-		int offset = Integer.getInteger(ctx.plusMinus().getText() + ctx.NUMBER().getText());
+		int offset = Integer.parseInt(ctx.plusMinus().getText() + ctx.NUMBER().getText());
 		
 		Operand.PointerDereferenceOperand pdo = new Operand.PointerDereferenceOperand(this.architecture, this.currentSub, ctx.numericImmediate().getText(), offset);
 		this.cachedOperands.add(pdo);
