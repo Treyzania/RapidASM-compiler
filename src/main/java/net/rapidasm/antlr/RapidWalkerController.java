@@ -51,6 +51,8 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	private RapidInstructionStatement currentInstructionStatement;
 	
 	private List<Operand> cachedOperands;
+	private boolean suppressNumericImmediateGeneration = false;
+	
 	private List<LabelSymbol> cachedLabels;
 	
 	public RapidWalkerController(File file, Architecture arch) {
@@ -206,6 +208,13 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		Operand.PointerDereferenceOperand pdo = new Operand.PointerDereferenceOperand(this.architecture, this.currentSub, ctx.numericImmediate().getText()); // TODO
 		this.cachedOperands.add(pdo);
 		
+		this.suppressNumericImmediateGeneration = true;
+		
+	}
+
+	@Override
+	public void exitNumericDereference(NumericDereferenceContext ctx) {
+		this.suppressNumericImmediateGeneration = false;
 	}
 
 	@Override
@@ -216,6 +225,13 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		Operand.PointerDereferenceOperand pdo = new Operand.PointerDereferenceOperand(this.architecture, this.currentSub, ctx.numericImmediate().getText(), offset);
 		this.cachedOperands.add(pdo);
 		
+		this.suppressNumericImmediateGeneration = true;
+		
+	}
+	
+	@Override
+	public void exitNumericRelativeDereference(NumericRelativeDereferenceContext ctx) {
+		this.suppressNumericImmediateGeneration = false;
 	}
 
 	@Override
@@ -231,6 +247,8 @@ public class RapidWalkerController extends RapidASMBaseListener {
 
 	@Override
 	public void enterNumericImmediate(NumericImmediateContext ctx) {
+		
+		if (this.suppressNumericImmediateGeneration) return;
 		
 		Operand.ImmediateOperand io = new Operand.ImmediateOperand(this.architecture, ctx.getText());
 		this.cachedOperands.add(io);
