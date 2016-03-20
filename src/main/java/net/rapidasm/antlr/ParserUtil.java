@@ -40,5 +40,22 @@ public class ParserUtil {
 		return "!!!ERROR!!!";
 		
 	}
+
+	public static String getConvertedRegisterName(String string) {
+		
+		if (!string.startsWith("$")) throw new IllegalArgumentException("That doesn't look like a register name!  It should start with a '$'! (" + string + ")");
+		return string.substring(1);
+		
+	}
+	
+	public static String tryParseRegisterName(String name) {
+		
+		try {				
+			return getConvertedRegisterName(name);
+		} catch (IllegalArgumentException iae) {
+			return name;
+		}
+		
+	}
 	
 }

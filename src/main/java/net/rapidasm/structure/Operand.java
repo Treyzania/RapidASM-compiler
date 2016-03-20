@@ -1,6 +1,7 @@
 package net.rapidasm.structure;
 
 import net.rapidasm.BinarySource;
+import net.rapidasm.antlr.ParserUtil;
 import net.rapidasm.arch.Architecture;
 
 public abstract class Operand {
@@ -39,7 +40,7 @@ public abstract class Operand {
 			
 			if (reg.startsWith("$")) {
 				
-				String val = reg.substring(1);
+				String val = ParserUtil.getConvertedRegisterName(reg);
 				
 				if (!arch.hasRegister(val)) throw new IllegalArgumentException("Architecture " + arch.getShortName() + " does not support the " + val + " register!");
 				this.value = val;
@@ -93,9 +94,9 @@ public abstract class Operand {
 				
 				// It's somewhere in the module, at least.  We can get it like this.
 				if (this.offset == 0) {
-					return String.format("[%s]", this.pointer);
+					return String.format("[%s]", ParserUtil.tryParseRegisterName(this.pointer));
 				} else {
-					return String.format("[%s %s %s]", this.pointer, this.offset > 0 ? '+' : '-', this.offset);
+					return String.format("[%s %s %s]", ParserUtil.tryParseRegisterName(this.pointer), this.offset > 0 ? '+' : '-', this.offset);
 				}
 				
 			}
