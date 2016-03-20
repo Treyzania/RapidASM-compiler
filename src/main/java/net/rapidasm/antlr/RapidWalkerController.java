@@ -191,6 +191,7 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		RapidStatementBlock block = this.statementStack.peek();
 		this.currentInstructionStatement = new RapidInstructionStatement(block, ctx.ALPHANUM().getText());
 		
+		this.resetOperands();
 		block.addStatement(this.currentInstructionStatement);
 		
 	}
