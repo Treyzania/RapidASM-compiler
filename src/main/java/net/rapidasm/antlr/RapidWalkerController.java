@@ -185,7 +185,7 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		RapidStatementBlock parent = this.getCurrentBlock();
 		RapidIfStatement statement = new RapidIfStatement(parent, ctx);
 		
-		this.statementStack.push(statement.getBody());
+		this.getCurrentBlock().addStatement(statement);
 		
 	}
 
@@ -194,9 +194,9 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		
 		RapidStatementBlock block = this.getCurrentBlock();
 		this.currentInstructionStatement = new RapidInstructionStatement(block, ctx.ALPHANUM().getText());
+		block.addStatement(this.currentInstructionStatement);
 		
 		this.resetOperands();
-		block.addStatement(this.currentInstructionStatement);
 		
 	}
 
