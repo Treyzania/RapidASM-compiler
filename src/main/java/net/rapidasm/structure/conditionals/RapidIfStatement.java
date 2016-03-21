@@ -46,8 +46,8 @@ public class RapidIfStatement extends RapidStatementBlock {
 		
 		Architecture arch = this.getRootModule().architecture;
 		
+		src.addSpace();
 		src.addComment("IF AT : " + this.context.start.getLine());
-		
 		src.addLabel(LABEL_PREFIX_BEGIN + this.getLine());
 		
 		if (this.type == BranchGenerationType.CONDITIONAL) {
@@ -82,6 +82,8 @@ public class RapidIfStatement extends RapidStatementBlock {
 		src.addLabel(LABEL_PREFIX_CODE + this.getLine());
 		super.addLines(src); // The code for the block itself.
 		src.addLabel(LABEL_PREFIX_AFTER + this.getLine());
+		src.addComment("IF END : " + this.getLine());
+		src.addSpace();
 		
 	}
 	
