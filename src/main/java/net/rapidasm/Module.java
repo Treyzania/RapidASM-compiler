@@ -63,10 +63,12 @@ public class Module implements Assemblable, Headerable {
 		// Put in the sections.
 		for (RapidSection sec : this.sections) {
 			
-			sec.addLines(src);
 			src.addSpace();
+			sec.addLines(src);
 			
 		}
+		
+		src.addCode(".ident \"RapidASM-compiler\"");
 		
 	}
 	

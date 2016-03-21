@@ -32,7 +32,9 @@ public class RapidSubroutine extends SectionPopulant implements Assemblable, Hea
 	@Override
 	public void addLines(BinarySource src) {
 		
-		src.addLabel("sub_" + this.name.toLowerCase());
+		String lcName = this.name.toLowerCase();
+		
+		src.addLabel("sub_" + lcName);
 		src.addSpace();
 		
 		// Now actually generate the code.
@@ -41,7 +43,8 @@ public class RapidSubroutine extends SectionPopulant implements Assemblable, Hea
 		this.callingConvention.doCalleeCleanup(this, src);
 		
 		src.addSpace();
-		src.addLabel("sub_" + this.name.toLowerCase() + "_end");
+		src.addLabel("sub_" + lcName + "_end");
+		src.addCode(String.format(".size %s, . - %s", lcName, lcName));
 		src.addSpace();
 		
 	}
