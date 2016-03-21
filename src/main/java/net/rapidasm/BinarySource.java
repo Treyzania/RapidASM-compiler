@@ -3,13 +3,22 @@ package net.rapidasm;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.rapidasm.arch.Architecture;
+import net.rapidasm.arch.Instruction;
+
 public class BinarySource {
 
+	private final Architecture arch;
+	
 	private Blob lines; // Underlying list wrapper.
 	public LineType lastTypeAdded;
 	
-	public BinarySource() {
+	public BinarySource(Architecture arch) {
+		
+		this.arch = arch;
+		
 		this.lines = new Blob();
+		
 	}
 	
 	private String getIndent() {
@@ -30,12 +39,12 @@ public class BinarySource {
 	public void addLabel(String labelName) {
 		
 		this.add(labelName + ":");
-		this.lastTypeAdded = LineType.LABEL;
+		this.lastTypeAdded = LineType.CODE;
 		
 	}
 	
 	/**
-	 * Adds code that is intented by a tab.
+	 * Adds code that is indented by a tab.
 	 * 
 	 * @param lines
 	 */
@@ -47,6 +56,15 @@ public class BinarySource {
 		
 		this.lastTypeAdded = LineType.CODE;
 		
+	}
+	
+	/**
+	 * Adds the instruction specified with the operands specified, if any.
+	 * @param instr
+	 * @param operands
+	 */
+	public void addInstruction(Instruction instr, String... operands) {
+		this.addCode(this.arch.getInstruction(instr, operands));
 	}
 	
 	public void addSpaces(int num) {
