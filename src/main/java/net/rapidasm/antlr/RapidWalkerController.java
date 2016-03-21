@@ -7,7 +7,9 @@ import java.util.Stack;
 
 import net.rapidasm.MathUtils;
 import net.rapidasm.Module;
+import net.rapidasm.antlr.RapidASMParser.BooleanExpressionContext;
 import net.rapidasm.antlr.RapidASMParser.ConditionalBlockContext;
+import net.rapidasm.antlr.RapidASMParser.ConditionalHeaderContext;
 import net.rapidasm.antlr.RapidASMParser.ConvDeclarationContext;
 import net.rapidasm.antlr.RapidASMParser.InstructionContext;
 import net.rapidasm.antlr.RapidASMParser.LabelSymbolContext;
@@ -33,6 +35,9 @@ import net.rapidasm.structure.RapidStatementBlock;
 import net.rapidasm.structure.RapidSubroutine;
 import net.rapidasm.structure.RapidWhileBlock;
 import net.rapidasm.structure.Vararg;
+import net.rapidasm.structure.conditionals.BranchGenerationType;
+import net.rapidasm.structure.conditionals.Conditional;
+import net.rapidasm.structure.conditionals.Likelihood;
 import net.rapidasm.structure.conditionals.RapidIfStatement;
 import net.rapidasm.structure.symbols.RapidLabel;
 import net.rapidasm.structure.symbols.SkipSymbol;
@@ -59,7 +64,7 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	
 	public RapidWalkerController(File file, Architecture arch) {
 		
-		this.generatedModule = new Module(file);
+		this.generatedModule = new Module(file, arch);
 		this.architecture = arch;
 		
 		this.sectionsEncountered = new ArrayList<>();
@@ -95,6 +100,16 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		this.statementStack.pop();
 	}
 	
+	private Likelihood getLikelihood(String name, Class<? extends RapidStatementBlock> clazz) {
+		
+		for (Likelihood l : Likelihood.values()) {
+			if (l.key.equals(name)) return l;
+		}
+		
+		return this.generatedModule.getDefaulyLikelihood(clazz);
+		
+	}
+	
 	@Override
 	public void enterSection(SectionContext ctx) {
 		
@@ -121,7 +136,7 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		ConvDeclarationContext conv = ctx.convDeclaration();
 		CallingConvention cc = this.architecture.getCallingConvention(conv != null ? conv.ALPHANUM().getText() : "nocall");
 		
-		RapidSubroutine sub = new RapidSubroutine(name, cc); 
+		RapidSubroutine sub = new RapidSubroutine(this.currentSection, name, cc); 
 		this.statementStack.push(new RapidStatementBlock(sub));
 		sub.statementBlock = this.getCurrentBlock();
 		
@@ -181,10 +196,43 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	@Override
 	public void enterConditionalBlock(ConditionalBlockContext ctx) {
 		
-		RapidIfStatement ris = new RapidIfStatement(this.getCurrentBlock(), ctx);
+		ConditionalHeaderContext header = ctx.conditionalHeader();
+		
+		Likelihood like = this.getLikelihood(header.LIKELYHOOD() != null ? header.LIKELYHOOD().getText() : null, RapidIfStatement.class);
+		
+		BooleanExpressionContext exp = header.booleanParen().booleanExpression();
+		BranchGenerationType type = BranchGenerationType.getType(exp.getText());
+		Conditional cond = null;
+		
+		if (type == BranchGenerationType.CONDITIONAL) {
+			cond = Conditional.getConditonal(exp.cmpOperator().getText());
+		}
+		
+		RapidIfStatement ris = new RapidIfStatement(this.getCurrentBlock(), type, like, cond, ctx);
 		this.pushBlock(ris);
 		
 		// TODO Make it figure out the expression.
+		
+	}
+	
+	@Override
+	public void enterConditionalHeader(ConditionalHeaderContext ctx) {
+		this.resetOperands();
+	}
+
+	@Override
+	public void exitConditionalHeader(ConditionalHeaderContext ctx) {
+		
+		// Get the operands from the cache if they're what we expect.
+		if (this.cachedOperands.size() == 2) {
+			
+			RapidIfStatement ris = (RapidIfStatement) this.getCurrentBlock();
+			ris.setOperands(this.cachedOperands.get(0), this.cachedOperands.get(1));
+			
+		}
+		
+		// Cleanup.
+		this.resetOperands();
 		
 	}
 
