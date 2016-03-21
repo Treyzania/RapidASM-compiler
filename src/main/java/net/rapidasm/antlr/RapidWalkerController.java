@@ -22,6 +22,7 @@ import net.rapidasm.antlr.RapidASMParser.StoreSymbolContext;
 import net.rapidasm.antlr.RapidASMParser.SubroutineContext;
 import net.rapidasm.antlr.RapidASMParser.ValueSymbolContext;
 import net.rapidasm.antlr.RapidASMParser.VarargContext;
+import net.rapidasm.antlr.RapidASMParser.WhileBlockContext;
 import net.rapidasm.arch.Architecture;
 import net.rapidasm.arch.CallingConvention;
 import net.rapidasm.structure.DataSize;
@@ -30,6 +31,7 @@ import net.rapidasm.structure.RapidInstructionStatement;
 import net.rapidasm.structure.RapidSection;
 import net.rapidasm.structure.RapidStatementBlock;
 import net.rapidasm.structure.RapidSubroutine;
+import net.rapidasm.structure.RapidWhileBlock;
 import net.rapidasm.structure.Vararg;
 import net.rapidasm.structure.conditionals.RapidIfStatement;
 import net.rapidasm.structure.symbols.LabelSymbol;
@@ -190,7 +192,22 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	public void exitConditionalBlock(ConditionalBlockContext ctx) {
 		this.popBlock();
 	}
+	
+	@Override
+	public void enterWhileBlock(WhileBlockContext ctx) {
+		
+		RapidWhileBlock rwb = new RapidWhileBlock(this.getCurrentBlock(), ctx);
+		this.pushBlock(rwb);
+		
+		// TODO Make it figure out the expression.
+		
+	}
 
+	@Override
+	public void exitWhileBlock(WhileBlockContext ctx) {
+		this.popBlock();
+	}
+	
 	@Override
 	public void enterInstruction(InstructionContext ctx) {
 		
