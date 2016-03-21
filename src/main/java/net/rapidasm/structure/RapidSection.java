@@ -36,18 +36,18 @@ public class RapidSection implements Child<Module>, Assemblable {
 	@Override
 	public void addLines(BinarySource src) {
 		
-		String actualName = this.name.toLowerCase();
+		src.addLabel("section_" + this.name); // A label to the section declaration.
 		
 		if (this.name.equals("TEXT")) {
-			actualName = "text";
+			src.addCode(".text");
 		} else if (this.name.equals("DATA")) {
-			actualName = "data";
+			src.addCode(".data");
 		} else if (this.name.equals("BSS")) {
-			actualName = "bss";
+			src.addCode(".bss");
+		} else {
+			src.addCode(".section ." + this.name.toLowerCase());
 		}
 		
-		src.addLabel("section_" + this.name);
-		src.addCode("section." + actualName);
 		src.addSpace();
 		
 		for (SectionPopulant child : this.children) {
