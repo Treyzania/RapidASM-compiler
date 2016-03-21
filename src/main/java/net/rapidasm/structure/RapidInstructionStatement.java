@@ -6,16 +6,16 @@ import java.util.List;
 import net.rapidasm.BinarySource;
 import net.rapidasm.arch.Register;
 
-public class RapidInstructionStatement extends RapidStatement implements Child<RapidStatementBlock> {
+public class RapidInstructionStatement extends RapidStatement implements Child<RapidStatementBlock>  {
 
-	private final RapidStatementBlock parent;
 	public final String name;
 	
 	private List<Operand> operands;
 	
 	public RapidInstructionStatement(RapidStatementBlock parent, String name) {
 		
-		this.parent = parent;
+		super(parent);
+		
 		this.name = name;
 		
 		this.operands = new ArrayList<>();

@@ -8,25 +8,22 @@ import net.rapidasm.BinarySource;
 public class RapidStatementBlock extends RapidStatement implements Child<StatementBlockParent>, StatementBlockParent {
 
 	private RapidSubroutine owningSubroutine;
-	private RapidStatementBlock parentBlock;
 	
 	public List<RapidStatement> statements;
 	
-	public RapidStatementBlock() {
-		this.statements = new ArrayList<>();
-	}
-	
 	public RapidStatementBlock(RapidSubroutine owner) {
 		
-		this();
+		super(null);
 		this.owningSubroutine = owner;
+		
+		this.statements = new ArrayList<>();
 		
 	}
 	
 	public RapidStatementBlock(RapidStatementBlock parent) {
 		
-		this();
-		this.parentBlock = parent;
+		super(parent);
+		this.statements = new ArrayList<>();
 		
 	}
 	
@@ -38,7 +35,7 @@ public class RapidStatementBlock extends RapidStatement implements Child<Stateme
 	public StatementBlockParent getStructuralParent() {
 		
 		// Can return a null, but we won't know what to return otherwise.
-		return this.owningSubroutine != null ? this.owningSubroutine : this.parentBlock;
+		return this.owningSubroutine != null ? this.owningSubroutine : this.parent;
 		
 	}
 

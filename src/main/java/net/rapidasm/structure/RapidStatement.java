@@ -8,7 +8,13 @@ import net.rapidasm.structure.symbols.Labelable;
 public abstract class RapidStatement implements Assemblable, Labelable {
 	
 	public List<LabelSymbol> labels;
-
+	
+	public final RapidStatementBlock parent;
+	
+	public RapidStatement(RapidStatementBlock block) {
+		this.parent = block;
+	}
+	
 	@Override
 	public void addLabel(LabelSymbol symb) {
 		this.labels.add(symb);
@@ -18,8 +24,5 @@ public abstract class RapidStatement implements Assemblable, Labelable {
 	public List<LabelSymbol> getLabels() {
 		return this.labels;
 	}
-	
-	// TODO Make children for conditionals, loops, instructions, etc.
-	
 	
 }
