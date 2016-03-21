@@ -1,10 +1,10 @@
 package net.rapidasm.structure.symbols;
 
-public class LabelSymbol extends Symbol {
+public class RapidLabel {
 
 	private String name;
 	
-	public LabelSymbol(String name) {
+	public RapidLabel(String name) {
 		this.name = name;
 	}
 	

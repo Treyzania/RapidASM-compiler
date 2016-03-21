@@ -6,7 +6,7 @@ import net.rapidasm.structure.Assemblable;
 import net.rapidasm.structure.DataSize;
 import net.rapidasm.structure.RapidSection;
 
-public class ValueSymbol extends StandaloneSymbol implements Assemblable {
+public class ValueSymbol extends Symbol implements Assemblable {
 
 	public String name;
 	public DataSize size;

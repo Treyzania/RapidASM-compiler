@@ -2,12 +2,12 @@ package net.rapidasm.structure;
 
 import java.util.List;
 
-import net.rapidasm.structure.symbols.LabelSymbol;
+import net.rapidasm.structure.symbols.RapidLabel;
 import net.rapidasm.structure.symbols.Labelable;
 
 public abstract class RapidStatement implements Assemblable, Labelable {
 	
-	public List<LabelSymbol> labels;
+	public List<RapidLabel> labels;
 	
 	public final RapidStatementBlock parent;
 	
@@ -16,12 +16,12 @@ public abstract class RapidStatement implements Assemblable, Labelable {
 	}
 	
 	@Override
-	public void addLabel(LabelSymbol symb) {
+	public void addLabel(RapidLabel symb) {
 		this.labels.add(symb);
 	}
 
 	@Override
-	public List<LabelSymbol> getLabels() {
+	public List<RapidLabel> getLabels() {
 		return this.labels;
 	}
 	

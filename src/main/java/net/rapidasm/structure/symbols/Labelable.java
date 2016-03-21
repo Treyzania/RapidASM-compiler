@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface Labelable {
 
-	public void addLabel(LabelSymbol symb);
-	public List<LabelSymbol> getLabels();
+	public void addLabel(RapidLabel symb);
+	public List<RapidLabel> getLabels();
 	
 }

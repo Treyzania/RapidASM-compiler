@@ -5,7 +5,7 @@ import net.rapidasm.structure.Assemblable;
 import net.rapidasm.structure.DataSize;
 import net.rapidasm.structure.RapidSection;
 
-public class StoreSymbol extends StandaloneSymbol implements Assemblable {
+public class StoreSymbol extends Symbol implements Assemblable {
 
 	public DataSize size;
 	public long data;

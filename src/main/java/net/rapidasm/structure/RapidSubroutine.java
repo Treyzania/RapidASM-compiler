@@ -11,7 +11,9 @@ public class RapidSubroutine extends SectionPopulant implements Assemblable, Hea
 	
 	public RapidStatementBlock statementBlock;
 	
-	public RapidSubroutine(String name, CallingConvention conv) {
+	public RapidSubroutine(RapidSection parent, String name, CallingConvention conv) {
+		
+		super(parent);
 		
 		this.name = name;
 		this.callingConvention = conv;

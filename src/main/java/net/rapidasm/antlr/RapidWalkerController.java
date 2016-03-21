@@ -34,7 +34,7 @@ import net.rapidasm.structure.RapidSubroutine;
 import net.rapidasm.structure.RapidWhileBlock;
 import net.rapidasm.structure.Vararg;
 import net.rapidasm.structure.conditionals.RapidIfStatement;
-import net.rapidasm.structure.symbols.LabelSymbol;
+import net.rapidasm.structure.symbols.RapidLabel;
 import net.rapidasm.structure.symbols.SkipSymbol;
 import net.rapidasm.structure.symbols.StoreSymbol;
 import net.rapidasm.structure.symbols.ValueSymbol;
@@ -55,7 +55,7 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	private List<Operand> cachedOperands;
 	private boolean suppressNumericImmediateGeneration = false;
 	
-	private List<LabelSymbol> cachedLabels;
+	private List<RapidLabel> cachedLabels;
 	
 	public RapidWalkerController(File file, Architecture arch) {
 		
@@ -150,7 +150,7 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	
 	@Override
 	public void enterLabelSymbol(LabelSymbolContext ctx) {
-		this.cachedLabels.add(new LabelSymbol(ctx.ALPHANUM().getText()));
+		this.cachedLabels.add(new RapidLabel(ctx.ALPHANUM().getText()));
 	}
 	
 	@Override

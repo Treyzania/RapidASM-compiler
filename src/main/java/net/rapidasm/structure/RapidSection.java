@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.rapidasm.BinarySource;
 import net.rapidasm.Module;
-import net.rapidasm.structure.symbols.LabelSymbol;
+import net.rapidasm.structure.symbols.RapidLabel;
 import net.rapidasm.structure.symbols.Labelable;
 
 public class RapidSection implements Child<Module>, Assemblable {
@@ -60,8 +60,8 @@ public class RapidSection implements Child<Module>, Assemblable {
 				// Check for labels, generate them if so.
 				if (asm instanceof Labelable) {
 					
-					List<LabelSymbol> labels = ((Labelable) asm).getLabels();
-					for (LabelSymbol label : labels) {
+					List<RapidLabel> labels = ((Labelable) asm).getLabels();
+					for (RapidLabel label : labels) {
 						src.addLabel(label.getName());
 					}
 					

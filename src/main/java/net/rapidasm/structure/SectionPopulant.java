@@ -3,27 +3,35 @@ package net.rapidasm.structure;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.rapidasm.structure.symbols.LabelSymbol;
+import net.rapidasm.structure.symbols.RapidLabel;
 import net.rapidasm.structure.symbols.Labelable;
 
-public class SectionPopulant implements Labelable {
+public class SectionPopulant implements Child<RapidSection>, Labelable {
 
-	private List<LabelSymbol> labels;
+	private RapidSection parent;
+	private List<RapidLabel> labels;
 	
-	public SectionPopulant() {
+	public SectionPopulant(RapidSection parent) {
+		
+		this.parent = parent;
 		
 		this.labels = new ArrayList<>();
 		
 	}
 	
 	@Override
-	public void addLabel(LabelSymbol symb) {
+	public void addLabel(RapidLabel symb) {
 		this.labels.add(symb);
 	}
 
 	@Override
-	public List<LabelSymbol> getLabels() {
+	public List<RapidLabel> getLabels() {
 		return this.labels;
+	}
+
+	@Override
+	public RapidSection getStructuralParent() {
+		return this.parent;
 	}
 
 }

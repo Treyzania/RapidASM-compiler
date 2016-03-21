@@ -4,7 +4,7 @@ import net.rapidasm.BinarySource;
 import net.rapidasm.structure.Assemblable;
 import net.rapidasm.structure.RapidSection;
 
-public class SkipSymbol extends StandaloneSymbol implements Assemblable {
+public class SkipSymbol extends Symbol implements Assemblable {
 
 	private int bytesSkipped;
 	
