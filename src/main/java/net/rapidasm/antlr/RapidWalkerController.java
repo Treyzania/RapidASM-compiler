@@ -17,7 +17,7 @@ import net.rapidasm.antlr.RapidASMParser.NumericRelativeDereferenceContext;
 import net.rapidasm.antlr.RapidASMParser.NumericSubroutineInvocationContext;
 import net.rapidasm.antlr.RapidASMParser.SectionContext;
 import net.rapidasm.antlr.RapidASMParser.SkipSymbolContext;
-import net.rapidasm.antlr.RapidASMParser.StatementBlockContext;
+import net.rapidasm.antlr.RapidASMParser.StatementBlockStatementContext;
 import net.rapidasm.antlr.RapidASMParser.StoreSymbolContext;
 import net.rapidasm.antlr.RapidASMParser.SubroutineContext;
 import net.rapidasm.antlr.RapidASMParser.ValueSymbolContext;
@@ -82,6 +82,17 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		return this.statementStack.peek();
 	}
 	
+	private void pushBlock(RapidStatementBlock block) {
+		
+		this.getCurrentBlock().addStatement(block);
+		this.statementStack.push(block);
+		
+	}
+	
+	private void popBlock() {
+		this.statementStack.pop();
+	}
+	
 	@Override
 	public void enterSection(SectionContext ctx) {
 		
@@ -109,6 +120,8 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		CallingConvention cc = this.architecture.getCallingConvention(conv != null ? conv.ALPHANUM().getText() : "nocall");
 		
 		RapidSubroutine sub = new RapidSubroutine(name, cc); 
+		this.statementStack.push(new RapidStatementBlock(sub));
+		sub.statementBlock = this.getCurrentBlock();
 		
 		this.currentSection.addChild(sub);
 		this.currentSub = sub;
@@ -154,41 +167,28 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	}
 	
 	@Override
-	public void enterStatementBlock(StatementBlockContext ctx) {
-		
-		RapidStatementBlock block = null;
-		
-		if (!this.statementStack.isEmpty()) {
-			
-			RapidStatementBlock parent = this.getCurrentBlock();
-			
-			block = new RapidStatementBlock(parent);
-			parent.addStatement(block);
-			
-		} else {
-			
-			block = new RapidStatementBlock(this.currentSub);
-			this.currentSub.statementBlock = block;
-			
-		}
-		
-		this.statementStack.push(block);
-		
+	public void enterStatementBlockStatement(StatementBlockStatementContext ctx) {
+		this.pushBlock(new RapidStatementBlock(this.getCurrentBlock()));
 	}
 	
 	@Override
-	public void exitStatementBlock(StatementBlockContext ctx) {
-		this.statementStack.pop();
+	public void exitStatementBlockStatement(StatementBlockStatementContext ctx) {
+		this.popBlock();
 	}
 	
 	@Override
 	public void enterConditionalBlock(ConditionalBlockContext ctx) {
 		
-		RapidStatementBlock parent = this.getCurrentBlock();
-		RapidIfStatement statement = new RapidIfStatement(parent, ctx);
+		RapidIfStatement ris = new RapidIfStatement(this.getCurrentBlock(), ctx);
+		this.pushBlock(ris);
 		
-		this.getCurrentBlock().addStatement(statement);
+		// TODO Make it figure out the expression.
 		
+	}
+
+	@Override
+	public void exitConditionalBlock(ConditionalBlockContext ctx) {
+		this.popBlock();
 	}
 
 	@Override

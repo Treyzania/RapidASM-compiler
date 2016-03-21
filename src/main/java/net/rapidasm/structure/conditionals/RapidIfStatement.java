@@ -2,19 +2,15 @@ package net.rapidasm.structure.conditionals;
 
 import net.rapidasm.BinarySource;
 import net.rapidasm.antlr.RapidASMParser.ConditionalBlockContext;
-import net.rapidasm.structure.Child;
 import net.rapidasm.structure.RapidStatementBlock;
-import net.rapidasm.structure.StatementBlockParent;
 
-public class RapidIfStatement extends RapidStatementBlock implements Child<StatementBlockParent>, StatementBlockParent {
+public class RapidIfStatement extends RapidStatementBlock {
 
-	private RapidStatementBlock parent, body;
 	private ConditionalBlockContext context;
 	
-	public RapidIfStatement(RapidStatementBlock parent,  ConditionalBlockContext ctx) {
+	public RapidIfStatement(RapidStatementBlock parent, ConditionalBlockContext ctx) {
 		
-		this.parent = parent;
-		this.body = new RapidStatementBlock(this.parent);
+		super(parent);
 		
 		this.context = ctx;
 		
@@ -25,19 +21,9 @@ public class RapidIfStatement extends RapidStatementBlock implements Child<State
 		
 		// TODO If begin code
 		src.addComment("IF AT : " + this.context.start.getLine());
-		this.body.addLines(src);
-		// TODO if end code
+		super.addLines(src); // The code for the block itself.
+		// TODO If end code
 		
 	}
-
-	@Override
-	public StatementBlockParent getStructuralParent() {
-		return this.parent;
-	}
-
-	@Override
-	public RapidStatementBlock getBody() {
-		return this.body;
-	}
-
+	
 }

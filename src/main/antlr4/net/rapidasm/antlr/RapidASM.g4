@@ -24,11 +24,12 @@ sectionPopulant : subroutine
                 ;
 
 statementBlock : '{' statementEntry* '}' ;
+statementBlockStatement : statementBlock ;
 statementEntry : labelSymbol* statement '\n'*;
 statement : movStatement
           | conditionalBlock
           | whileBlock
-          | statementBlock
+          | statementBlockStatement
           | instruction
           | subroutineInvocation
           | returnStatement
@@ -36,7 +37,8 @@ statement : movStatement
 
 movStatement : numericValue movOperator numericValue ; // TODO Make this more specific. 
 
-conditionalBlock : LIKELYHOOD? IF booleanParen statementBlock ;
+conditionalBlock : conditionalHeader statementBlock ;
+conditionalHeader : LIKELYHOOD? IF booleanParen ;
 
 whileBlock : whileBlockBefore
            | whileBlockAfter
