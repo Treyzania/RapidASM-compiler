@@ -38,6 +38,7 @@ public class RapidASM {
 		}
 		
 		BinarySource bs = new BinarySource(mod.architecture);
+		bs.addComment("Generated from " + fileName);
 		mod.addLines(bs);
 		
 		System.out.println("\n========\n");

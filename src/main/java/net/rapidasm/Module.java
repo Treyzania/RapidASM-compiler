@@ -1,6 +1,5 @@
 package net.rapidasm;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,16 +16,14 @@ import net.rapidasm.structure.conditionals.RapidIfStatement;
 
 public class Module implements Assemblable, Headerable {
 
-	public final File filename;
 	public final Architecture architecture;
 	
 	public List<RapidSection> sections;
 	
 	private Map<Class<? extends RapidStatementBlock>, Likelihood> defaultLikelyhoods;
 	
-	public Module(File file, Architecture arch) {
+	public Module(Architecture arch) {
 		
-		this.filename = file;
 		this.architecture = arch;
 		
 		this.sections = new ArrayList<>();
@@ -61,7 +58,6 @@ public class Module implements Assemblable, Headerable {
 	public void addLines(BinarySource src) {
 		
 		// Add beginning stuff.
-		src.addComment("Generated from " + this.filename.getPath());
 		// TODO Add some generic stuff derived from the arch.
 		
 		// Put in the sections.

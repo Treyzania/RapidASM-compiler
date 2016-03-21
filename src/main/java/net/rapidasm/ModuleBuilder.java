@@ -45,7 +45,7 @@ public class ModuleBuilder {
 			
 			// Walker setup & walk.
 			ParseTreeWalker walker = new ParseTreeWalker();
-			RapidWalkerController ctrl = new RapidWalkerController(file, new X86Architecture());
+			RapidWalkerController ctrl = new RapidWalkerController(new X86Architecture()); // FIXME Make the arch pre-specified.
 			walker.walk(ctrl, parser.module());
 			
 			// Get the populated module.

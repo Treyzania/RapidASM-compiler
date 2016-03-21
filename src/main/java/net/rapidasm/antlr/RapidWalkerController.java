@@ -62,9 +62,9 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	
 	private List<RapidLabel> cachedLabels;
 	
-	public RapidWalkerController(File file, Architecture arch) {
+	public RapidWalkerController(Architecture arch) {
 		
-		this.generatedModule = new Module(file, arch);
+		this.generatedModule = new Module(arch);
 		this.architecture = arch;
 		
 		this.sectionsEncountered = new ArrayList<>();
