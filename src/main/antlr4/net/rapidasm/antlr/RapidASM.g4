@@ -51,7 +51,7 @@ whileHeader : LIKELYHOOD? WHILE booleanParen ;
 booleanParen : OPENPAREN booleanExpression CLOSEPAREN ;
 booleanExpression : TRUE
                   | FALSE
-                  | numericValue cmpOperator numericValue
+                  | operand cmpOperator operand
                   ; // TODO Add more to this.
 
 returnStatement : RETURN numericValue? ;
