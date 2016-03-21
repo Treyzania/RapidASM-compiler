@@ -42,13 +42,10 @@ public class RapidStatementBlock extends RapidStatement implements Child<Stateme
 	@Override
 	public void addLines(BinarySource src) {
 		
-		src.addComment("BLOCK: " + this.hashCode() + " (" + this.statements.size() + ", parent:" + this.getStructuralParent().getClass().getSimpleName() + ")");
-		
+		// Just add the code inside, this class is fairly transparent.
 		for (RapidStatement rs : this.statements) {
 			rs.addLines(src);
 		}
-		
-		src.addComment("END BLOCK: " + this.hashCode());
 		
 	}
 
