@@ -31,6 +31,8 @@ public class X86Architecture extends Architecture {
 		this.conventions.add(new EmptyConvention(this, "nocall"));
 		
 		this.instructionSet = new InstructionSet();
+		
+		// General instructions.
 		this.instructionSet.set(Instruction.MOVE, "mov %s, %s");
 		this.instructionSet.set(Instruction.EXCHANGE, "xchg %s, %s");
 		this.instructionSet.set(Instruction.ADD, "add %s, %s");
@@ -39,7 +41,18 @@ public class X86Architecture extends Architecture {
 		this.instructionSet.set(Instruction.DECREMENT, "dec %s");
 		this.instructionSet.set(Instruction.CALL, "call %s");
 		this.instructionSet.set(Instruction.RETURN, "ret");
-		// TODO Add more support.
+		this.instructionSet.set(Instruction.JUMP, "jmp %s");
+		this.instructionSet.set(Instruction.COMPARE, "cmp %s, %s");
+		
+		// Jumping instructions.
+		this.instructionSet.set(Instruction.JUMP_EQUAL, "je %s");
+		this.instructionSet.set(Instruction.JUMP_INEQUAL, "jne %s");
+		this.instructionSet.set(Instruction.JUMP_ZERO, "jz %s");
+		this.instructionSet.set(Instruction.JUMP_NONZERO, "jnz %s");
+		this.instructionSet.set(Instruction.JUMP_GREATER, "jg %s");
+		this.instructionSet.set(Instruction.JUMP_GREATER_OR_EQUAL, "jge %s");
+		this.instructionSet.set(Instruction.JUMP_LESS, "jl %s");
+		this.instructionSet.set(Instruction.JUMP_LESS_OR_EQUAL, "jle %s");
 		
 	}
 	
