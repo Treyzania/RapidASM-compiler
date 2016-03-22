@@ -27,7 +27,13 @@ public class Signature {
 	}
 	
 	public boolean hasAgument(String name) {
-		return this.arguments.contains(name);
+		
+		for (Vararg arg : this.arguments) {
+			if (arg.name.equals(name)) return true;
+		}
+		
+		return false;
+		
 	}
 	
 	public List<Vararg> getArguments() {

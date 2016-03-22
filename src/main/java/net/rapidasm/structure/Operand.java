@@ -7,10 +7,12 @@ import net.rapidasm.arch.Architecture;
 public abstract class Operand {
 
 	protected final Architecture arch;
+	protected final RapidSubroutine subroutine;
 	
-	protected Operand(Architecture arch) {
+	protected Operand(Architecture arch, RapidSubroutine sub) {
 		
 		this.arch = arch;
+		this.subroutine = sub;
 		
 	}
 	
@@ -34,9 +36,9 @@ public abstract class Operand {
 
 		public String value;
 		
-		public ImmediateOperand(Architecture arch, String reg) {
+		public ImmediateOperand(Architecture arch, RapidSubroutine sub, String reg) {
 			
-			super(arch);
+			super(arch, sub);
 			
 			if (reg.startsWith("$")) {
 				
@@ -53,7 +55,15 @@ public abstract class Operand {
 		
 		@Override
 		public String getActualOperand() {
-			return this.value;
+			
+			String out = this.value;
+			
+			if (this.subroutine != null && this.subroutine.hasArgument(this.value)) {
+				out = this.subroutine.getArgumentExpression(this.value);
+			}
+			
+			return out;
+			
 		}
 
 		@Override
@@ -65,15 +75,13 @@ public abstract class Operand {
 	
 	public static class PointerDereferenceOperand extends Operand {
 		
-		private RapidSubroutine subroutine;
 		private String pointer;
 		private int offset;
 		
 		public PointerDereferenceOperand(Architecture arch, RapidSubroutine sub, String pointer, int offset) {
 			
-			super(arch);
+			super(arch, sub);
 			
-			this.subroutine = sub;
 			this.pointer = pointer;
 			this.offset = offset;
 			
