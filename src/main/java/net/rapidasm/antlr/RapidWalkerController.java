@@ -23,17 +23,22 @@ import net.rapidasm.antlr.RapidASMParser.StoreSymbolContext;
 import net.rapidasm.antlr.RapidASMParser.SubroutineContext;
 import net.rapidasm.antlr.RapidASMParser.ValueSymbolContext;
 import net.rapidasm.antlr.RapidASMParser.VarargContext;
+import net.rapidasm.antlr.RapidASMParser.WhileBlockAfterContext;
+import net.rapidasm.antlr.RapidASMParser.WhileBlockBeforeContext;
 import net.rapidasm.antlr.RapidASMParser.WhileBlockContext;
+import net.rapidasm.antlr.RapidASMParser.WhileHeaderContext;
 import net.rapidasm.arch.Architecture;
 import net.rapidasm.arch.CallingConvention;
 import net.rapidasm.structure.DataSize;
 import net.rapidasm.structure.DataType;
 import net.rapidasm.structure.Operand;
+import net.rapidasm.structure.RapidBranchingStatement;
 import net.rapidasm.structure.RapidInstructionStatement;
 import net.rapidasm.structure.RapidSection;
 import net.rapidasm.structure.RapidStatementBlock;
 import net.rapidasm.structure.RapidSubroutine;
-import net.rapidasm.structure.RapidWhileBlock;
+import net.rapidasm.structure.RapidWhileAfterBlock;
+import net.rapidasm.structure.RapidWhileBeforeBlock;
 import net.rapidasm.structure.Vararg;
 import net.rapidasm.structure.conditionals.BranchGenerationType;
 import net.rapidasm.structure.conditionals.Conditional;
@@ -203,11 +208,9 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		
 		BooleanExpressionContext exp = header.booleanParen().booleanExpression();
 		BranchGenerationType type = BranchGenerationType.getType(exp.getText());
-		Conditional cond = null;
 		
-		if (type == BranchGenerationType.CONDITIONAL) {
-			cond = Conditional.getConditonal(exp.cmpOperator().getText());
-		}
+		Conditional cond = null;
+		if (type == BranchGenerationType.CONDITIONAL) cond = Conditional.getConditonal(exp.cmpOperator().getText());
 		
 		RapidIfStatement ris = new RapidIfStatement(this.getCurrentBlock(), type, like, cond, ctx);
 		this.pushBlock(ris);
@@ -226,9 +229,9 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		
 		// Get the operands from the cache if they're what we expect.
 		if (this.cachedOperands.size() == 2) {
-			
-			RapidIfStatement ris = (RapidIfStatement) this.getCurrentBlock();
-			ris.setOperands(this.cachedOperands.get(0), this.cachedOperands.get(1));
+
+			RapidBranchingStatement rbs = (RapidBranchingStatement) this.getCurrentBlock();
+			rbs.setOperands(this.cachedOperands.get(0), this.cachedOperands.get(1));
 			
 		}
 		
@@ -242,13 +245,62 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		this.popBlock();
 	}
 	
+	// No support for whiles that check after the code runs yet.
 	@Override
-	public void enterWhileBlock(WhileBlockContext ctx) {
+	public void enterWhileBlockBefore(WhileBlockBeforeContext ctx) {
 		
-		RapidWhileBlock rwb = new RapidWhileBlock(this.getCurrentBlock(), ctx);
-		this.pushBlock(rwb);
+		WhileHeaderContext header = ctx.whileHeader();
 		
-		// TODO Make it figure out the expression.
+		Likelihood like = this.getLikelihood(header.LIKELYHOOD() != null ? header.LIKELYHOOD().getText() : null, RapidIfStatement.class);
+		
+		BooleanExpressionContext exp = header.booleanParen().booleanExpression();
+		BranchGenerationType type = BranchGenerationType.getType(exp.getText());
+		
+		Conditional cond = null;
+		if (type == BranchGenerationType.CONDITIONAL) cond = Conditional.getConditonal(exp.cmpOperator().getText());
+		
+		RapidWhileBeforeBlock rwbb = new RapidWhileBeforeBlock(this.getCurrentBlock(), type, like, cond, ctx);
+		this.pushBlock(rwbb);
+		
+	}
+	
+	@Override
+	public void enterWhileBlockAfter(WhileBlockAfterContext ctx) {
+		
+		// FIXME
+		WhileHeaderContext header = ctx.whileHeader();
+		
+		Likelihood like = this.getLikelihood(header.LIKELYHOOD() != null ? header.LIKELYHOOD().getText() : null, RapidIfStatement.class);
+		
+		BooleanExpressionContext exp = header.booleanParen().booleanExpression();
+		BranchGenerationType type = BranchGenerationType.getType(exp.getText());
+		
+		Conditional cond = null;
+		if (type == BranchGenerationType.CONDITIONAL) cond = Conditional.getConditonal(exp.cmpOperator().getText());
+		
+		RapidWhileAfterBlock rwab = new RapidWhileAfterBlock(this.getCurrentBlock(), type, like, cond, ctx);
+		this.pushBlock(rwab);
+		
+	}
+
+	@Override
+	public void enterWhileHeader(WhileHeaderContext ctx) {
+		this.resetOperands();
+	}
+
+	@Override
+	public void exitWhileHeader(WhileHeaderContext ctx) {
+		
+		// Get the operands from the cache if they're what we expect.
+		if (this.cachedOperands.size() == 2) {
+			
+			RapidBranchingStatement rbs = (RapidBranchingStatement) this.getCurrentBlock();
+			rbs.setOperands(this.cachedOperands.get(0), this.cachedOperands.get(1));
+			
+		}
+		
+		// Cleanup.
+		this.resetOperands();
 		
 	}
 

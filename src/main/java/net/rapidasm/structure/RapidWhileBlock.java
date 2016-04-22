@@ -1,29 +1,18 @@
 package net.rapidasm.structure;
 
-import net.rapidasm.BinarySource;
-import net.rapidasm.antlr.RapidASMParser.WhileBlockContext;
+import net.rapidasm.structure.conditionals.BranchGenerationType;
+import net.rapidasm.structure.conditionals.Conditional;
+import net.rapidasm.structure.conditionals.Likelihood;
 
-public class RapidWhileBlock extends RapidStatementBlock {
+public abstract class RapidWhileBlock extends RapidBranchingStatement {
 
-	private WhileBlockContext context;
-	
-	public RapidWhileBlock(RapidStatementBlock parent, WhileBlockContext ctx) {
-		
-		super(parent);
-		
-		this.context = ctx;
-		
+	public RapidWhileBlock(RapidStatementBlock parent, BranchGenerationType type, Likelihood like, Conditional cond) {
+		super(parent, type, like, cond);
 	}
 	
 	@Override
-	public void addLines(BinarySource src) {
-		
-		// TODO If begin code
-		src.addComment("LOOP AT : " + this.context.start.getLine());
-		super.addLines(src); // The code for the block itself.
-		// TODO If end code
-		
+	public String getBlockLabelPrefix() {
+		return "loop";
 	}
-	
 	
 }

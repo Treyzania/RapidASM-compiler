@@ -10,7 +10,7 @@ import net.rapidasm.structure.Assemblable;
 import net.rapidasm.structure.Headerable;
 import net.rapidasm.structure.RapidSection;
 import net.rapidasm.structure.RapidStatementBlock;
-import net.rapidasm.structure.RapidWhileBlock;
+import net.rapidasm.structure.RapidWhileBeforeBlock;
 import net.rapidasm.structure.conditionals.Likelihood;
 import net.rapidasm.structure.conditionals.RapidIfStatement;
 
@@ -30,7 +30,7 @@ public class Module implements Assemblable, Headerable {
 		
 		this.defaultLikelyhoods = new HashMap<>();
 		this.defaultLikelyhoods.put(RapidIfStatement.class, Likelihood.UNLIKELY);
-		this.defaultLikelyhoods.put(RapidWhileBlock.class, Likelihood.LIKELY);
+		this.defaultLikelyhoods.put(RapidWhileBeforeBlock.class, Likelihood.LIKELY);
 		
 	}
 	
