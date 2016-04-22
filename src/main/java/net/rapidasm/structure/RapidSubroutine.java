@@ -44,7 +44,6 @@ public class RapidSubroutine extends SectionPopulant implements Assemblable, Hea
 		
 		src.addSpace();
 		src.addLabel("sub_" + lcName + "_end");
-		src.addCode(String.format(".size %s, . - %s", lcName, lcName));
 		src.addSpace();
 		
 	}

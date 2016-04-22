@@ -13,12 +13,20 @@ public class BinarySource {
 	private Blob lines; // Underlying list wrapper.
 	public LineType lastTypeAdded;
 	
+	private List<String> queuedLabels;
+	private int spacesAdded;
+	
 	public BinarySource(Architecture arch) {
 		
 		this.arch = arch;
 		
 		this.lines = new Blob();
+		this.resetLabelQueue();
 		
+	}
+	
+	private void resetLabelQueue() {
+		this.queuedLabels = new ArrayList<>();
 	}
 	
 	private String getIndent() {
@@ -37,10 +45,7 @@ public class BinarySource {
 	 * @param labelName
 	 */
 	public void addLabel(String labelName) {
-		
-		this.add(labelName + ":");
-		this.lastTypeAdded = LineType.CODE;
-		
+		this.queuedLabels.add(labelName);
 	}
 	
 	/**
@@ -49,6 +54,14 @@ public class BinarySource {
 	 * @param lines
 	 */
 	public void addCode(String... lines) {
+		
+		this.spacesAdded = 0; // Reset the spaces.
+		
+		for (String label : this.queuedLabels) {
+			this.add(label + ":");
+		}
+		
+		this.resetLabelQueue();
 		
 		for (String line : lines) {
 			this.add("\t" + line);
@@ -67,13 +80,21 @@ public class BinarySource {
 		this.addCode(this.arch.getInstruction(instr, operands));
 	}
 	
-	public void addSpaces(int num) {
+	public void addSpaces(int minSpaces) {
+		
+		int toAdd = minSpaces;
+		
+		// Quick tests to make sure we don't overshoot or anything bad.
+		if (this.spacesAdded <= minSpaces) toAdd -= this.spacesAdded;
+		if (toAdd < 0) toAdd = 0;
 		
 		String indent = this.getIndent();
 		
-		for (int i = 0; i < num; i++) {
+		for (int i = 0; i < toAdd; i++) {
 			this.add(indent);
 		}
+		
+		this.spacesAdded += toAdd;
 		
 	}
 	
@@ -82,7 +103,10 @@ public class BinarySource {
 	}
 	
 	public void addComment(String msg) {
+		
+		this.spacesAdded = 0;
 		this.add(this.getIndent() + "; " + msg);
+		
 	}
 	
 	public void add(String str) {
