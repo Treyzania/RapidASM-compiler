@@ -4,18 +4,20 @@ import net.rapidasm.arch.Architecture;
 
 public enum DataSize {
 
-	BYTE(1, DataType.BYTE),
-	SHORT(2, DataType.SHORT),
-	INTEGER(4, DataType.INTEGER),
-	LONG(8, DataType.LONG);
+	BYTE(1, 'b', DataType.BYTE),
+	SHORT(2, 's', DataType.SHORT),
+	INTEGER(4, 'l', DataType.INTEGER),
+	LONG(8, 'q', DataType.LONG);
 	
 	public int size = 0;
+	public char suffix;
 	
 	public DataType dataType;
 	
-	private DataSize(int size, DataType type) {
+	private DataSize(int size, char suffix, DataType type) {
 		
 		this.size = size;
+		this.suffix = suffix;
 		this.dataType = type;
 		
 	}

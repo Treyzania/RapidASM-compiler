@@ -40,15 +40,23 @@ public abstract class Operand {
 			
 			super(arch, sub);
 			
+			// This branching doesn't work perfectly.  Needs some fine tuning for stuff like referencing arguments 
 			if (reg.startsWith("$")) {
 				
 				String val = ParserUtil.getConvertedRegisterName(reg);
 				
 				if (!arch.hasRegister(val)) throw new IllegalArgumentException("Architecture " + arch.getShortName() + " does not support the " + val + " register!");
-				this.value = val;
+				this.value = "%" + val;
 				
+			} else if (reg.equals("!")) {
+				this.value = "$";
+			} else if (reg.equals("!!")) {
+				this.value = "$$";
 			} else {
-				this.value = reg;
+				
+				// Probably a number at this point, so we'll use the dolla sign.
+				this.value = "$" + reg;
+				
 			}
 			
 		}
@@ -102,9 +110,9 @@ public abstract class Operand {
 				
 				// It's somewhere in the module, at least.  We can get it like this.
 				if (this.offset == 0) {
-					return String.format("[%s]", ParserUtil.tryParseRegisterName(this.pointer));
+					return "(" + ParserUtil.tryParseRegisterName(this.pointer) + ")";
 				} else {
-					return String.format("[%s %s %s]", ParserUtil.tryParseRegisterName(this.pointer), this.offset > 0 ? '+' : '-', this.offset);
+					return String.format("%s(%s)", this.offset, ParserUtil.tryParseRegisterName(this.pointer));
 				}
 				
 			}
