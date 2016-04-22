@@ -4,19 +4,19 @@ import net.rapidasm.arch.Architecture;
 
 public enum DataSize {
 
-	BYTE(1, "db"),
-	SHORT(2, "dw"),
-	INTEGER(4, "dd"),
-	LONG(8, "dq");
+	BYTE(1, DataType.BYTE),
+	SHORT(2, DataType.SHORT),
+	INTEGER(4, DataType.INTEGER),
+	LONG(8, DataType.LONG);
 	
 	public int size = 0;
 	
-	public String keyword;
+	public DataType dataType;
 	
-	private DataSize(int size, String keyword) {
+	private DataSize(int size, DataType type) {
 		
 		this.size = size;
-		this.keyword = keyword;
+		this.dataType = type;
 		
 	}
 	
@@ -25,7 +25,6 @@ public enum DataSize {
 		String val = key.substring(1);
 		
 		if (val.equals("ptr")) return arch.getPointerSize();
-		if (val.equals("str")) return BYTE; // Doesn't really matter at this point.
 		
 		int bytes = Integer.MIN_VALUE;
 		

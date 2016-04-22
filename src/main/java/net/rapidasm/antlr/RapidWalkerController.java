@@ -27,6 +27,7 @@ import net.rapidasm.antlr.RapidASMParser.WhileBlockContext;
 import net.rapidasm.arch.Architecture;
 import net.rapidasm.arch.CallingConvention;
 import net.rapidasm.structure.DataSize;
+import net.rapidasm.structure.DataType;
 import net.rapidasm.structure.Operand;
 import net.rapidasm.structure.RapidInstructionStatement;
 import net.rapidasm.structure.RapidSection;
@@ -169,7 +170,7 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	
 	@Override
 	public void enterStoreSymbol(StoreSymbolContext ctx) {
-		this.currentSection.addChild(new StoreSymbol(this.currentSection, DataSize.getSize(this.architecture, ctx.VARSIZE().getText()), MathUtils.parseNumber(ctx.NUMBER().getText())));
+		this.currentSection.addChild(new StoreSymbol(this.currentSection, DataType.getType(this.architecture, ctx.VARSIZE().getText()), MathUtils.parseNumber(ctx.NUMBER().getText())));
 	}
 	
 	@Override
@@ -179,7 +180,7 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	
 	@Override
 	public void enterValueSymbol(ValueSymbolContext ctx) {
-		this.currentSection.addChild(new ValueSymbol(this.currentSection, ctx.ALPHANUM().getText(), DataSize.getSize(this.architecture, ctx.VARSIZE().getText()), ctx.quantity()));
+		this.currentSection.addChild(new ValueSymbol(this.currentSection, ctx.ALPHANUM().getText(), DataType.getType(this.architecture, ctx.VARSIZE().getText()), ctx.quantity()));
 	}
 	
 	@Override
