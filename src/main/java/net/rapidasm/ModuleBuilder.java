@@ -41,7 +41,7 @@ public class ModuleBuilder {
 			RapidASMLexer lexer = new RapidASMLexer(stream);
 			CommonTokenStream tokens = new CommonTokenStream(lexer);
 			RapidASMParser parser = new RapidASMParser(tokens);
-			parser.setTrace(true);
+			parser.setTrace(false);
 			
 			// Walker setup & walk.
 			ParseTreeWalker walker = new ParseTreeWalker();

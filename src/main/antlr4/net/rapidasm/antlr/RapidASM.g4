@@ -174,6 +174,7 @@ ALPHANUM : [a-zA-Z][a-zA-Z0-9]+ ;
 VARSIZE : '_' INT // _ means width
         | '_ptr'
         | '_str'
+        | '_string'
         ;
 
 // Moving and comparison operators.

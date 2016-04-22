@@ -105,7 +105,7 @@ public class BinarySource {
 	public void addComment(String msg) {
 		
 		this.spacesAdded = 0;
-		this.add(this.getIndent() + "; " + msg);
+		this.add(this.getIndent() + "# " + msg);
 		
 	}
 	

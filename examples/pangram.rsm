@@ -4,7 +4,7 @@
 
 section DATA {
 	
-	@value _str someString = "This is a string."
+	@value _string someString = "This is a string."
 	@store _4 0x0099aaff
 	@skip 0x100
 	@value _ptr somePointer = !
