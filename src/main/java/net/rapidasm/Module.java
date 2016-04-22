@@ -10,9 +10,9 @@ import net.rapidasm.structure.Assemblable;
 import net.rapidasm.structure.Headerable;
 import net.rapidasm.structure.RapidSection;
 import net.rapidasm.structure.RapidStatementBlock;
-import net.rapidasm.structure.RapidWhileBeforeBlock;
 import net.rapidasm.structure.conditionals.Likelihood;
 import net.rapidasm.structure.conditionals.RapidIfStatement;
+import net.rapidasm.structure.loops.RapidWhileBeforeBlock;
 
 public class Module implements Assemblable, Headerable {
 

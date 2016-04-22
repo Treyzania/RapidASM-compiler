@@ -1,7 +1,8 @@
-package net.rapidasm.structure;
+package net.rapidasm.structure.loops;
 
 import net.rapidasm.BinarySource;
 import net.rapidasm.antlr.RapidASMParser.WhileBlockAfterContext;
+import net.rapidasm.structure.RapidStatementBlock;
 import net.rapidasm.structure.conditionals.BranchGenerationType;
 import net.rapidasm.structure.conditionals.Conditional;
 import net.rapidasm.structure.conditionals.Likelihood;
