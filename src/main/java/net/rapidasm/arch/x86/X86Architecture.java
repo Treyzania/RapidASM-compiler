@@ -22,11 +22,14 @@ public class X86Architecture extends Architecture {
 	private List<CallingConvention> conventions;
 	private InstructionSet instructionSet;
 	
+	private CallingConvention cdeclConvention;
+	
 	public X86Architecture() {
 		
 		// FIXME TODO Create actual calling conventions for these ones.
 		this.conventions = new ArrayList<>();
-		this.conventions.add(new CdeclConvention(this));
+		this.cdeclConvention = new CdeclConvention(this);
+		this.conventions.add(this.cdeclConvention);
 		this.conventions.add(new EmptyConvention(this, "test"));
 		this.conventions.add(new EmptyConvention(this, "nocall"));
 		
@@ -118,7 +121,8 @@ public class X86Architecture extends Architecture {
 			
 			ListIterator<Vararg> args = sig.getArguments().listIterator();
 			
-			int bytesPassed = 0;
+			// Initial value to overcome the ebp thing.
+			int bytesPassed = this.arch.getPointerSize().size;
 			
 			while (args.hasNext()) {
 				
@@ -186,6 +190,11 @@ public class X86Architecture extends Architecture {
 	@Override
 	public int getStackDirection() {
 		return -1;
+	}
+
+	@Override
+	public CallingConvention getDefaultCallingConvention() {
+		return this.cdeclConvention;
 	}
 	
 }

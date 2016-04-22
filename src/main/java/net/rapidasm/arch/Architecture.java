@@ -105,4 +105,6 @@ public abstract class Architecture {
 		return this.getInstructionSet().fill(instr, operands);
 	}
 	
+	public abstract CallingConvention getDefaultCallingConvention();
+	
 }

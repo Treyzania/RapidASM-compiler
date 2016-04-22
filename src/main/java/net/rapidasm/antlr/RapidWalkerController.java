@@ -134,7 +134,8 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		String name = ctx.ALPHANUM().getText();
 		
 		ConvDeclarationContext conv = ctx.convDeclaration();
-		CallingConvention cc = this.architecture.getCallingConvention(conv != null ? conv.ALPHANUM().getText() : "nocall");
+		CallingConvention cc = this.architecture.getDefaultCallingConvention();
+		if (conv != null) cc = this.architecture.getCallingConvention(conv.ALPHANUM().getText());
 		
 		RapidSubroutine sub = new RapidSubroutine(this.currentSection, name, cc); 
 		this.statementStack.push(new RapidStatementBlock(sub));
@@ -270,7 +271,9 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	@Override
 	public void enterNumericDereference(NumericDereferenceContext ctx) {
 		
-		Operand.PointerDereferenceOperand pdo = new Operand.PointerDereferenceOperand(this.architecture, this.currentSub, ctx.numericImmediate().getText()); // TODO
+		String varName = ctx.numericImmediate().getText();
+		
+		Operand.PointerDereferenceOperand pdo = new Operand.PointerDereferenceOperand(this.architecture, this.currentSub, varName); // TODO
 		this.cachedOperands.add(pdo);
 		
 		this.suppressNumericImmediateGeneration = true;
@@ -315,7 +318,7 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		
 		if (this.suppressNumericImmediateGeneration) return;
 		
-		Operand.ImmediateOperand io = new Operand.ImmediateOperand(this.architecture, ctx.getText());
+		Operand.ImmediateOperand io = new Operand.ImmediateOperand(this.architecture, this.currentSub, ctx.getText());
 		this.cachedOperands.add(io);
 		
 	}
