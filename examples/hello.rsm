@@ -16,7 +16,7 @@ section TEXT {
 	// Becomes `main`, with `.type main @function`.
 	sub! ENTRY {
 		
-		$edx <- %length		// Length
+		$edx <- *%length		// Length
 		$ecx <- %message		// Pointer to the message
 		$ebx <- 1			// stdout printstream number
 		$eax <- 4			// sys_write syscall number
