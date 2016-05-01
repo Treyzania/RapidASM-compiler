@@ -30,11 +30,17 @@ public class ValueSymbol extends Symbol implements Assemblable {
 	@Override
 	public void addLines(BinarySource src) {
 		
+		String expression = this.value.getText();
+		
+		if (expression.matches("\\[.*\\]")) { // [ blah ]
+			expression = expression.substring(1, expression.length() - 1).trim().replace('!', '.');
+		}
+		
 		src.addLabel(this.name);
 		src.addCode(String.format(
 			".%s %s",
 			this.type.definer,
-			this.value.getText()
+			expression
 		));
 		
 	}

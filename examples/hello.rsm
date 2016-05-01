@@ -6,7 +6,7 @@
 section DATA {
 	
 	@value _str message = "Hello, world!\n"
-	@value _4 length = 14
+	@value _4 length = [ ! - message ]
 	
 }
 

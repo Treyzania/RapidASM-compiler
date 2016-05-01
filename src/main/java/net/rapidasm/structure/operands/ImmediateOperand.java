@@ -23,9 +23,7 @@ public class ImmediateOperand extends Operand {
 			this.value = "%" + val;
 			
 		} else if (reg.equals("!")) {
-			this.value = "$";
-		} else if (reg.equals("!!")) {
-			this.value = "$$";
+			this.value = ".";
 		} else {
 			
 			// Probably a number at this point, so we'll use the dolla sign.

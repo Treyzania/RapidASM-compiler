@@ -95,6 +95,7 @@ vararg : ALPHANUM ':' VARSIZE ;
 
 quantity : numericValue
          | STRING
+         | RAW_QUANTITY 
          ;
 
 // TODO Make sure the pointer stuff doesn't allow spaces.
@@ -199,6 +200,8 @@ GREATERTHAN : '>' ;
 EQUALCMP : '==' ;
 INEQUALCMP : '!=' ;
 GTETCMP : '>=' ;
+
+RAW_QUANTITY : '[' .*? ']' ;
 
 WS : [ \t\r\n\u000C]+ -> skip ;
 
