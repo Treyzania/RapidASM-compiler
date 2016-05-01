@@ -12,6 +12,7 @@ import net.rapidasm.antlr.RapidASMParser.ConditionalHeaderContext;
 import net.rapidasm.antlr.RapidASMParser.ConvDeclarationContext;
 import net.rapidasm.antlr.RapidASMParser.InstructionContext;
 import net.rapidasm.antlr.RapidASMParser.LabelSymbolContext;
+import net.rapidasm.antlr.RapidASMParser.MovStatementContext;
 import net.rapidasm.antlr.RapidASMParser.NumericDereferenceContext;
 import net.rapidasm.antlr.RapidASMParser.NumericImmediateContext;
 import net.rapidasm.antlr.RapidASMParser.NumericRelativeDereferenceContext;
@@ -44,6 +45,8 @@ import net.rapidasm.structure.conditionals.Likelihood;
 import net.rapidasm.structure.conditionals.RapidIfStatement;
 import net.rapidasm.structure.loops.RapidWhileAfterBlock;
 import net.rapidasm.structure.loops.RapidWhileBeforeBlock;
+import net.rapidasm.structure.mov.MoveDirection;
+import net.rapidasm.structure.mov.RapidMoveStatement;
 import net.rapidasm.structure.symbols.RapidLabel;
 import net.rapidasm.structure.symbols.SkipSymbol;
 import net.rapidasm.structure.symbols.StoreSymbol;
@@ -381,6 +384,41 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		this.currentInstructionStatement.setOperands(this.cachedOperands);
 		this.resetOperands();
 		this.currentInstructionStatement = null;
+		
+	}
+
+	@Override
+	public void enterMovStatement(MovStatementContext ctx) {
+		
+		this.resetOperands();
+		
+	}
+
+	@Override
+	public void exitMovStatement(MovStatementContext ctx) {
+		
+		Operand lhs = this.cachedOperands.get(0);
+		Operand rhs = this.cachedOperands.get(1);
+		
+		String token = ctx.movOperator().getText();
+		MoveDirection dir = MoveDirection.getMoveDirection(token);
+		
+		Operand src, dest;
+		
+		if (dir == MoveDirection.RTL) {
+			
+			src = rhs;
+			dest = lhs;
+			
+		} else {
+			
+			src = lhs;
+			dest = rhs;
+			
+		}
+		
+		RapidMoveStatement rms = new RapidMoveStatement(this.getCurrentBlock(), dir.moveType, src, dest);
+		this.getCurrentBlock().addStatement(rms);
 		
 	}
 	

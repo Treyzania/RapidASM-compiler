@@ -106,7 +106,7 @@ public abstract class Architecture {
 	public abstract InstructionSet getInstructionSet();
 	
 	public String getInstruction(Instruction instr, DataSize size, String... operands) {
-		return this.getInstruction(instr, operands).replaceFirst("{}", Character.toString(size.suffix));
+		return this.getInstruction(instr, operands).replaceFirst("\\{\\}", Character.toString(size.suffix));
 	}
 	
 	public String getInstruction(Instruction instr, String... operands) {
