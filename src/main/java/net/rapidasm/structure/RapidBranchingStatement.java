@@ -5,6 +5,7 @@ import net.rapidasm.arch.Instruction;
 import net.rapidasm.structure.conditionals.BranchGenerationType;
 import net.rapidasm.structure.conditionals.Conditional;
 import net.rapidasm.structure.conditionals.Likelihood;
+import net.rapidasm.structure.operands.Operand;
 
 public abstract class RapidBranchingStatement extends RapidStatementBlock {
 

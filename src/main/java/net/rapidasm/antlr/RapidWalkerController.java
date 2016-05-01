@@ -17,6 +17,8 @@ import net.rapidasm.antlr.RapidASMParser.NumericDereferenceContext;
 import net.rapidasm.antlr.RapidASMParser.NumericImmediateContext;
 import net.rapidasm.antlr.RapidASMParser.NumericRelativeDereferenceContext;
 import net.rapidasm.antlr.RapidASMParser.NumericSubroutineInvocationContext;
+import net.rapidasm.antlr.RapidASMParser.NumericValueSymbolContext;
+import net.rapidasm.antlr.RapidASMParser.NumericValueSymbolDereferenceContext;
 import net.rapidasm.antlr.RapidASMParser.SectionContext;
 import net.rapidasm.antlr.RapidASMParser.SkipSymbolContext;
 import net.rapidasm.antlr.RapidASMParser.StatementBlockStatementContext;
@@ -32,7 +34,6 @@ import net.rapidasm.arch.Architecture;
 import net.rapidasm.arch.CallingConvention;
 import net.rapidasm.structure.DataSize;
 import net.rapidasm.structure.DataType;
-import net.rapidasm.structure.Operand;
 import net.rapidasm.structure.RapidBranchingStatement;
 import net.rapidasm.structure.RapidInstructionStatement;
 import net.rapidasm.structure.RapidSection;
@@ -47,6 +48,9 @@ import net.rapidasm.structure.loops.RapidWhileAfterBlock;
 import net.rapidasm.structure.loops.RapidWhileBeforeBlock;
 import net.rapidasm.structure.mov.MoveDirection;
 import net.rapidasm.structure.mov.RapidMoveStatement;
+import net.rapidasm.structure.operands.ImmediateOperand;
+import net.rapidasm.structure.operands.Operand;
+import net.rapidasm.structure.operands.PointerDereferenceOperand;
 import net.rapidasm.structure.symbols.RapidLabel;
 import net.rapidasm.structure.symbols.SkipSymbol;
 import net.rapidasm.structure.symbols.StoreSymbol;
@@ -328,7 +332,7 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		
 		String varName = ctx.numericImmediate().getText();
 		
-		Operand.PointerDereferenceOperand pdo = new Operand.PointerDereferenceOperand(this.architecture, this.currentSub, varName); // TODO
+		PointerDereferenceOperand pdo = new PointerDereferenceOperand(this.architecture, this.currentSub, varName); // TODO
 		this.cachedOperands.add(pdo);
 		
 		this.suppressNumericImmediateGeneration = true;
@@ -345,7 +349,7 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		
 		int offset = Integer.parseInt(ctx.plusMinus().getText() + ctx.NUMBER().getText());
 		
-		Operand.PointerDereferenceOperand pdo = new Operand.PointerDereferenceOperand(this.architecture, this.currentSub, ctx.numericImmediate().getText(), offset);
+		PointerDereferenceOperand pdo = new PointerDereferenceOperand(this.architecture, this.currentSub, ctx.numericImmediate().getText(), offset);
 		this.cachedOperands.add(pdo);
 		
 		this.suppressNumericImmediateGeneration = true;
@@ -367,13 +371,13 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		}
 		
 	}
-
+	
 	@Override
 	public void enterNumericImmediate(NumericImmediateContext ctx) {
 		
 		if (this.suppressNumericImmediateGeneration) return;
 		
-		Operand.ImmediateOperand io = new Operand.ImmediateOperand(this.architecture, this.currentSub, ctx.getText());
+		ImmediateOperand io = new ImmediateOperand(this.architecture, this.currentSub, ctx.getText());
 		this.cachedOperands.add(io);
 		
 	}
@@ -386,14 +390,14 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		this.currentInstructionStatement = null;
 		
 	}
-
+	
 	@Override
 	public void enterMovStatement(MovStatementContext ctx) {
 		
 		this.resetOperands();
 		
 	}
-
+	
 	@Override
 	public void exitMovStatement(MovStatementContext ctx) {
 		

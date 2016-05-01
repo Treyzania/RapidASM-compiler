@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.rapidasm.BinarySource;
 import net.rapidasm.arch.Register;
+import net.rapidasm.structure.operands.Operand;
 
 public class RapidInstructionStatement extends RapidStatement implements Child<RapidStatementBlock>  {
 

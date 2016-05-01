@@ -1,6 +1,7 @@
 package net.rapidasm.structure;
 
 import net.rapidasm.arch.Architecture;
+import net.rapidasm.structure.operands.Operand;
 
 public enum DataSize {
 

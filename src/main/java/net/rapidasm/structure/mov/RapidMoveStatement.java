@@ -2,9 +2,9 @@ package net.rapidasm.structure.mov;
 
 import net.rapidasm.BinarySource;
 import net.rapidasm.structure.DataSize;
-import net.rapidasm.structure.Operand;
 import net.rapidasm.structure.RapidStatement;
 import net.rapidasm.structure.RapidStatementBlock;
+import net.rapidasm.structure.operands.Operand;
 
 public class RapidMoveStatement extends RapidStatement {
 	
