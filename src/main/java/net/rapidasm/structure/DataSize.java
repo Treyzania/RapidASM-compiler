@@ -42,4 +42,25 @@ public enum DataSize {
 		
 	}
 	
+	public static DataSize getDataSize(Operand a, Operand b) {
+		
+		DataSize dsa = a.getResultingDataSize();
+		DataSize dsb = b.getResultingDataSize();
+		
+		if (dsa == null && dsb == null) throw new IllegalArgumentException(String.format("Operands %s and %s both don't have obvious sizes!", a.getActualOperand(), b.getActualOperand()));
+		if (dsa != null && dsb != null) {
+			
+			if (dsa == dsb) {
+				return dsa; // Could do either.
+			} else {
+				throw new IllegalArgumentException(String.format("Operands %s and %s are incompatible.", a.getActualOperand(), b.getActualOperand()));
+			}
+			
+		}
+		
+		if (dsb == null) return dsa;
+		return dsb; // We want the left hand side usually.
+		
+	}
+	
 }

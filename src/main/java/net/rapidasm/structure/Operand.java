@@ -78,12 +78,12 @@ public abstract class Operand {
 			return out;
 			
 		}
-
+		
 		@Override
 		public boolean needsRegisterCache() {
 			return false;
 		}
-
+		
 		@Override
 		public DataSize getResultingDataSize() {
 			

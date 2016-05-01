@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.rapidasm.arch.Architecture;
 import net.rapidasm.arch.Instruction;
+import net.rapidasm.structure.DataSize;
 
 public class BinarySource {
 
@@ -78,6 +79,11 @@ public class BinarySource {
 	 */
 	public void addInstruction(Instruction instr, String... operands) {
 		this.addCode(this.arch.getInstruction(instr, operands));
+	}
+	
+	
+	public void addInstruction(Instruction instr, DataSize size, String... operands) {
+		this.addCode(this.arch.getInstruction(instr, size, operands));
 	}
 	
 	public void addSpaces(int minSpaces) {

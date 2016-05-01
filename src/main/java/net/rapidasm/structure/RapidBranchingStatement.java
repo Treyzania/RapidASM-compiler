@@ -45,21 +45,21 @@ public abstract class RapidBranchingStatement extends RapidStatementBlock {
 	
 	public void addConditionalLines(BinarySource src) {
 		
-		Architecture arch = this.getRootModule().architecture;
+		DataSize cmpSuffix = DataSize.getDataSize(this.leftSide, this.rightSide);
 		
 		if (this.type == BranchGenerationType.CONDITIONAL) {
 			
 			this.leftSide.setup(src);
 			this.rightSide.setup(src);
 			
-			src.addCode(arch.getInstruction(Instruction.COMPARE, this.leftSide.getActualOperand(), this.rightSide.getActualOperand()));
+			src.addInstruction(Instruction.COMPARE, cmpSuffix, this.leftSide.getActualOperand(), this.rightSide.getActualOperand());
 			
 			if (this.likelyhood == Likelihood.LIKELY) {
-				src.addCode(arch.getInstruction(this.conditional.jmpInstructionInverse, this.getEndLabel()));
+				src.addInstruction(this.conditional.jmpInstructionInverse, this.getEndLabel());
 			} else if (this.likelyhood == Likelihood.UNLIKELY) {
 				
-				src.addCode(arch.getInstruction(this.conditional.jmpInstruction, this.getCodeLabel()));
-				src.addCode(arch.getInstruction(Instruction.JUMP, this.getEndLabel()));
+				src.addInstruction(this.conditional.jmpInstruction, this.getCodeLabel());
+				src.addInstruction(Instruction.JUMP, this.getEndLabel());
 				
 			} else {
 				src.addComment("ERROR FOR CONDITIONAL ON LINE " + this.getLine());
@@ -68,7 +68,7 @@ public abstract class RapidBranchingStatement extends RapidStatementBlock {
 		} else if (this.type == BranchGenerationType.FALSE) {
 			
 			src.addComment("Branch here is always false.");
-			src.addCode(arch.getInstruction(Instruction.JUMP, this.getEndLabel()));
+			src.addInstruction(Instruction.JUMP, this.getEndLabel());
 			
 		} else if (this.type == BranchGenerationType.TRUE) {
 			src.addComment("Branch here is always true.");
