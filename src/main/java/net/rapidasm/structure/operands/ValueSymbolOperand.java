@@ -19,7 +19,7 @@ public class ValueSymbolOperand extends Operand {
 
 	@Override
 	public String getActualOperand() {
-		return this.value.name;
+		return "$" + this.value.name;
 	}
 
 	@Override
