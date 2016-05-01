@@ -59,7 +59,7 @@ import net.rapidasm.structure.symbols.SkipSymbol;
 import net.rapidasm.structure.symbols.StoreSymbol;
 import net.rapidasm.structure.symbols.ValueSymbol;
 
-public class RapidWalkerController extends RapidASMBaseListener {
+public class RapidWalkerListener extends RapidASMBaseListener {
 
 	private Module generatedModule;
 	private final Architecture architecture;
@@ -77,7 +77,7 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	
 	private List<RapidLabel> cachedLabels;
 	
-	public RapidWalkerController(Architecture arch) {
+	public RapidWalkerListener(Architecture arch) {
 		
 		this.generatedModule = new Module(arch);
 		this.architecture = arch;

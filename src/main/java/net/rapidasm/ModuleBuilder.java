@@ -10,7 +10,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 import net.rapidasm.antlr.RapidASMLexer;
 import net.rapidasm.antlr.RapidASMParser;
-import net.rapidasm.antlr.RapidWalkerController;
+import net.rapidasm.antlr.RapidWalkerListener;
 import net.rapidasm.arch.x86.X86Architecture;
 
 public class ModuleBuilder {
@@ -45,7 +45,7 @@ public class ModuleBuilder {
 			
 			// Walker setup & walk.
 			ParseTreeWalker walker = new ParseTreeWalker();
-			RapidWalkerController ctrl = new RapidWalkerController(new X86Architecture()); // FIXME Make the arch pre-specified.
+			RapidWalkerListener ctrl = new RapidWalkerListener(new X86Architecture()); // FIXME Make the arch pre-specified.
 			walker.walk(ctrl, parser.module());
 			
 			// Get the populated module.
