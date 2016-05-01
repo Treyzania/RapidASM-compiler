@@ -18,7 +18,7 @@ import net.rapidasm.structure.Signature;
 import net.rapidasm.structure.Vararg;
 
 public class X86Architecture extends Architecture {
-
+	
 	private List<CallingConvention> conventions;
 	private InstructionSet instructionSet;
 	
@@ -47,7 +47,7 @@ public class X86Architecture extends Architecture {
 		this.instructionSet.set(Instruction.JUMP, "jmp %s");
 		this.instructionSet.set(Instruction.COMPARE, "cmp %s, %s");
 		
-		// Jumping instructions.'
+		// Jumping instructions.
 		this.instructionSet.set(Instruction.COMPARE, "cmp{} %s, %s");
 		this.instructionSet.set(Instruction.JUMP_EQUAL, "je %s");
 		this.instructionSet.set(Instruction.JUMP_INEQUAL, "jne %s");
@@ -69,7 +69,7 @@ public class X86Architecture extends Architecture {
 	public DataSize getWordSize() {
 		return DataSize.INTEGER;
 	}
-
+	
 	@Override
 	public String getShortName() {
 		return "x86";
@@ -79,36 +79,36 @@ public class X86Architecture extends Architecture {
 	public List<CallingConvention> getCallingConventions() {
 		return this.conventions;
 	}
-
+	
 	@Override
 	public InstructionSet getInstructionSet() {
 		return this.instructionSet;
 	}
 	
 	public static class CdeclConvention extends CallingConvention {
-
+		
 		private CdeclConvention(X86Architecture x86) {
 			super(x86, "cdecl");
 		}
-
+		
 		@Override
 		public void doCallerSetup(RapidSubroutine caller, RapidSubroutine callee, BinarySource src) {
 			// TODO Push the arguments onto the stack.
 		}
-
+		
 		@Override
 		public void doCallerCleanup(RapidSubroutine caller, RapidSubroutine callee, BinarySource src) {
 			
 			// Clean up the stack.
-			src.addCode(String.format("add esp, %s", callee.signature.getTotalSize())); // Remove the arguments.
+			src.addCode(String.format("addl %s, esp", callee.signature.getTotalSize())); // Remove the arguments.
 			
 		}
-
+		
 		@Override
 		public void doCalleeSetup(RapidSubroutine callee, BinarySource src) {
 			// Nothing!
 		}
-
+		
 		@Override
 		public void doCalleeCleanup(RapidSubroutine callee, BinarySource src) {
 			
@@ -116,7 +116,7 @@ public class X86Architecture extends Architecture {
 			src.addCode("ret");
 			
 		}
-
+		
 		@Override
 		public String getArgumentExpression(Signature sig, String argName) {
 			
@@ -139,7 +139,7 @@ public class X86Architecture extends Architecture {
 		}
 		
 	}
-
+	
 	@Override
 	public List<Register> getRegisters() {
 		
@@ -182,17 +182,17 @@ public class X86Architecture extends Architecture {
 		);
 		
 	}
-
+	
 	@Override
 	public Register getStackRegister() {
 		return new Register("esp", DataSize.INTEGER); // This is identical to the one defined above.
 	}
-
+	
 	@Override
 	public int getStackDirection() {
 		return -1;
 	}
-
+	
 	@Override
 	public CallingConvention getDefaultCallingConvention() {
 		return this.cdeclConvention;
