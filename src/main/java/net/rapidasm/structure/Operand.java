@@ -32,9 +32,12 @@ public abstract class Operand {
 		
 	}
 	
+	public abstract DataSize getResultingDataSize();
+	
 	public static class ImmediateOperand extends Operand {
 
-		public String value;
+		public final String value;
+		public final String originalValue;
 		
 		public ImmediateOperand(Architecture arch, RapidSubroutine sub, String reg) {
 			
@@ -59,6 +62,8 @@ public abstract class Operand {
 				
 			}
 			
+			this.originalValue = reg;
+			
 		}
 		
 		@Override
@@ -77,6 +82,19 @@ public abstract class Operand {
 		@Override
 		public boolean needsRegisterCache() {
 			return false;
+		}
+
+		@Override
+		public DataSize getResultingDataSize() {
+			
+			if (this.originalValue.startsWith("$")) {
+				return this.arch.getRegister(this.originalValue.substring(1)).size;
+			} else if (this.originalValue.equals("!") || this.originalValue.equals("!!")) {
+				return this.arch.getPointerSize();
+			} else {
+				return null; 
+			}
+			
 		}
 		
 	}
@@ -118,10 +136,15 @@ public abstract class Operand {
 			}
 			
 		}
-
+		
 		@Override
 		public boolean needsRegisterCache() {
 			return false;
+		}
+		
+		@Override
+		public DataSize getResultingDataSize() {
+			return this.arch.getPointerSize();
 		}
 		
 	}

@@ -1,19 +1,21 @@
 package net.rapidasm.arch;
 
+import net.rapidasm.structure.DataSize;
+
 public class Register {
 
 	public final String name;
-	public final int width;
+	public final DataSize size;
 	
-	public Register(String name, int width) {
+	public Register(String name, DataSize size) {
 		
 		this.name = name;
-		this.width = width;
+		this.size = size;
 		
 	}
 	
 	public boolean isCompatible(Register other) {
-		return this.width == other.width;
+		return this.size == other.size;
 	}
 	
 	public static boolean isCompatible(Register a, Register b) {
@@ -23,11 +25,10 @@ public class Register {
 	@Override
 	public int hashCode() {
 		
-		// Yucky generated code.
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + width;
+		result = prime * result + ((size == null) ? 0 : size.hashCode());
 		return result;
 		
 	}
@@ -35,7 +36,6 @@ public class Register {
 	@Override
 	public boolean equals(Object obj) {
 		
-		// Yucky generated code.
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -48,7 +48,7 @@ public class Register {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (width != other.width)
+		if (size != other.size)
 			return false;
 		return true;
 		

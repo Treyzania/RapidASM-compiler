@@ -36,18 +36,19 @@ public class X86Architecture extends Architecture {
 		this.instructionSet = new InstructionSet();
 		
 		// General instructions.
-		this.instructionSet.set(Instruction.MOVE, "mov %s, %s");
-		this.instructionSet.set(Instruction.EXCHANGE, "xchg %s, %s");
-		this.instructionSet.set(Instruction.ADD, "add %s, %s");
-		this.instructionSet.set(Instruction.SUBTRACT, "sub %s, %s");
-		this.instructionSet.set(Instruction.INCREMENT, "inc %s");
-		this.instructionSet.set(Instruction.DECREMENT, "dec %s");
+		this.instructionSet.set(Instruction.MOVE, "mov{} %s, %s");
+		this.instructionSet.set(Instruction.EXCHANGE, "xchg{} %s, %s");
+		this.instructionSet.set(Instruction.ADD, "add{} %s, %s");
+		this.instructionSet.set(Instruction.SUBTRACT, "sub{} %s, %s");
+		this.instructionSet.set(Instruction.INCREMENT, "inc{} %s");
+		this.instructionSet.set(Instruction.DECREMENT, "dec{} %s");
 		this.instructionSet.set(Instruction.CALL, "call %s");
 		this.instructionSet.set(Instruction.RETURN, "ret");
 		this.instructionSet.set(Instruction.JUMP, "jmp %s");
 		this.instructionSet.set(Instruction.COMPARE, "cmp %s, %s");
 		
-		// Jumping instructions.
+		// Jumping instructions.'
+		this.instructionSet.set(Instruction.COMPARE, "cmp{} %s, %s");
 		this.instructionSet.set(Instruction.JUMP_EQUAL, "je %s");
 		this.instructionSet.set(Instruction.JUMP_INEQUAL, "jne %s");
 		this.instructionSet.set(Instruction.JUMP_ZERO, "jz %s");
@@ -133,7 +134,7 @@ public class X86Architecture extends Architecture {
 				
 			}
 			
-			return String.format("[esp + %s]", bytesPassed);
+			return String.format("%s(%esp)", bytesPassed);
 			
 		}
 		
@@ -145,36 +146,36 @@ public class X86Architecture extends Architecture {
 		return Arrays.asList(
 				
 			// General purpose registers
-			new Register("al", 1),
-			new Register("ah", 1),
-			new Register("ax", 2),
-			new Register("eax", 4),
-			new Register("bl", 1),
-			new Register("bh", 1),
-			new Register("bx", 2),
-			new Register("ebx", 4),
-			new Register("cl", 1),
-			new Register("ch", 1),
-			new Register("cx", 2),
-			new Register("ecx", 4),
-			new Register("dl", 1),
-			new Register("dh", 1),
-			new Register("dx", 2),
-			new Register("edx", 4),
+			new Register("al", DataSize.BYTE),
+			new Register("ah", DataSize.BYTE),
+			new Register("ax", DataSize.SHORT),
+			new Register("eax", DataSize.INTEGER),
+			new Register("bl", DataSize.BYTE),
+			new Register("bh", DataSize.BYTE),
+			new Register("bx", DataSize.SHORT),
+			new Register("ebx", DataSize.INTEGER),
+			new Register("cl", DataSize.BYTE),
+			new Register("ch", DataSize.BYTE),
+			new Register("cx", DataSize.SHORT),
+			new Register("ecx", DataSize.INTEGER),
+			new Register("dl", DataSize.BYTE),
+			new Register("dh", DataSize.BYTE),
+			new Register("dx", DataSize.SHORT),
+			new Register("edx", DataSize.INTEGER),
 			
 			// Others
-			new Register("si", 2),
-			new Register("esi", 4),
-			new Register("di", 2),
-			new Register("edi", 4),
-			new Register("bp", 2),
-			new Register("ebp", 4),
-			new Register("sp", 2),
-			new Register("esp", 4),
+			new Register("si", DataSize.SHORT),
+			new Register("esi", DataSize.INTEGER),
+			new Register("di", DataSize.SHORT),
+			new Register("edi", DataSize.INTEGER),
+			new Register("bp", DataSize.SHORT),
+			new Register("ebp", DataSize.INTEGER),
+			new Register("sp", DataSize.SHORT),
+			new Register("esp", DataSize.INTEGER),
 			
 			// Flags
-			new Register("flags", 2),
-			new Register("eflags", 4)
+			new Register("flags", DataSize.SHORT),
+			new Register("eflags", DataSize.INTEGER)
 			
 			// TODO Add the other ones, like cs, ds, es, fs, gs, and ss? 
 			
@@ -184,7 +185,7 @@ public class X86Architecture extends Architecture {
 
 	@Override
 	public Register getStackRegister() {
-		return new Register("esp", 4); // This is identical to the one defined above.
+		return new Register("esp", DataSize.INTEGER); // This is identical to the one defined above.
 	}
 
 	@Override

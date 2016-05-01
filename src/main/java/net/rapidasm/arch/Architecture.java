@@ -54,12 +54,16 @@ public abstract class Architecture {
 	public abstract Register getStackRegister();
 	
 	public boolean hasRegister(String name) {
+		return this.getRegister(name) != null;
+	}
+	
+	public Register getRegister(String name) {
 		
 		for (Register r : this.getRegisters()) {
-			if (r.name.equals(name)) return true;
+			if (r.name.equals(name)) return r;
 		}
 		
-		return false;
+		return null;
 		
 	}
 	
@@ -68,7 +72,7 @@ public abstract class Architecture {
 		List<Register> regs = new ArrayList<>();
 		
 		this.getRegisters().forEach(r -> {
-			if (r.width == this.getWordSize().size) regs.add(r);
+			if (r.size == this.getWordSize()) regs.add(r);
 		});
 		
 		return regs;
@@ -100,6 +104,10 @@ public abstract class Architecture {
 	}
 	
 	public abstract InstructionSet getInstructionSet();
+	
+	public String getInstruction(Instruction instr, DataSize size, String... operands) {
+		return this.getInstruction(instr, operands).replaceFirst("{}", Character.toString(size.suffix));
+	}
 	
 	public String getInstruction(Instruction instr, String... operands) {
 		return this.getInstructionSet().fill(instr, operands);
