@@ -6,7 +6,7 @@
 section DATA {
 	
 	@value _str message = "Hello, world!\n"
-	@value _ptr length = 14
+	@value _4 length = 14
 	
 }
 
@@ -16,8 +16,8 @@ section TEXT {
 	// Becomes `main`, with `.type main @function`.
 	sub! ENTRY {
 		
-		$edx <- length		// Length
-		$ecx <- message		// Pointer to the message
+		$edx <- %length		// Length
+		$ecx <- %message		// Pointer to the message
 		$ebx <- 1			// stdout printstream number
 		$eax <- 4			// sys_write syscall number
 		int 0x80			// Actually invoke it

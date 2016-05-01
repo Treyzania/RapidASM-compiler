@@ -102,6 +102,8 @@ numericValue : numericImmediate
              | numericDereference          // C-style pointer dereferencing
              | numericSubroutineInvocation // Return values
              | numericRelativeDereference  // Relative addressing
+             | numericValueSymbol
+             | numericValueSymbolDereference
              ;
 
 numericDereference : ASTERISK numericImmediate ;
@@ -112,6 +114,9 @@ numericImmediate : NUMBER      // Literals
                  | ALPHANUM
                  | EXCLAMATION // Address of instruction
                  ;
+
+numericValueSymbol : PERCENT ALPHANUM ;
+numericValueSymbolDereference : ASTERISK PERCENT ALPHANUM ;
 
 subroutineInvocation : SQUIGGLE ALPHANUM OPENPAREN operands? CLOSEPAREN;
 operands : operand (',' operand)*;
@@ -151,6 +156,7 @@ IF : 'if' ;
 DOLLARSIGN : '$' ;
 EXCLAMATION : '!' ;
 ANDPERSEAND : '&' ;
+PERCENT : '%' ;
 ASTERISK : '*' ;
 SUBROUTINE : 'sub' ;
 SUBROUTINE_NOCALL : 'sub!' ;

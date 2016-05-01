@@ -39,6 +39,7 @@ import net.rapidasm.structure.RapidInstructionStatement;
 import net.rapidasm.structure.RapidSection;
 import net.rapidasm.structure.RapidStatementBlock;
 import net.rapidasm.structure.RapidSubroutine;
+import net.rapidasm.structure.SectionPopulant;
 import net.rapidasm.structure.Vararg;
 import net.rapidasm.structure.conditionals.BranchGenerationType;
 import net.rapidasm.structure.conditionals.Conditional;
@@ -51,6 +52,8 @@ import net.rapidasm.structure.mov.RapidMoveStatement;
 import net.rapidasm.structure.operands.ImmediateOperand;
 import net.rapidasm.structure.operands.Operand;
 import net.rapidasm.structure.operands.PointerDereferenceOperand;
+import net.rapidasm.structure.operands.ValueSymbolDereferenceOperand;
+import net.rapidasm.structure.operands.ValueSymbolOperand;
 import net.rapidasm.structure.symbols.RapidLabel;
 import net.rapidasm.structure.symbols.SkipSymbol;
 import net.rapidasm.structure.symbols.StoreSymbol;
@@ -99,6 +102,28 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	
 	private RapidStatementBlock getCurrentBlock() {
 		return this.statementStack.peek();
+	}
+	
+	public ValueSymbol getValueSymbol(String name) {
+		
+		for (RapidSection section : this.generatedModule.sections) {
+			
+			for (SectionPopulant populant : section.children) {
+				
+				if (populant instanceof ValueSymbol) {
+					
+					ValueSymbol symb = (ValueSymbol) populant;
+					
+					if (symb.name.equals(name)) return symb;
+					
+				}
+				
+			}
+			
+		}
+		
+		return null;
+		
 	}
 	
 	private void pushBlock(RapidStatementBlock block) {
@@ -193,7 +218,12 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	
 	@Override
 	public void enterValueSymbol(ValueSymbolContext ctx) {
-		this.currentSection.addChild(new ValueSymbol(this.currentSection, ctx.ALPHANUM().getText(), DataType.getType(this.architecture, ctx.VARSIZE().getText()), ctx.quantity()));
+		
+		String name = ctx.ALPHANUM().getText();
+		DataType dt = DataType.getType(this.architecture, ctx.VARSIZE().getText());
+		
+		this.currentSection.addChild(new ValueSymbol(this.currentSection, name, dt, ctx.quantity()));
+		
 	}
 	
 	@Override
@@ -381,6 +411,16 @@ public class RapidWalkerController extends RapidASMBaseListener {
 		this.cachedOperands.add(io);
 		
 	}
+	
+	@Override
+	public void enterNumericValueSymbolDereference(NumericValueSymbolDereferenceContext ctx) {
+		this.cachedOperands.add(new ValueSymbolDereferenceOperand(this.architecture, this.currentSub, this.getValueSymbol(ctx.ALPHANUM().getText())));
+	}
+
+	@Override
+	public void enterNumericValueSymbol(NumericValueSymbolContext ctx) {
+		this.cachedOperands.add(new ValueSymbolOperand(this.architecture, this.currentSub, this.getValueSymbol(ctx.ALPHANUM().getText())));
+	}
 
 	@Override
 	public void exitInstruction(InstructionContext ctx) {
@@ -393,9 +433,7 @@ public class RapidWalkerController extends RapidASMBaseListener {
 	
 	@Override
 	public void enterMovStatement(MovStatementContext ctx) {
-		
 		this.resetOperands();
-		
 	}
 	
 	@Override

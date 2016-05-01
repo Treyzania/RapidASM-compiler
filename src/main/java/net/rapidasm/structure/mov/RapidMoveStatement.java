@@ -24,9 +24,6 @@ public class RapidMoveStatement extends RapidStatement {
 	@Override
 	public void addLines(BinarySource src) {
 		
-		src.addComment("SRC.class: " + this.src.getClass().getSimpleName());
-		src.addComment("DEST.class: " + this.dest.getClass().getSimpleName());
-		
 		this.src.setup(src);
 		this.dest.setup(src);
 		

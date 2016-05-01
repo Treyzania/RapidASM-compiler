@@ -5,21 +5,29 @@ import net.rapidasm.structure.operands.Operand;
 
 public enum DataSize {
 
-	BYTE(1, 'b', DataType.BYTE),
-	SHORT(2, 's', DataType.SHORT),
-	INTEGER(4, 'l', DataType.INTEGER),
-	LONG(8, 'q', DataType.LONG);
+	BYTE(1, 'b'),
+	SHORT(2, 's'),
+	INTEGER(4, 'l'),
+	LONG(8, 'q');
 	
 	public int size = 0;
 	public char suffix;
 	
-	public DataType dataType;
-	
-	private DataSize(int size, char suffix, DataType type) {
+	private DataSize(int size, char suffix) {
 		
 		this.size = size;
 		this.suffix = suffix;
-		this.dataType = type;
+		
+	}
+	
+	// Apparently Java doesn't like it when you have circular enum declarations.
+	public DataType getType() {
+		
+		for (DataType dt : DataType.values()) {
+			if (dt.size == this) return dt;
+		}
+		
+		return null;
 		
 	}
 	
@@ -38,7 +46,10 @@ public enum DataSize {
 		}
 		
 		// Find it or fail.
-		for (DataSize ds : values()) if (ds.size == bytes) return ds;
+		for (DataSize ds : values()) {
+			if (ds.size == bytes) return ds;
+		}
+		
 		throw new IllegalArgumentException("Invalid data size: " + key);
 		
 	}
