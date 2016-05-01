@@ -38,6 +38,7 @@ public class RapidSection implements Child<Module>, Assemblable {
 		
 		src.addLabel("section_" + this.name); // A label to the section declaration.
 		
+		// FIXME Make this more generic.
 		if (this.name.equals("TEXT")) {
 			src.addCode(".text");
 		} else if (this.name.equals("DATA")) {
@@ -56,6 +57,17 @@ public class RapidSection implements Child<Module>, Assemblable {
 			if (child instanceof Assemblable) {
 				
 				Assemblable asm = (Assemblable) child;
+				
+				if (asm instanceof RapidSubroutine) {
+					
+					RapidSubroutine sub = (RapidSubroutine) asm;
+					
+					// FIXME Make this more generic.
+					if (sub.name.equals("ENTRY")) {
+						src.addCode(".globl _start");
+					}
+					
+				}
 				
 				// Check for labels, generate them if so.
 				if (asm instanceof Labelable) {

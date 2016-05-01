@@ -34,7 +34,12 @@ public class RapidSubroutine extends SectionPopulant implements Assemblable, Hea
 		
 		String lcName = this.name.toLowerCase();
 		
-		src.addLabel("sub_" + lcName);
+		if (this.name.equals("ENTRY")) {
+			src.addLabel("_start");
+		} else {
+			src.addLabel("sub_" + lcName);
+		} 
+		
 		src.addSpace();
 		
 		// Now actually generate the code.
