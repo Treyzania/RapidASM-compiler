@@ -14,7 +14,7 @@ public class EmptyConvention extends CallingConvention {
 	public void doCallerSetup(RapidSubroutine caller, RapidSubroutine callee, BinarySource src) {
 		
 		src.addComment("CALLING: " + callee.name + " (" + this.name + ")");
-		src.addCode(this.arch.getInstruction(Instruction.CALL, callee.name));
+		src.addInstruction(Instruction.CALL, callee.name));
 		
 	}
 	
@@ -34,7 +34,7 @@ public class EmptyConvention extends CallingConvention {
 	public void doCalleeCleanup(RapidSubroutine callee, BinarySource src) {
 		
 		// Just the return instruction here.
-		src.addCode(this.arch.getInstruction(Instruction.RETURN));
+		src.addInstruction(Instruction.RETURN));
 		
 	}
 

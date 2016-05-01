@@ -1,7 +1,6 @@
 package net.rapidasm.structure;
 
 import net.rapidasm.BinarySource;
-import net.rapidasm.arch.Architecture;
 import net.rapidasm.arch.Instruction;
 import net.rapidasm.structure.conditionals.BranchGenerationType;
 import net.rapidasm.structure.conditionals.Conditional;

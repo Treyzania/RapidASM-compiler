@@ -53,4 +53,8 @@ public enum Instruction {
 		return (this.changedRegisterMask & (1 << argNum)) != 0;
 	}
 	
+	public boolean hasModifiedRegisters() {
+		return this.changedRegisterMask != 0;
+	}
+	
 }
