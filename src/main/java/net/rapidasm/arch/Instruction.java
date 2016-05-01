@@ -2,12 +2,12 @@ package net.rapidasm.arch;
 
 public enum Instruction {
 
-	MOVE(2, 0),
+	MOVE(2, 1),
 	EXCHANGE(2, 0, 1),
-	ADD(2, 0),
-	SUBTRACT(1, 0),
-	INCREMENT(1, 0),
-	DECREMENT(1, 0),
+	ADD(2, 1),
+	SUBTRACT(1, 1),
+	INCREMENT(1, 1),
+	DECREMENT(1, 1),
 	CALL(1),
 	RETURN(0),
 	JUMP(1),
@@ -20,6 +20,8 @@ public enum Instruction {
 	JUMP_GREATER_OR_EQUAL(1),
 	JUMP_LESS(1),
 	JUMP_LESS_OR_EQUAL(1),
+	PUSH(1),
+	POP(1, 0),
 	
 	UNDEFINED(-1); // Used for any other instruction that we somehow need to represent.
 	
