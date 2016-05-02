@@ -55,10 +55,10 @@ public abstract class RapidBranchingStatement extends RapidStatementBlock {
 			src.addInstruction(Instruction.COMPARE, cmpSuffix, this.leftSide.getActualOperand(), this.rightSide.getActualOperand());
 			
 			if (this.likelyhood == Likelihood.LIKELY) {
-				src.addInstruction(this.conditional.jmpInstructionInverse, this.getEndLabel());
+				src.addInstruction(this.conditional.jmpInstruction, this.getEndLabel());
 			} else if (this.likelyhood == Likelihood.UNLIKELY) {
 				
-				src.addInstruction(this.conditional.jmpInstruction, this.getCodeLabel());
+				src.addInstruction(this.conditional.jmpInstructionInverse, this.getCodeLabel());
 				src.addInstruction(Instruction.JUMP, this.getEndLabel());
 				
 			} else {
