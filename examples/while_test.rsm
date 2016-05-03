@@ -1,0 +1,34 @@
+/*
+ * Repeatedly prints "Hello, world!\n" to stdout on Linux, removing a byte from the end each time.
+ */
+
+section DATA {
+	
+	@value _str message = "Hello, world!\n"
+	@value _4 length = [ ! - message ]
+	
+}
+
+section TEXT {
+	
+	sub! ENTRY {
+		
+		while (0 < *%length) {
+			
+			$ecx <- %message	// Pointer to the message
+			$ebx <- 1			// stdout printstream number
+			$eax <- 4			// sys_write syscall number
+			
+			$edx <- *%length	// Length
+			int 0x80			// Actually invoke it
+			
+			decl *%length
+			
+		}
+		
+		$eax <- 1	// sys_exit syscall number
+		int 0x80	// Actually invoke it
+		
+	}
+	
+}
