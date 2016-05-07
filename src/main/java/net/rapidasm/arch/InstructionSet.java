@@ -20,7 +20,11 @@ public class InstructionSet {
 	}
 	
 	/**
-	 * Defines an instruction in the instruction set to have the specified characteristics.
+	 * Defines an instruction in the instruction set to have the specified
+	 * characteristics.  These values are later passed into String.format (so
+	 * arguments should be replaced by <code>%s</code>) and another replace(),
+	 * so there should be <code>{}</code> in the place of the GAS syntax
+	 * instruction size specification.
 	 * 
 	 * @param instr
 	 * @param pattern
