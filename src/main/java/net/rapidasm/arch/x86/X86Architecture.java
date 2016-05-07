@@ -14,9 +14,10 @@ import net.rapidasm.structure.DataSize;
 public class X86Architecture extends Architecture {
 	
 	private List<CallingConvention> conventions;
-	private InstructionSet instructionSet;
 	
-	private CallingConvention cdeclConvention;
+	// Specific stuffs.
+	private X86InstructionSet instructionSet;
+	private CdeclConvention cdeclConvention;
 	
 	public X86Architecture() {
 		

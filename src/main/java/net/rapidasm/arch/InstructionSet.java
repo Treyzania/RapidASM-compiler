@@ -2,6 +2,9 @@ package net.rapidasm.arch;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import net.rapidasm.asm.AsmInstruction;
+import net.rapidasm.asm.AsmOperand;
 import net.rapidasm.asm.DataSource;
 import net.rapidasm.structure.operands.Operand;
 
@@ -60,15 +63,15 @@ public class InstructionSet {
 		
 	}
 	
-	public String fill(Instruction instr, Operand... operands) {
+	public AsmInstruction fill(Instruction instr, Operand... operands) {
 		
-		// First check to see if we can support it, and get the actual text while we're at it.
+		// First check to see if we can support it, and get the actual AsmOperands while we're at it.
 		DataSource[] sources = new DataSource[operands.length];
-		String[] ops = new String[operands.length];
+		AsmOperand[] aos = new AsmOperand[operands.length];
 		for (int i = 0; i < operands.length; i++) {
 			
 			sources[i] = operands[i].getSource();
-			ops[i] = operands[i].getAsmOperand().value;
+			aos[i] = operands[i].getAsmOperand();
 			
 		}
 		
@@ -78,7 +81,8 @@ public class InstructionSet {
 		}
 		
 		if (is == null) throw new IllegalArgumentException("Instruction " + instr.name() + " is not supported by this instruction set!");
-		return String.format(is.pattern, (Object[]) ops); // Yucky Object[] casting. :P
+		
+		return new AsmInstruction(is.pattern, aos); // FIXME THIS PATTERN BULLSHIT ISN'T RIGHT AT ALL.
 		
 	}
 	

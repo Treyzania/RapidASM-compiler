@@ -1,7 +1,9 @@
 package net.rapidasm.asm.actions;
 
+import java.util.List;
+
 import net.rapidasm.arch.Architecture;
-import net.rapidasm.asm.AsmSequencer;
+import net.rapidasm.asm.AsmInstruction;
 
 public abstract class Action {
 	
@@ -11,6 +13,6 @@ public abstract class Action {
 		this.arch = arch;
 	}
 	
-	public abstract void addInstructions(AsmSequencer seq);
+	public abstract List<AsmInstruction> getInstructions();
 	
 }

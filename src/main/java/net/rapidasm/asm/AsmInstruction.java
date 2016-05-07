@@ -38,6 +38,10 @@ public class AsmInstruction {
 		this.addLabel(new AsmLabel(label));
 	}
 	
+	public AsmLabel getPrimaryLabel() {
+		return this.labels.get(0);
+	}
+	
 	public String getCompiledLine(Architecture arch) {
 		
 		StringBuilder sb = new StringBuilder(this.instruction);

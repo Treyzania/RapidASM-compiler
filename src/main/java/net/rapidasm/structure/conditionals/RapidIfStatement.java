@@ -1,7 +1,6 @@
 package net.rapidasm.structure.conditionals;
 
 import net.rapidasm.antlr.RapidASMParser.ConditionalBlockContext;
-import net.rapidasm.structure.RapidBranchingStatement;
 import net.rapidasm.structure.RapidStatementBlock;
 
 public class RapidIfStatement extends RapidBranchingStatement {

@@ -1,9 +1,11 @@
 package net.rapidasm.asm.actions;
 
+import java.util.Arrays;
+import java.util.List;
+
 import net.rapidasm.arch.Architecture;
 import net.rapidasm.asm.AsmInstruction;
 import net.rapidasm.asm.AsmOperand;
-import net.rapidasm.asm.AsmSequencer;
 import net.rapidasm.structure.operands.Operand;
 
 public class GenericAction extends Action {
@@ -31,10 +33,10 @@ public class GenericAction extends Action {
 	}
 	
 	@Override
-	public void addInstructions(AsmSequencer seq) {
+	public List<AsmInstruction> getInstructions() {
 		
 		// XXX
-		seq.addInstruction(new AsmInstruction(this.instructionString, new AsmOperand[] {this.left.getAsmOperand(), this.right.getAsmOperand()}));
+		return Arrays.asList(new AsmInstruction(this.instructionString, new AsmOperand[] {this.left.getAsmOperand(), this.right.getAsmOperand()}));
 		
 	}
 	
