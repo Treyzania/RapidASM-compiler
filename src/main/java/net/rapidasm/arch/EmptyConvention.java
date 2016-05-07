@@ -13,8 +13,8 @@ public class EmptyConvention extends CallingConvention {
 	@Override
 	public void doCallerSetup(RapidSubroutine caller, RapidSubroutine callee, BinarySource src) {
 		
-		src.addComment("CALLING: " + callee.name + " (" + this.name + ")");
-		src.addInstruction(Instruction.CALL, callee.name);
+		// FIXME XXX
+		//src.addInstruction(Instruction.CALL, callee.name);
 		
 	}
 	
@@ -33,8 +33,9 @@ public class EmptyConvention extends CallingConvention {
 	@Override
 	public void doCalleeCleanup(RapidSubroutine callee, BinarySource src) {
 		
+		// FIXME XXX
 		// Just the return instruction here.
-		src.addInstruction(Instruction.RETURN);
+		//src.addInstruction(Instruction.RETURN);
 		
 	}
 

@@ -2,6 +2,8 @@ package net.rapidasm.structure.operands;
 
 import net.rapidasm.antlr.ParserUtil;
 import net.rapidasm.arch.Architecture;
+import net.rapidasm.asm.AsmOperand;
+import net.rapidasm.asm.DataSource;
 import net.rapidasm.structure.DataSize;
 import net.rapidasm.structure.RapidSubroutine;
 
@@ -49,11 +51,6 @@ public class ImmediateOperand extends Operand {
 	}
 	
 	@Override
-	public boolean needsRegisterCache() {
-		return false;
-	}
-	
-	@Override
 	public DataSize getResultingDataSize() {
 		
 		if (this.originalValue.startsWith("$")) {
@@ -64,6 +61,17 @@ public class ImmediateOperand extends Operand {
 			return null; 
 		}
 		
+	}
+
+	@Override
+	public AsmOperand getAsmOperand() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public DataSource getSource() {
+		return this.originalValue.startsWith("$") ? DataSource.REGISTER : DataSource.LITERAL;
 	}
 	
 }

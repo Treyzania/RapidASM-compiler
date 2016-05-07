@@ -1,13 +1,13 @@
 package net.rapidasm.structure.mov;
 
 import net.rapidasm.BinarySource;
-import net.rapidasm.structure.DataSize;
 import net.rapidasm.structure.RapidStatement;
 import net.rapidasm.structure.RapidStatementBlock;
 import net.rapidasm.structure.operands.Operand;
 
 public class RapidMoveStatement extends RapidStatement {
 	
+	@SuppressWarnings("unused")
 	private MoveType type;
 	private Operand src, dest;
 	
@@ -27,7 +27,9 @@ public class RapidMoveStatement extends RapidStatement {
 		this.src.setup(src);
 		this.dest.setup(src);
 		
-		src.addInstruction(this.type.instruction, DataSize.getDataSize(this.src, this.dest), this.src.getActualOperand(), this.dest.getActualOperand());
+		
+		// FIXME XXX
+		//src.addInstruction(this.type.instruction, DataSize.getDataSize(this.src, this.dest), this.src.getActualOperand(), this.dest.getActualOperand());
 		
 		this.src.cleanup(src);
 		this.dest.cleanup(src);

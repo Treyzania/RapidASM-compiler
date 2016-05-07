@@ -81,7 +81,7 @@ public abstract class Architecture {
 	
 	/**
 	 * 
-	 * @return '+' or '-', depending on which direction the stack grows.
+	 * @return 1 or -1, depending on which direction the stack grows.
 	 */
 	public abstract int getStackDirection();
 	public char getStackDirectionSign() {
@@ -104,14 +104,6 @@ public abstract class Architecture {
 	}
 	
 	public abstract InstructionSet getInstructionSet();
-	
-	public String getInstruction(Instruction instr, DataSize size, String... operands) {
-		return this.getInstruction(instr, operands).replaceFirst("\\{\\}", Character.toString(size.suffix));
-	}
-	
-	public String getInstruction(Instruction instr, String... operands) {
-		return this.getInstructionSet().fill(instr, operands);
-	}
 	
 	public abstract CallingConvention getDefaultCallingConvention();
 	

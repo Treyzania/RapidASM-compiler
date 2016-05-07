@@ -2,7 +2,6 @@ package net.rapidasm.structure.loops;
 
 import net.rapidasm.BinarySource;
 import net.rapidasm.antlr.RapidASMParser.WhileBlockBeforeContext;
-import net.rapidasm.arch.Instruction;
 import net.rapidasm.structure.RapidStatementBlock;
 import net.rapidasm.structure.conditionals.BranchGenerationType;
 import net.rapidasm.structure.conditionals.Conditional;
@@ -29,7 +28,8 @@ public class RapidWhileBeforeBlock extends RapidWhileBlock {
 	public void addCodeLines(BinarySource src) {
 		
 		super.addCodeLines(src);
-		src.addInstruction(Instruction.JUMP, this.getBeginLabel());
+		// FIXME XXX
+		//src.addInstruction(Instruction.JUMP, this.getBeginLabel());
 		
 	}
 	

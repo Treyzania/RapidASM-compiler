@@ -1,7 +1,6 @@
 package net.rapidasm.structure;
 
 import net.rapidasm.BinarySource;
-import net.rapidasm.arch.Instruction;
 import net.rapidasm.structure.conditionals.BranchGenerationType;
 import net.rapidasm.structure.conditionals.Conditional;
 import net.rapidasm.structure.conditionals.Likelihood;
@@ -43,23 +42,26 @@ public abstract class RapidBranchingStatement extends RapidStatementBlock {
 		super.addLines(src); // This is what normally gets generated.
 	}
 	
+	@Deprecated
 	public void addConditionalLines(BinarySource src) {
 		
-		DataSize cmpSuffix = DataSize.getDataSize(this.leftSide, this.rightSide);
+		// FIXME XXX XXX XXX FIXME TODO XXX Like really.
+		
+		//DataSize cmpSuffix = DataSize.getDataSize(this.leftSide, this.rightSide);
 		
 		if (this.type == BranchGenerationType.CONDITIONAL) {
 			
 			this.leftSide.setup(src);
 			this.rightSide.setup(src);
 			
-			src.addInstruction(Instruction.COMPARE, cmpSuffix, this.leftSide.getActualOperand(), this.rightSide.getActualOperand());
+			//src.addInstruction(Instruction.COMPARE, cmpSuffix, this.leftSide.getActualOperand(), this.rightSide.getActualOperand());
 			
 			if (this.likelyhood == Likelihood.LIKELY) {
-				src.addInstruction(this.conditional.jmpInstruction, this.getEndLabel());
+				//src.addInstruction(this.conditional.jmpInstruction, this.getEndLabel());
 			} else if (this.likelyhood == Likelihood.UNLIKELY) {
 				
-				src.addInstruction(this.conditional.jmpInstructionInverse, this.getCodeLabel());
-				src.addInstruction(Instruction.JUMP, this.getEndLabel());
+				//src.addInstruction(this.conditional.jmpInstructionInverse, this.getCodeLabel());
+				//src.addInstruction(Instruction.JUMP, this.getEndLabel());
 				
 			} else {
 				src.addComment("ERROR FOR CONDITIONAL ON LINE " + this.getLine());
@@ -68,7 +70,7 @@ public abstract class RapidBranchingStatement extends RapidStatementBlock {
 		} else if (this.type == BranchGenerationType.FALSE) {
 			
 			src.addComment("Branch here is always false.");
-			src.addInstruction(Instruction.JUMP, this.getEndLabel());
+			//src.addInstruction(Instruction.JUMP, this.getEndLabel());
 			
 		} else if (this.type == BranchGenerationType.TRUE) {
 			src.addComment("Branch here is always true.");

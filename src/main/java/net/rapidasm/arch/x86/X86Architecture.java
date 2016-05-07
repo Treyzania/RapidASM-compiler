@@ -7,7 +7,6 @@ import java.util.List;
 import net.rapidasm.arch.Architecture;
 import net.rapidasm.arch.CallingConvention;
 import net.rapidasm.arch.EmptyConvention;
-import net.rapidasm.arch.Instruction;
 import net.rapidasm.arch.InstructionSet;
 import net.rapidasm.arch.Register;
 import net.rapidasm.structure.DataSize;
@@ -27,30 +26,7 @@ public class X86Architecture extends Architecture {
 		this.conventions.add(this.cdeclConvention);
 		this.conventions.add(new EmptyConvention(this, "nocall"));
 		
-		this.instructionSet = new InstructionSet();
-		
-		// General instructions.
-		this.instructionSet.set(Instruction.MOVE, "mov{} %s, %s");
-		this.instructionSet.set(Instruction.EXCHANGE, "xchg{} %s, %s");
-		this.instructionSet.set(Instruction.ADD, "add{} %s, %s");
-		this.instructionSet.set(Instruction.SUBTRACT, "sub{} %s, %s");
-		this.instructionSet.set(Instruction.INCREMENT, "inc{} %s");
-		this.instructionSet.set(Instruction.DECREMENT, "dec{} %s");
-		this.instructionSet.set(Instruction.CALL, "call %s");
-		this.instructionSet.set(Instruction.RETURN, "ret");
-		this.instructionSet.set(Instruction.JUMP, "jmp %s");
-		this.instructionSet.set(Instruction.COMPARE, "cmp %s, %s");
-		
-		// Jumping instructions.
-		this.instructionSet.set(Instruction.COMPARE, "cmp{} %s, %s");
-		this.instructionSet.set(Instruction.JUMP_EQUAL, "je %s");
-		this.instructionSet.set(Instruction.JUMP_INEQUAL, "jne %s");
-		this.instructionSet.set(Instruction.JUMP_ZERO, "jz %s");
-		this.instructionSet.set(Instruction.JUMP_NONZERO, "jnz %s");
-		this.instructionSet.set(Instruction.JUMP_GREATER, "jg %s");
-		this.instructionSet.set(Instruction.JUMP_GREATER_OR_EQUAL, "jge %s");
-		this.instructionSet.set(Instruction.JUMP_LESS, "jl %s");
-		this.instructionSet.set(Instruction.JUMP_LESS_OR_EQUAL, "jle %s");
+		this.instructionSet = new X86InstructionSet();
 		
 	}
 	
@@ -110,11 +86,7 @@ public class X86Architecture extends Architecture {
 			new Register("bp", DataSize.SHORT),
 			new Register("ebp", DataSize.INTEGER),
 			new Register("sp", DataSize.SHORT),
-			new Register("esp", DataSize.INTEGER),
-			
-			// Flags
-			new Register("flags", DataSize.SHORT),
-			new Register("eflags", DataSize.INTEGER)
+			new Register("esp", DataSize.INTEGER)
 			
 			// TODO Add the other ones, like cs, ds, es, fs, gs, and ss? 
 			

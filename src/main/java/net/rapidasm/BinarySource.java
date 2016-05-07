@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.rapidasm.arch.Architecture;
-import net.rapidasm.arch.Instruction;
-import net.rapidasm.structure.DataSize;
 
 public class BinarySource {
 
+	@SuppressWarnings("unused")
 	private final Architecture arch;
 	
 	private Blob lines; // Underlying list wrapper.
@@ -70,20 +69,6 @@ public class BinarySource {
 		
 		this.lastTypeAdded = LineType.CODE;
 		
-	}
-	
-	/**
-	 * Adds the instruction specified with the operands specified, if any.
-	 * @param instr
-	 * @param operands
-	 */
-	public void addInstruction(Instruction instr, String... operands) {
-		this.addCode(this.arch.getInstruction(instr, operands));
-	}
-	
-	
-	public void addInstruction(Instruction instr, DataSize size, String... operands) {
-		this.addCode(this.arch.getInstruction(instr, size, operands));
 	}
 	
 	public void addSpaces(int minSpaces) {

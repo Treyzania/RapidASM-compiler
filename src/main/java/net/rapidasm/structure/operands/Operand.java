@@ -2,6 +2,8 @@ package net.rapidasm.structure.operands;
 
 import net.rapidasm.BinarySource;
 import net.rapidasm.arch.Architecture;
+import net.rapidasm.asm.AsmOperand;
+import net.rapidasm.asm.DataSource;
 import net.rapidasm.structure.DataSize;
 import net.rapidasm.structure.RapidSubroutine;
 
@@ -25,14 +27,13 @@ public abstract class Operand {
 		
 	}
 	
-	public abstract String getActualOperand();
-	
-	// The cache here is the register we store it in before doing whatever with it, might not be necessary.
-	public abstract boolean needsRegisterCache();
-	public void setCacheRegister(String registre) {
-		
+	public String getActualOperand() {
+		return this.getAsmOperand().value;
 	}
 	
 	public abstract DataSize getResultingDataSize();
+	
+	public abstract AsmOperand getAsmOperand();
+	public abstract DataSource getSource();
 	
 }

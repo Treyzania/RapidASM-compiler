@@ -59,13 +59,13 @@ public enum DataSize {
 		DataSize dsa = a.getResultingDataSize();
 		DataSize dsb = b.getResultingDataSize();
 		
-		if (dsa == null && dsb == null) throw new IllegalArgumentException(String.format("Operands %s and %s both don't have obvious sizes!", a.getActualOperand(), b.getActualOperand()));
+		if (dsa == null && dsb == null) throw new IllegalArgumentException(String.format("Operands %s and %s both don't have obvious sizes!", a.getAsmOperand().value, b.getAsmOperand().value));
 		if (dsa != null && dsb != null) {
 			
 			if (dsa == dsb) {
 				return dsa; // Could do either.
 			} else {
-				throw new IllegalArgumentException(String.format("Operands %s and %s are incompatible.", a.getActualOperand(), b.getActualOperand()));
+				throw new IllegalArgumentException(String.format("Operands %s and %s are incompatible.", a.getAsmOperand().value, b.getAsmOperand().value));
 			}
 			
 		}
