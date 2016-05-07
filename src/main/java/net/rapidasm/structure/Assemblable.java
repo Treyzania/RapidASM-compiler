@@ -4,7 +4,10 @@ import net.rapidasm.BinarySource;
 
 public interface Assemblable {
 
-	// TODO Figure out how to do this bit here.
+	@Deprecated
 	public void addLines(BinarySource src);
-
+	
+	// FIXME This probably needs to be reworked. 
+	//public List<Action> getActions();
+	
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.rapidasm.arch.Architecture;
 
+@Deprecated
 public class BinarySource {
 
 	@SuppressWarnings("unused")

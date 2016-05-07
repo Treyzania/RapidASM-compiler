@@ -4,6 +4,7 @@ import net.rapidasm.BinarySource;
 import net.rapidasm.structure.RapidStatementBlock;
 import net.rapidasm.structure.operands.Operand;
 
+@Deprecated
 public abstract class RapidBranchingStatement extends RapidStatementBlock {
 
 	private static final String LABEL_INFIX_BEGIN = "_begin_";

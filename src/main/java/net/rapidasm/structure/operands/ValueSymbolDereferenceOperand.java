@@ -7,6 +7,7 @@ import net.rapidasm.structure.DataSize;
 import net.rapidasm.structure.RapidSubroutine;
 import net.rapidasm.structure.symbols.ValueSymbol;
 
+@Deprecated
 public class ValueSymbolDereferenceOperand extends Operand {
 
 	private final ValueSymbol value;

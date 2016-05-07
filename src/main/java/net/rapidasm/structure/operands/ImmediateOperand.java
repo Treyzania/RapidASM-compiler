@@ -7,6 +7,7 @@ import net.rapidasm.asm.DataSource;
 import net.rapidasm.structure.DataSize;
 import net.rapidasm.structure.RapidSubroutine;
 
+@Deprecated
 public class ImmediateOperand extends Operand {
 
 	public final String value;
